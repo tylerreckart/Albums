@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */; };
 		DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */; };
 		DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */; };
 		DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB82A0D11C900CE4D74 /* Albums.xcdatamodeld */; };
@@ -14,13 +15,13 @@
 		DB9B8CBE2A0D11CA00CE4D74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9B8CBD2A0D11CA00CE4D74 /* Assets.xcassets */; };
 		DB9B8CC22A0D11CA00CE4D74 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB9B8CC12A0D11CA00CE4D74 /* Preview Assets.xcassets */; };
 		DB9B8CCA2A0D11E800CE4D74 /* MusicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9B8CC92A0D11E800CE4D74 /* MusicKit.framework */; };
-		DB9B8CCD2A0DC56000CE4D74 /* AnimatedBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CCC2A0DC56000CE4D74 /* AnimatedBackground.swift */; };
 		DB9B8CD02A0DC5E300CE4D74 /* ColorKit in Frameworks */ = {isa = PBXBuildFile; productRef = DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */; };
 		DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CD22A11C81A00CE4D74 /* AlbumDetail.swift */; };
 		DB9B8CD52A11C85200CE4D74 /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CD42A11C85200CE4D74 /* SearchSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesRequestService.swift; sourceTree = "<group>"; };
 		DB9B8CB12A0D11C900CE4D74 /* Albums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsApp.swift; sourceTree = "<group>"; };
 		DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -30,7 +31,6 @@
 		DB9B8CBF2A0D11CA00CE4D74 /* Albums.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Albums.entitlements; sourceTree = "<group>"; };
 		DB9B8CC12A0D11CA00CE4D74 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9B8CC92A0D11E800CE4D74 /* MusicKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MusicKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.4.sdk/System/Library/Frameworks/MusicKit.framework; sourceTree = DEVELOPER_DIR; };
-		DB9B8CCC2A0DC56000CE4D74 /* AnimatedBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedBackground.swift; sourceTree = "<group>"; };
 		DB9B8CD22A11C81A00CE4D74 /* AlbumDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetail.swift; sourceTree = "<group>"; };
 		DB9B8CD42A11C85200CE4D74 /* SearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				DB9B8CD12A11C80C00CE4D74 /* Views */,
-				DB9B8CCB2A0DC55400CE4D74 /* Components */,
+				DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */,
 				DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */,
 				DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */,
 				DB9B8CBB2A0D11C900CE4D74 /* ContentView.swift */,
@@ -95,14 +95,6 @@
 				DB9B8CC92A0D11E800CE4D74 /* MusicKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DB9B8CCB2A0DC55400CE4D74 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				DB9B8CCC2A0DC56000CE4D74 /* AnimatedBackground.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		DB9B8CD12A11C80C00CE4D74 /* Views */ = {
@@ -194,9 +186,9 @@
 				DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */,
 				DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */,
 				DB9B8CD52A11C85200CE4D74 /* SearchSheet.swift in Sources */,
-				DB9B8CCD2A0DC56000CE4D74 /* AnimatedBackground.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
 				DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */,
+				DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,7 +331,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.2;
@@ -383,7 +375,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.2;
