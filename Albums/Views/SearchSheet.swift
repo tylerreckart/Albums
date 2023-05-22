@@ -84,7 +84,12 @@ struct SearchSheet: View {
                 List {
                     Section(header: Text("Albums matching '\(searchText)'")) {
                         ForEach(albumsResults, id: \.self) { album in
-                            Button(action: {}) {
+                            Button(action: {
+                                Task {
+                                    let relatedAlbums = await iTunesRequestService().lookupRelatedAlbums(album.artistId)
+                                    print(relatedAlbums)
+                                }
+                            }) {
                                 HStack(alignment: .center, spacing: 10) {
                                     AsyncImage(url: URL(string: album.artworkUrl)) { image in
                                         image.resizable().aspectRatio(contentMode: .fit)
