@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */; };
+		DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B72A1B0932005C4CAE /* Color.swift */; };
+		DB96D4BB2A1B0960005C4CAE /* AlbumDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BA2A1B0960005C4CAE /* AlbumDetailItem.swift */; };
+		DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */; };
+		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
 		DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */; };
 		DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */; };
 		DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB82A0D11C900CE4D74 /* Albums.xcdatamodeld */; };
@@ -22,6 +26,10 @@
 
 /* Begin PBXFileReference section */
 		DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesRequestService.swift; sourceTree = "<group>"; };
+		DB96D4B72A1B0932005C4CAE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		DB96D4BA2A1B0960005C4CAE /* AlbumDetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailItem.swift; sourceTree = "<group>"; };
+		DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccomendedAlbum.swift; sourceTree = "<group>"; };
+		DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
 		DB9B8CB12A0D11C900CE4D74 /* Albums.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albums.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsApp.swift; sourceTree = "<group>"; };
 		DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -48,6 +56,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB96D4B62A1B0928005C4CAE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DB96D4B72A1B0932005C4CAE /* Color.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		DB96D4B92A1B0953005C4CAE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DB96D4BA2A1B0960005C4CAE /* AlbumDetailItem.swift */,
+				DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */,
+				DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		DB9B8CA82A0D11C900CE4D74 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +94,8 @@
 		DB9B8CB32A0D11C900CE4D74 /* Albums */ = {
 			isa = PBXGroup;
 			children = (
+				DB96D4B92A1B0953005C4CAE /* Components */,
+				DB96D4B62A1B0928005C4CAE /* Extensions */,
 				DB9B8CD12A11C80C00CE4D74 /* Views */,
 				DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */,
 				DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */,
@@ -184,9 +212,13 @@
 			files = (
 				DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */,
 				DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */,
+				DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */,
 				DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */,
+				DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */,
 				DB9B8CD52A11C85200CE4D74 /* SearchSheet.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
+				DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */,
+				DB96D4BB2A1B0960005C4CAE /* AlbumDetailItem.swift in Sources */,
 				DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */,
 				DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */,
 			);

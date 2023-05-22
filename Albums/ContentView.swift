@@ -9,236 +9,109 @@ import SwiftUI
 import CoreData
 import MusicKit
 
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
-        
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-
 struct ContentView: View {
     @State private var albums: [Album] = []
     @State private var gridSize: Int = 2
     
     @State private var showSearchSheet: Bool = false
     
+    let columnWidth = (UIScreen.main.bounds.width / 2) - 26
+    
     var greeting: some View {
-        VStack {
+        VStack(spacing: 5) {
             HStack {
-                Text("Hello, Tyler!")
+                Text("Good Evening, Tyler")
                     .font(.largeTitle)
-                    .fontWeight(.heavy)
-                    .foregroundColor(Color("PrimaryBlack"))
+                    .fontWeight(.bold)
                 Spacer()
             }
-            .padding(.bottom, 1)
             HStack {
                 Text("Your last listen was on Tuesday, May 8th.")
                     .foregroundColor(.gray)
                 Spacer()
             }
         }
-        .padding([.horizontal, .bottom])
-        .padding(.top, 20)
+        .padding(.horizontal)
     }
     
     var favoritesCarousel: some View {
         VStack {
-            HStack {
-                Text("Your Favorites")
-                    .fontWeight(.heavy)
-                    .foregroundColor(Color("PrimaryBlack"))
-                Spacer()
-            }
-            .padding([.horizontal])
+            SectionTitle(
+                text: "Your Favorites",
+                symbol: "star",
+                buttonText: "View All",
+                destination: { VStack { Text("Hello, World") } }
+            )
         }
     }
     
     var reccomendedCarousel: some View {
         VStack {
-            HStack(spacing: 5) {
-                Image(systemName: "wand.and.stars")
-                    .font(.system(size: 16, weight: .black))
-//                    .foregroundColor(Color("PrimaryRed"))
-                Text("Reccomended Listens")
-                    .fontWeight(.heavy)
-                    .foregroundColor(Color("PrimaryBlack"))
-                Spacer()
-            }
-            .padding([.horizontal])
+            SectionTitle(
+                text: "Recommended Listens",
+                symbol: "wand.and.stars",
+                buttonText: "View All",
+                destination: { VStack { Text("Hello, World") } }
+            )
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
-                    Rectangle()
-                        .fill(LinearGradient(
-                            colors: [.purple, .red],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(width: 300, height: 120)
-                        .cornerRadius(6)
-                        .padding(.leading)
-                    
-                    Rectangle()
-                        .fill(LinearGradient(
-                            colors: [.green, .blue],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(width: 300, height: 120)
-                        .cornerRadius(6)
-                    
-                    Rectangle()
-                        .fill(LinearGradient(
-                            colors: [.red, .yellow],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ))
-                        .frame(width: 300, height: 120)
-                        .cornerRadius(6)
-                        .padding(.trailing)
+                    RecommendedAlbum(columnWidth: columnWidth)
+                    RecommendedAlbum(columnWidth: columnWidth)
+                    RecommendedAlbum(columnWidth: columnWidth)
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+    
+    var library: some View {
+        VStack {
+            SectionTitle(
+                text: "Your Library",
+                symbol: "square.stack.3d.down.right.fill",
+                buttonText: "View All",
+                destination: { VStack { Text("Hello, World") } }
+            )
+
+            VStack(spacing: 20) {
+                HStack(spacing: 20) {
+                    AlbumGridItem(columnWidth: columnWidth)
+                    AlbumGridItem(columnWidth: columnWidth)
+                }
+                
+                HStack(spacing: 20) {
+                    AlbumGridItem(columnWidth: columnWidth)
+                    AlbumGridItem(columnWidth: columnWidth)
                 }
             }
-            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
-            .padding(.bottom)
         }
     }
 
     var body: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    
-                    Button(action: { self.showSearchSheet.toggle() }) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 20, weight: .bold))
-                    }
-                    .foregroundColor(Color("PrimaryRed"))
-                }
-                .padding([.horizontal, .top])
-                .background(.white)
-                .zIndex(1)
-                
-                ScrollView {
-                    VStack(spacing: 0) {
+            NavigationView {
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
                         greeting
-                            .padding(.bottom, 5)
                         reccomendedCarousel
-                            .padding(.bottom, 5)
-                        
-                        let columnWidth = (UIScreen.main.bounds.width / 2) - 26
-                        
-                        VStack {
-                            HStack(spacing: 5) {
-                                Image(systemName: "square.stack.3d.down.right")
-                                    .font(.system(size: 16, weight: .heavy))
-//                                    .foregroundColor(Color("PrimaryRed"))
-                                Text("Your Library")
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(Color("PrimaryBlack"))
-                                Spacer()
-                            }
-                            .padding(.horizontal)
-                            
-                            VStack(spacing: 20) {
-                                ZStack {
-                                    HStack(spacing: 20) {
-                                        Rectangle()
-                                            .fill(LinearGradient(
-                                                colors: [.blue, .purple],
-                                                startPoint: .top,
-                                                endPoint: .bottom
-                                            ))
-                                            .frame(width: columnWidth, height: columnWidth)
-                                            .overlay(.ultraThinMaterial)
-                                            .cornerRadius(6)
-                                            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
-                                        Rectangle()
-                                            .fill(LinearGradient(
-                                                colors: [.purple, .red],
-                                                startPoint: .top,
-                                                endPoint: .bottom
-                                            ))
-                                            .frame(width: columnWidth, height: columnWidth)
-                                            .overlay(.ultraThinMaterial)
-                                            .cornerRadius(6)
-                                            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
-                                    }
-                                    
-                                    Text("Add albums to your library to get started...")
-                                        .font(.system(size: 16))
-                                        .padding()
-                                        .background(.ultraThinMaterial)
-                                        .cornerRadius(8)
-                                        .shadow(color: .black.opacity(0.2), radius: 10, y: 10)
-                                        .foregroundColor(.white)
-                                }
-                            }
+                        library
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: { self.showSearchSheet.toggle() }) {
+                            Image(systemName: "magnifyingglass")
+                                .fontWeight(.medium)
+                                .foregroundColor(Color("PrimaryRed"))
                         }
-                        .padding(.bottom)
                     }
-                }
-                .frame(height: UIScreen.main.bounds.height - 200)
-                
-                
-                VStack {
-                    Spacer()
-                    
-                    HStack {
-                        Text("Bottom Bar")
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 80)
-                    //                    .padding()
-                    .background(.white)
-                    .shadow(color: Color.init(hex: "57061F").opacity(0.2), radius: 10, y: 8)
-                    .edgesIgnoringSafeArea(.bottom)
                 }
             }
-            .toolbar {
-                ToolbarItem {
-                    Button(action: { self.showSearchSheet.toggle() }) {
-                        Label("Search", systemImage: "magnifyingglass")
-                            .font(.system(size: 18, weight: .bold, design: .rounded))
-                    }
-                    .foregroundColor(Color("PrimaryRed"))
-                }
-            }
-            .background(
-                LinearGradient(
-                    colors: [.white, Color.init(hex: "FFECF3")],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .background(Color.init(hex: "F5F5F5"))
             .sheet(isPresented: $showSearchSheet) {
                 SearchSheet()
             }
         }
-        .background(
-            LinearGradient(colors: [.red, .white], startPoint: .top, endPoint: .bottom)
-        )
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
