@@ -73,18 +73,6 @@ struct ContentView: View {
                 buttonText: "View All",
                 destination: { VStack { Text("Hello, World") } }
             )
-
-            VStack(spacing: 20) {
-                HStack(spacing: 20) {
-                    AlbumGridItem(columnWidth: columnWidth)
-                    AlbumGridItem(columnWidth: columnWidth)
-                }
-                
-                HStack(spacing: 20) {
-                    AlbumGridItem(columnWidth: columnWidth)
-                    AlbumGridItem(columnWidth: columnWidth)
-                }
-            }
         }
     }
 

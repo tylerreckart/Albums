@@ -42,7 +42,6 @@ class iTunesRequestService {
     
         for album in data {
             let tmp = AlbumsAlbum()
-            tmp.appleId = album.collectionId
             tmp.name = album.collectionName
             tmp.artistName = album.artistName
             tmp.artistId = album.artistId

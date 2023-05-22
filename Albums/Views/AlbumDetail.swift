@@ -8,34 +8,32 @@
 import SwiftUI
 import MusicKit
 
-struct AlbumDetail: View {
-    var album: Album
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            ArtworkImage(album.artwork!, height: UIScreen.main.bounds.width - 80)
-                .padding(.vertical, 40)
-                
-            Spacer()
-        }
-    }
-}
 
-struct AlbumDetailSheet: View {
-    @Binding var album: Album?
-    @Binding var artist: Artist?
-    @State private var artists: [Artist] = []
-    
+struct AlbumDetail: View {
+    var album: AlbumsAlbum
+
     var body: some View {
-        if (album != nil) {
-            ZStack {
-                ScrollView {
-                    AlbumDetail(album: album!)
+        ZStack {
+            ScrollView {
+                VStack {
+                    Text(album.name)
+                        .font(.system(size: 20, weight: .heavy))
+                    Text(album.artistName)
+                    HStack {
+                        Text("Genre")
+                            .bold()
+                        Text(album.genre)
+                    }
+                    
+                    Button(action: {}) {
+                        Text("Add To Library")
+                    }
                 }
-                .frame(maxHeight: .infinity)
             }
             .frame(maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemGray6))
     }
 }
 

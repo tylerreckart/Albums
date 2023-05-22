@@ -18,7 +18,7 @@ class AlbumsAlbum: Identifiable, Hashable {
     
     var uid: UUID = UUID()
     // iTunes-fetched properties.
-    var appleId: Int = 0
+    var mbid: String = ""
     var name: String = ""
     var artistName: String = ""
     var artistId: Int = 0
