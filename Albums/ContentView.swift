@@ -41,148 +41,185 @@ struct ContentView: View {
     @State private var gridSize: Int = 2
     
     @State private var showSearchSheet: Bool = false
+    
+    var greeting: some View {
+        VStack {
+            HStack {
+                Text("Hello, Tyler!")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                    .foregroundColor(Color("PrimaryBlack"))
+                Spacer()
+            }
+            .padding(.bottom, 1)
+            HStack {
+                Text("Your last listen was on Tuesday, May 8th.")
+                    .foregroundColor(.gray)
+                Spacer()
+            }
+        }
+        .padding([.horizontal, .bottom])
+        .padding(.top, 20)
+    }
+    
+    var favoritesCarousel: some View {
+        VStack {
+            HStack {
+                Text("Your Favorites")
+                    .fontWeight(.heavy)
+                    .foregroundColor(Color("PrimaryBlack"))
+                Spacer()
+            }
+            .padding([.horizontal])
+        }
+    }
+    
+    var reccomendedCarousel: some View {
+        VStack {
+            HStack(spacing: 5) {
+                Image(systemName: "wand.and.stars")
+                    .font(.system(size: 16, weight: .black))
+//                    .foregroundColor(Color("PrimaryRed"))
+                Text("Reccomended Listens")
+                    .fontWeight(.heavy)
+                    .foregroundColor(Color("PrimaryBlack"))
+                Spacer()
+            }
+            .padding([.horizontal])
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    Rectangle()
+                        .fill(LinearGradient(
+                            colors: [.purple, .red],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                        .frame(width: 300, height: 120)
+                        .cornerRadius(6)
+                        .padding(.leading)
+                    
+                    Rectangle()
+                        .fill(LinearGradient(
+                            colors: [.green, .blue],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                        .frame(width: 300, height: 120)
+                        .cornerRadius(6)
+                    
+                    Rectangle()
+                        .fill(LinearGradient(
+                            colors: [.red, .yellow],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                        .frame(width: 300, height: 120)
+                        .cornerRadius(6)
+                        .padding(.trailing)
+                }
+            }
+            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
+            .padding(.bottom)
+        }
+    }
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 0) {
-                    VStack {
-                        HStack {
-                            Text("Hello, Tyler!")
-                                .font(.largeTitle)
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color("PrimaryBlack"))
-                            Spacer()
-                        }
-                        HStack {
-                            Text("Your last listen was on Tuesday, May 8th.")
-                                .foregroundColor(.gray)
-                            Spacer()
-                        }
-                    }
-                    .padding([.horizontal, .bottom])
+        ZStack {
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
                     
-                    VStack {
-                        HStack {
-                            Text("Reccomended Listens")
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color("PrimaryBlack"))
-                            Spacer()
-                        }
-                        .padding([.horizontal])
+                    Button(action: { self.showSearchSheet.toggle() }) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 20, weight: .bold))
+                    }
+                    .foregroundColor(Color("PrimaryRed"))
+                }
+                .padding([.horizontal, .top])
+                .background(.white)
+                .zIndex(1)
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        greeting
+                            .padding(.bottom, 5)
+                        reccomendedCarousel
+                            .padding(.bottom, 5)
                         
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                Rectangle()
-                                    .fill(LinearGradient(
-                                        colors: [.purple, .red],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    ))
-                                    .frame(width: 300, height: 120)
-                                    .cornerRadius(6)
-                                    .padding(.leading)
-                                
-                                Rectangle()
-                                    .fill(LinearGradient(
-                                        colors: [.green, .blue],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    ))
-                                    .frame(width: 300, height: 120)
-                                    .cornerRadius(6)
-                                
-                                Rectangle()
-                                    .fill(LinearGradient(
-                                        colors: [.red, .yellow],
-                                        startPoint: .top,
-                                        endPoint: .bottom
-                                    ))
-                                    .frame(width: 300, height: 120)
-                                    .cornerRadius(6)
-                                    .padding(.trailing)
+                        let columnWidth = (UIScreen.main.bounds.width / 2) - 26
+                        
+                        VStack {
+                            HStack(spacing: 5) {
+                                Image(systemName: "square.stack.3d.down.right")
+                                    .font(.system(size: 16, weight: .heavy))
+//                                    .foregroundColor(Color("PrimaryRed"))
+                                Text("Your Library")
+                                    .fontWeight(.heavy)
+                                    .foregroundColor(Color("PrimaryBlack"))
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            
+                            VStack(spacing: 20) {
+                                ZStack {
+                                    HStack(spacing: 20) {
+                                        Rectangle()
+                                            .fill(LinearGradient(
+                                                colors: [.blue, .purple],
+                                                startPoint: .top,
+                                                endPoint: .bottom
+                                            ))
+                                            .frame(width: columnWidth, height: columnWidth)
+                                            .overlay(.ultraThinMaterial)
+                                            .cornerRadius(6)
+                                            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
+                                        Rectangle()
+                                            .fill(LinearGradient(
+                                                colors: [.purple, .red],
+                                                startPoint: .top,
+                                                endPoint: .bottom
+                                            ))
+                                            .frame(width: columnWidth, height: columnWidth)
+                                            .overlay(.ultraThinMaterial)
+                                            .cornerRadius(6)
+                                            .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
+                                    }
+                                    
+                                    Text("Add albums to your library to get started...")
+                                        .font(.system(size: 16))
+                                        .padding()
+                                        .background(.ultraThinMaterial)
+                                        .cornerRadius(8)
+                                        .shadow(color: .black.opacity(0.2), radius: 10, y: 10)
+                                        .foregroundColor(.white)
+                                }
                             }
                         }
-                        .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
                         .padding(.bottom)
                     }
-
-                    let columnWidth = (UIScreen.main.bounds.width / 2) - 26
+                }
+                .frame(height: UIScreen.main.bounds.height - 200)
+                
+                
+                VStack {
+                    Spacer()
                     
-                    VStack {
-                        HStack {
-                            Text("Your Library")
-                                .fontWeight(.heavy)
-                                .foregroundColor(Color("PrimaryBlack"))
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        
-                        VStack(spacing: 20) {
-                            ZStack {
-                                HStack(spacing: 20) {
-                                    Rectangle()
-                                        .fill(LinearGradient(
-                                            colors: [.blue, .purple],
-                                            startPoint: .top,
-                                            endPoint: .bottom
-                                        ))
-                                        .frame(width: columnWidth, height: columnWidth)
-                                        .cornerRadius(6)
-                                        .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
-                                    Rectangle()
-                                        .fill(LinearGradient(
-                                            colors: [.purple, .red],
-                                            startPoint: .top,
-                                            endPoint: .bottom
-                                        ))
-                                        .frame(width: columnWidth, height: columnWidth)
-                                        .cornerRadius(6)
-                                        .shadow(color: .black.opacity(0.1), radius: 10, y: 10)
-                                }
-                                
-                                Text("Add albums to your library to get started...")
-                                    .font(.system(size: 16))
-                                    .padding()
-                                    .background(.ultraThinMaterial)
-                                    .cornerRadius(8)
-                                    .shadow(color: .black.opacity(0.2), radius: 10, y: 10)
-                                    .foregroundColor(.white)
-                            }
-                        }
+                    HStack {
+                        Text("Bottom Bar")
                     }
-                    .padding(.bottom)
-
-                    ZStack {
-                        VStack(spacing: 0) {
-                            let rowCount = Int((CGFloat(albums.count) / CGFloat(gridSize)).rounded())
-                            if (rowCount > 0) {
-                                ForEach(0..<rowCount, id: \.self) { row in
-                                    let startIndex = row * gridSize
-                                    let stopIndex = startIndex + gridSize
-                                    
-                                    HStack(spacing: 0) {
-                                        ForEach(startIndex..<stopIndex, id: \.self) { index in
-                                            if (index < albums.count) {
-                                                let art = albums[index].artwork
-                                                
-                                                ArtworkImage(art!, width: (UIScreen.main.bounds.width / CGFloat(gridSize)))
-                                            } else {
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    .frame(maxWidth: .infinity, maxHeight: 80)
+                    //                    .padding()
+                    .background(.white)
+                    .shadow(color: Color.init(hex: "57061F").opacity(0.2), radius: 10, y: 8)
+                    .edgesIgnoringSafeArea(.bottom)
                 }
             }
             .toolbar {
                 ToolbarItem {
                     Button(action: { self.showSearchSheet.toggle() }) {
-                        Label("Search", systemImage: "person.crop.circle")
-                            .font(.system(size: 20, weight: .bold, design: .rounded))
+                        Label("Search", systemImage: "magnifyingglass")
+                            .font(.system(size: 18, weight: .bold, design: .rounded))
                     }
                     .foregroundColor(Color("PrimaryRed"))
                 }
