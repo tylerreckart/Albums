@@ -11,33 +11,28 @@ import MusicKit
 struct SearchSheet: View {
     @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
+    @State private var isDebounced: Bool = false
+    
     @State private var searchText: String = ""
     @State private var artistsResults: [Artist] = []
-    @State private var albumsResults: [Album] = []
+    @State private var albumsResults: [AlbumsAlbum] = []
     
     @State private var showAlbumView: Bool = false
     @State private var selectedAlbum: Album?
     @State private var selectedArtist: Artist?
     
     private func search() async {
-        let status = await MusicAuthorization.request()
-        guard status == .authorized else { return }
-    
-        let encodedStr = searchText.split(separator: " ").joined(separator: "+")
-        var request = MusicCatalogSearchRequest(term: encodedStr, types: [Album.self, Artist.self])
-        request.includeTopResults = true
-        request.limit = 6
-        let response = try? await request.response()
-
-        self.albumsResults = []
-        self.artistsResults = []
-        
-        if (response != nil) {
-            let albums: MusicItemCollection<Album>? = response?.albums
-            albums?.forEach({ album in albumsResults.append(album) })
+        if !isDebounced {
+            self.isDebounced = true
             
-            let artists: MusicItemCollection<Artist>? = response?.artists
-            artists?.forEach({ artist in artistsResults.append(artist) })
+            let results = await iTunesRequestService().search(searchText)
+            if results.count != 0 {
+                self.albumsResults = results
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.isDebounced = false
+            }
         }
     }
     
@@ -89,26 +84,22 @@ struct SearchSheet: View {
                 List {
                     Section(header: Text("Albums matching '\(searchText)'")) {
                         ForEach(albumsResults, id: \.self) { album in
-                            Button(action: {
-                                self.selectedAlbum = album
-                                
-                                let albumArtist = album.artistName
-                                
-                                let searchMatch = artistsResults.firstIndex(where: { $0.name == albumArtist })
-                                
-                                if (searchMatch != nil) {
-                                    self.selectedArtist = self.artistsResults[searchMatch!]
-                                }
-                                
-                                self.showAlbumView.toggle()
-                            }) {
+                            Button(action: {}) {
                                 HStack(alignment: .center, spacing: 10) {
-                                    ArtworkImage(album.artwork!, height: 48)
-                                        .cornerRadius(4)
-                                        .padding(.top, 2)
-                                    
+                                    AsyncImage(url: URL(string: album.artworkUrl)) { image in
+                                        image.resizable().aspectRatio(contentMode: .fit)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .frame(width: 48, height: 48)
+                                    .overlay(
+                                        LinearGradient(colors: [.white.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
+                                    )
+                                    .cornerRadius(6)
+                                    .shadow(color: .black.opacity(0.2), radius: 3, y: 2)
+                        
                                     VStack(alignment: .leading) {
-                                        Text(album.title)
+                                        Text(album.name)
                                             .font(.system(size: 16, weight: .bold))
                                         Text(album.artistName)
                                             .font(.system(size: 14, weight: .regular))
@@ -118,27 +109,8 @@ struct SearchSheet: View {
                             .foregroundColor(.primary)
                         }
                     }
-                    
-                    Section(header: Text("Artists matching '\(searchText)'")) {
-                        ForEach(artistsResults, id: \.self) { artist in
-                            HStack(alignment: .center, spacing: 10) {
-                                if (artist.artwork != nil) {
-                                    ArtworkImage(artist.artwork!, height: 48)
-                                        .cornerRadius(.infinity)
-                                        .padding(.top, 2)
-                                } else {
-                                    Circle().fill(.clear).frame(width: 48)
-                                }
-
-                                VStack(alignment: .leading) {
-                                    Text(artist.name)
-                                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                                }
-                            }
-                        }
-                    }
                 }
-                .transition(.opacity)
+                .edgesIgnoringSafeArea(.bottom)
             }
             
             Spacer()

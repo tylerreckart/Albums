@@ -12,6 +12,7 @@
 		DB96D4BB2A1B0960005C4CAE /* AlbumDetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BA2A1B0960005C4CAE /* AlbumDetailItem.swift */; };
 		DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */; };
 		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
+		DB96D4C22A1B89EF005C4CAE /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DB96D4C12A1B89EF005C4CAE /* Alamofire */; };
 		DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB42A0D11C900CE4D74 /* AlbumsApp.swift */; };
 		DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB62A0D11C900CE4D74 /* Persistence.swift */; };
 		DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CB82A0D11C900CE4D74 /* Albums.xcdatamodeld */; };
@@ -48,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB96D4C22A1B89EF005C4CAE /* Alamofire in Frameworks */,
 				DB9B8CCA2A0D11E800CE4D74 /* MusicKit.framework in Frameworks */,
 				DB9B8CD02A0DC5E300CE4D74 /* ColorKit in Frameworks */,
 			);
@@ -152,6 +154,7 @@
 			name = Albums;
 			packageProductDependencies = (
 				DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */,
+				DB96D4C12A1B89EF005C4CAE /* Alamofire */,
 			);
 			productName = Albums;
 			productReference = DB9B8CB12A0D11C900CE4D74 /* Albums.app */;
@@ -183,6 +186,7 @@
 			mainGroup = DB9B8CA82A0D11C900CE4D74;
 			packageReferences = (
 				DB9B8CCE2A0DC5E300CE4D74 /* XCRemoteSwiftPackageReference "ColorKit" */,
+				DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = DB9B8CB22A0D11C900CE4D74 /* Products */;
 			projectDirPath = "";
@@ -448,6 +452,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		DB9B8CCE2A0DC5E300CE4D74 /* XCRemoteSwiftPackageReference "ColorKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Boris-Em/ColorKit.git";
@@ -459,6 +471,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DB96D4C12A1B89EF005C4CAE /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DB9B8CCE2A0DC5E300CE4D74 /* XCRemoteSwiftPackageReference "ColorKit" */;
