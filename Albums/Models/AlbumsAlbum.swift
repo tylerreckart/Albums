@@ -7,7 +7,7 @@
 
 import Foundation
 
-class AlbumsAlbum: Identifiable, Hashable {
+class AlbumsAlbum: ObservableObject, Identifiable, Hashable {
     static func == (lhs: AlbumsAlbum, rhs: AlbumsAlbum) -> Bool {
         return lhs.uid == rhs.uid
     }
@@ -17,12 +17,13 @@ class AlbumsAlbum: Identifiable, Hashable {
     }
     
     var uid: UUID = UUID()
+    var appleId: Int = 0
     // iTunes-fetched properties.
     var mbid: String = ""
     var name: String = ""
     var artistName: String = ""
     var artistId: Int = 0
-    var artworkUrl: String = ""
+    @Published var artworkUrl: String = ""
     var genre: String = ""
     var releaseDate: String = ""
     // Local application properties.
