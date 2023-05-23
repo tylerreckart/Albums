@@ -19,7 +19,6 @@
 		DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4CD2A1BA0D3005C4CAE /* iTunesArtistResponse.swift */; };
 		DB96D4D02A1BA0F2005C4CAE /* iTunesAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4CF2A1BA0F2005C4CAE /* iTunesAlbum.swift */; };
 		DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4D12A1BA154005C4CAE /* iTunesArtist.swift */; };
-		DB96D4D42A1BB71A005C4CAE /* MusicBrainzAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4D32A1BB71A005C4CAE /* MusicBrainzAPI.swift */; };
 		DB96D4D72A1BFC5F005C4CAE /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4D62A1BFC5F005C4CAE /* RoundedCorner.swift */; };
 		DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4D82A1BFC6D005C4CAE /* View.swift */; };
 		DB96D4DB2A1C0125005C4CAE /* AlbumListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4DA2A1C0125005C4CAE /* AlbumListItem.swift */; };
@@ -48,7 +47,6 @@
 		DB96D4CD2A1BA0D3005C4CAE /* iTunesArtistResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtistResponse.swift; sourceTree = "<group>"; };
 		DB96D4CF2A1BA0F2005C4CAE /* iTunesAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAlbum.swift; sourceTree = "<group>"; };
 		DB96D4D12A1BA154005C4CAE /* iTunesArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtist.swift; sourceTree = "<group>"; };
-		DB96D4D32A1BB71A005C4CAE /* MusicBrainzAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBrainzAPI.swift; sourceTree = "<group>"; };
 		DB96D4D62A1BFC5F005C4CAE /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		DB96D4D82A1BFC6D005C4CAE /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		DB96D4DA2A1C0125005C4CAE /* AlbumListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListItem.swift; sourceTree = "<group>"; };
@@ -105,7 +103,6 @@
 			isa = PBXGroup;
 			children = (
 				DB96D4B42A1A8986005C4CAE /* iTunesRequestService.swift */,
-				DB96D4D32A1BB71A005C4CAE /* MusicBrainzAPI.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -278,7 +275,6 @@
 				DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */,
 				DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */,
 				DB96D4C62A1BA0A7005C4CAE /* AlbumsAlbum.swift in Sources */,
-				DB96D4D42A1BB71A005C4CAE /* MusicBrainzAPI.swift in Sources */,
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,
 				DB96D4DD2A1C014F005C4CAE /* SearchBar.swift in Sources */,
 				DB96D4DB2A1C0125005C4CAE /* AlbumListItem.swift in Sources */,

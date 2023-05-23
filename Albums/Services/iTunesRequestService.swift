@@ -11,7 +11,7 @@ import Alamofire
 class iTunesRequestService {
     public func search(_ term: String, countryCode: String = "US") async -> [AlbumsAlbum] {
         let me = "iTunesRequestService.search(): "
-        let qs = "search?term=\(term)&country=\(countryCode)&media=music&entity=album"
+        let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=album"
         print(me + qs)
         
         let value = try? await AF

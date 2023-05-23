@@ -9,12 +9,57 @@ import SwiftUI
 import MusicKit
 
 struct AlbumDetail: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    
     @ObservedObject var album: AlbumsAlbum
     
     func dateFromReleaseStr(_ str: String) -> String {
         let dateFormatter = DateFormatter()
         let date = dateFormatter.date(from: str)
         return (date ?? Date()).formatted(date: .long, time: .omitted)
+    }
+    
+    private func mapAlbumsAlbumToLibraryStruct(_ target: AlbumsAlbum, wantlisted: Bool = false, owned: Bool = true) -> Void {
+        let tmp = LibraryAlbum(context: viewContext)
+        tmp.appleId = Float(target.appleId)
+        tmp.artistAppleId = Float(target.artistId)
+        tmp.artistName = target.artistName
+        tmp.title = target.name
+        tmp.artworkUrl = target.artworkUrl
+        tmp.playCount = Float(0)
+        tmp.wantlisted = wantlisted
+        tmp.owned = owned
+        tmp.dateAdded = Date()
+    }
+    
+    private func addToLibrary(_ target: AlbumsAlbum) {
+        withAnimation {
+            mapAlbumsAlbumToLibraryStruct(target, wantlisted: false, owned: true)
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
+    
+    private func addToWantlist(_ target: AlbumsAlbum) {
+        withAnimation {
+            mapAlbumsAlbumToLibraryStruct(target, wantlisted: true, owned: false)
+
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
     }
 
     var body: some View {
@@ -55,7 +100,7 @@ struct AlbumDetail: View {
                     }
 
                     HStack(spacing: 10) {
-                        Button(action: {}) {
+                        Button(action: { addToLibrary(album) }) {
                             Text("Add To Library")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
@@ -66,7 +111,7 @@ struct AlbumDetail: View {
                                 .shadow(color: .black.opacity(0.1), radius: 6, y: 3)
                         }
                         
-                        Button(action: {}) {
+                        Button(action: { addToWantlist(album) }) {
                             Text("Add To Wantlist")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
