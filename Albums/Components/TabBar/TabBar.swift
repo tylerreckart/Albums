@@ -24,7 +24,7 @@ struct TabBarGroupItem: View {
             withAnimation(.linear(duration: 0)) {
                 self.showBaseIcon = false
             }
-            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.4, blendDuration: 1)) {
+            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.75, blendDuration: 1)) {
                 self.activeView = targetView
             }
             let impactMed = UIImpactFeedbackGenerator(style: .medium)
@@ -33,26 +33,18 @@ struct TabBarGroupItem: View {
             VStack(spacing: 5) {
                 ZStack {
                     if (showBaseIcon) {
-                        Image("\(image)Outlined")
+                        Image("\(image)Gray")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                        Color("PrimaryGray").blendMode(.plusLighter)
                     }
                     
                     if activeView == targetView {
-                        Image("\(image)Outlined")
+                        Image("\(image)Red")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .transition(
                                 .asymmetric(
-                                    insertion: .scale(scale: 0.9),
-                                    removal: .identity
-                                )
-                            )
-                        Color("PrimaryRed").blendMode(.plusLighter)
-                            .transition(
-                                .asymmetric(
-                                    insertion: .scale(scale: 0.9),
+                                    insertion: .scale(scale: 1.2),
                                     removal: .identity
                                 )
                             )
@@ -87,7 +79,7 @@ struct TabBar: View {
             Spacer()
             Rectangle()
                 .fill(Color(.systemGray5))
-                .frame(height: 1)
+                .frame(height: 0.5)
             HStack(spacing: 0) {
                 TabBarGroupItem(
                     activeView: $activeView,
@@ -114,9 +106,10 @@ struct TabBar: View {
                     label: "Settings"
                 )
             }
-            .padding([.horizontal])
             .padding(.top, 15)
+            .padding(.bottom, 30)
             .background(.white)
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
 }

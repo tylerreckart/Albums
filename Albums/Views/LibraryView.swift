@@ -28,7 +28,6 @@ struct LibraryView: View {
                 Spacer()
             }
             .padding(.top, 40)
-            .padding(.horizontal)
             
             Header(content: {
                 HStack {
@@ -45,7 +44,7 @@ struct LibraryView: View {
                         }
                         .frame(maxWidth: .infinity)
                     } else {
-                        Rectangle().fill(.clear).frame(maxWidth: .infinity, maxHeight: 1)
+                        Rectangle().fill(.clear).frame(maxWidth: .infinity, maxHeight: 0.5)
                     }
                     Text("Your Library")
                         .font(.system(size: 16, weight: .semibold))
@@ -60,9 +59,9 @@ struct LibraryView: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal)
             })
         }
         .navigationBarHidden(true)
+        .transition(.push(from: .trailing))
     }
 }

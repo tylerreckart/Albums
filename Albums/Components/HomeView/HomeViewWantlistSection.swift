@@ -50,7 +50,6 @@ struct HomeViewWantlistSection: View {
                     }
                 }
             }
-            .padding(.horizontal)
         }
         .padding(.horizontal)
         .foregroundColor(.primary)

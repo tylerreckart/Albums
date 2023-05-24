@@ -14,8 +14,8 @@ struct ContentView: View {
     @State private var activeView: RootView = .home
 
     var body: some View {
-        ZStack {
-            NavigationView {
+        NavigationView {
+            ZStack {
                 switch (activeView) {
                     case .home:
                         HomeView()
@@ -26,12 +26,13 @@ struct ContentView: View {
                     case .settings:
                         SettingsView()
                 }
+                
+                TabBar(activeView: $activeView)
             }
-            .environmentObject(store)
-            .environmentObject(iTunesAPI)
-            
-            TabBar(activeView: $activeView)
+            .ignoresSafeArea(.keyboard)
         }
+        .environmentObject(store)
+        .environmentObject(iTunesAPI)
         .frame(maxWidth: UIScreen.main.bounds.width)
     }
 }

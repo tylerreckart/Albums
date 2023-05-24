@@ -53,8 +53,8 @@ class iTunesRequestService: ObservableObject {
             let target = results[0]
             
             let artworkBaseUrl = target.artworkUrl100
-            let width: Int = 400
-            let height: Int = 400
+            let width: Int = 1024
+            let height: Int = 1024
             let updatedArtworkUrl = artworkBaseUrl.replacingOccurrences(of: "100x100", with: "\(width)x\(height)")
             print(me + "artwork retrieved (\(updatedArtworkUrl))")
             album.artworkUrl = updatedArtworkUrl

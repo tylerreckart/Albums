@@ -46,7 +46,6 @@ struct HomeViewLibrarySection: View {
                     }
                 }
             }
-            .padding(.horizontal)
         }
         .padding(.horizontal)
         .foregroundColor(.primary)

@@ -10,6 +10,8 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var scrollTrackingInitialized: Bool = false
+    @State private var lastOffset: CGFloat = 0
+    @State private var totalDistance: CGFloat = 0
     @State private var showHeader: Bool = false
     var body: some View {
         ZStack {
@@ -20,16 +22,24 @@ struct HomeView: View {
                         HomeViewLibrarySection()
                         HomeViewWantlistSection()
                         GeometryReader { proxy in
-                            let offset = proxy.frame(in: .named("scroll")).minY
+                            let offset = proxy.frame(in: .named("scroll")).origin.y
 
                             if scrollTrackingInitialized {
                                 Color.clear.onChange(of: offset) { newState in
                                     print(newState)
                                     withAnimation(.linear(duration: 0.1)) {
-                                        if (newState < 850 && showHeader == false) {
-                                            self.showHeader = true
-                                        } else if (newState > 850 && showHeader == true) {
-                                            self.showHeader = false
+                                        if lastOffset == 0 {
+                                            lastOffset = newState
+                                        }
+                                        
+                                        if (newState < lastOffset) {
+                                            let delta = abs(Double((totalDistance * 2) / 100))
+                                            print(delta)
+                                            if delta == 0 || delta > 0.02 {
+                                                totalDistance = newState - lastOffset
+                                            } else {
+                                                totalDistance = 0
+                                            }
                                         }
                                     }
                                 }
@@ -40,17 +50,16 @@ struct HomeView: View {
                 }
             }
             
-            if showHeader && scrollTrackingInitialized {
-                Header(content: {
-                    HStack {
-                        Spacer()
-                        Text("Albums")
-                            .font(.system(size: 16, weight: .semibold))
-                        Spacer()
-                    }
-                })
-                .zIndex(1)
-            }
+            Header(content: {
+                HStack {
+                    Spacer()
+                    Text("Albums")
+                        .font(.system(size: 16, weight: .semibold))
+                    Spacer()
+                }
+            })
+            .zIndex(1)
+            .opacity(abs(totalDistance * 2.25) < 100 ? abs(Double((totalDistance * 2.25)) / Double(100)) : 1)
         }
         .background(Color(.white))
         .onAppear {
@@ -58,5 +67,6 @@ struct HomeView: View {
                 scrollTrackingInitialized = true
             }
         }
+        .transition(.push(from: .trailing))
     }
 }

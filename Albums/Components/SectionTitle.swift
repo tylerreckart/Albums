@@ -28,6 +28,5 @@ struct SectionTitle<Destination: View>: View {
                 .foregroundColor(Color("PrimaryRed"))
             }
         }
-        .padding([.horizontal])
     }
 }

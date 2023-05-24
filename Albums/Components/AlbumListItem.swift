@@ -44,7 +44,7 @@ struct AlbumListItem: View {
             
             Rectangle()
                 .fill(Color(.systemGray5))
-                .frame(height: 1)
+                .frame(height: 0.5)
                 .padding(.leading, 75)
         }
         .background(.white)

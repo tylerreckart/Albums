@@ -28,6 +28,7 @@ struct SettingsView: View {
                 }
             })
         }
+        .transition(.push(from: .trailing))
     }
 }
 

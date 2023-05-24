@@ -18,11 +18,11 @@ struct Header<Content: View>: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 5)
-                .padding(.bottom, 15)
+                .padding(.bottom, 10)
                 .background(Color(.white))
                 Rectangle()
                     .fill(Color(.systemGray5))
-                    .frame(height: 1)
+                    .frame(height: 0.5)
             }
             
             Spacer()

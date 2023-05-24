@@ -68,7 +68,7 @@ struct SearchView: View {
                         
                         Rectangle()
                             .fill(Color(.systemGray5))
-                            .frame(height: 1)
+                            .frame(height: 0.5)
                             .padding(.leading)
                     }
                     .padding(.top, 80)
@@ -78,6 +78,6 @@ struct SearchView: View {
             Header(content: { SearchBar(searchText: $searchText, search: search) })
         }
         .background(Color(.white))
-        .padding(.horizontal)
+        .transition(.push(from: .trailing))
     }
 }
