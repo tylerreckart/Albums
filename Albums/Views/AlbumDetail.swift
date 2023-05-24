@@ -25,9 +25,13 @@ func mapAlbumsAlbumToLibraryStruct(_ target: AlbumsAlbum, wantlisted: Bool = fal
 }
 
 struct AlbumDetail: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var store: AlbumsViewModel
     
-    @ObservedObject var album: LibraryAlbum
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State private var viewContext: NSManagedObjectContext?
+    
+    var album: LibraryAlbum
+
     
     func dateFromReleaseStr(_ str: String) -> String {
         let dateFormatter = DateFormatter()
@@ -35,27 +39,12 @@ struct AlbumDetail: View {
         return (date ?? Date()).formatted(date: .long, time: .omitted)
     }
     
-    private func addToLibrary(_ target: LibraryAlbum) {
-        withAnimation {
-            target.owned = true
-            target.wantlisted = false
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-    
     private func addToWantlist(_ target: LibraryAlbum) {
         withAnimation {
             target.owned = false
             target.wantlisted = true
             do {
-                try viewContext.save()
+                try viewContext!.save()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -70,40 +59,36 @@ struct AlbumDetail: View {
             ScrollView {
                 VStack(spacing: 20) {
                     VStack(spacing: 5) {
-                        AsyncImage(url: URL(string: album.artworkUrl!)) { image in
+                        AsyncImage(url: URL(string: (store.activeAlbum?.artworkUrl!) ?? "")) { image in
                             image.resizable().aspectRatio(contentMode: .fit)
                         } placeholder: {
                             ProgressView()
                         }
                         .frame(width: 320, height: 320)
-                        .overlay(
-                            LinearGradient(colors: [.white.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
-                        )
                         .cornerRadius(6)
-                        .shadow(color: .black.opacity(0.2), radius: 3, y: 2)
                         .padding(.horizontal)
                         .padding([.bottom, .top], 10)
                         
-                        Text(album.title!)
+                        Text((store.activeAlbum?.title!) ?? "")
                             .font(.system(size: 18, weight: .bold))
                         
-                        Text(album.artistName!)
+                        Text((store.activeAlbum?.artistName!) ?? "")
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(Color("PrimaryRed"))
                         
                         HStack(alignment: .center, spacing: 5) {
-                            Text(album.genre ?? "")
+                            Text(store.activeAlbum?.genre ?? "")
                             Circle()
                                 .fill(Color(.gray))
                                 .frame(width: 4, height: 4)
-                            Text(dateFromReleaseStr(album.releaseDate ?? ""))
+                            Text(dateFromReleaseStr(store.activeAlbum?.releaseDate ?? ""))
                         }
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.gray)
                     }
 
                     HStack(spacing: 10) {
-                        Button(action: { addToLibrary(album) }) {
+                        Button(action: { store.addAlbumToLibrary((store.activeAlbum)!) }) {
                             Text("Add To Library")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
@@ -111,10 +96,9 @@ struct AlbumDetail: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color("PrimaryRed"))
                                 .cornerRadius(10)
-                                .shadow(color: .black.opacity(0.1), radius: 6, y: 3)
                         }
                         
-                        Button(action: { addToWantlist(album) }) {
+                        Button(action: { store.addAlbumToWantlist((store.activeAlbum)!) }) {
                             Text("Add To Wantlist")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
@@ -122,7 +106,6 @@ struct AlbumDetail: View {
                                 .frame(maxWidth: .infinity)
                                 .background(Color(.systemGray3))
                                 .cornerRadius(10)
-                                .shadow(color: .black.opacity(0.075), radius: 6, y: 3)
                         }
                     }
                     .padding(.horizontal)
@@ -130,14 +113,28 @@ struct AlbumDetail: View {
             }
             .frame(maxHeight: .infinity)
             .padding(.horizontal)
+            .padding(.top, 55)
+            
+            Header(content: {
+                HStack {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        Image(systemName: "chevron.backward")
+                            .font(.system(size: 20, weight: .regular))
+                    }
+                    Spacer()
+                }
+                .padding(.horizontal)
+            })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemGray6))
+        .background(Color(.white))
         .onAppear {
+            store.setActiveAlbum(album)
             Task {
-                await iTunesRequestService().lookupAlbumArtwork(album)
+                await iTunesRequestService().lookupAlbumArtwork(store.activeAlbum!)
             }
         }
+        .navigationBarHidden(true)
     }
 }
 

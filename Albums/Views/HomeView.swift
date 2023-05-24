@@ -9,14 +9,50 @@ import Foundation
 import SwiftUI
 
 struct HomeView: View {
+    @State private var scrollTrackingInitialized: Bool = false
+    @State private var showHeader: Bool = false
     var body: some View {
-        ScrollView(showsIndicators: true) {
-            VStack(spacing: 20) {
-//                Greeting()
-                HomeViewLibrarySection()
-                HomeViewWantlistSection()
+        ZStack {
+            ScrollViewReader { value in
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 20) {
+                        Greeting()
+                        HomeViewLibrarySection()
+                        HomeViewWantlistSection()
+                        GeometryReader { proxy in
+                            let offset = proxy.frame(in: .named("scroll")).minY
+                            Color.clear.onChange(of: offset) { newState in
+                                withAnimation(.linear(duration: 0.1)) {
+                                    if (newState < 870 && showHeader == false) {
+                                        self.showHeader = true
+                                    } else if (newState > 870 && showHeader == true) {
+                                        self.showHeader = false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom, 60)
+                }
+            }
+            
+            if showHeader && scrollTrackingInitialized {
+                Header(content: {
+                    HStack {
+                        Spacer()
+                        Text("Albums")
+                            .font(.system(size: 16, weight: .semibold))
+                        Spacer()
+                    }
+                })
+                .zIndex(1)
             }
         }
-        .background(Color(.systemBackground))
+        .background(Color(.white))
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                scrollTrackingInitialized = true
+            }
+        }
     }
 }

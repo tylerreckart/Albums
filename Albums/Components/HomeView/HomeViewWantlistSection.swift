@@ -16,7 +16,7 @@ struct HomeViewWantlistSection: View {
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
-        request.fetchLimit = 2
+        request.fetchLimit = 1
     
         _libraryItems = FetchRequest(fetchRequest: request)
     }
@@ -53,6 +53,7 @@ struct HomeViewWantlistSection: View {
             .padding(.horizontal)
         }
         .padding(.horizontal)
+        .foregroundColor(.primary)
     }
 }
 

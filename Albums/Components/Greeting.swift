@@ -12,18 +12,14 @@ struct Greeting: View {
     var body: some View {
         VStack(spacing: 5) {
             HStack {
-                Text("Good Evening, Tyler")
+                Text("Albums")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                Spacer()
-            }
-            HStack {
-                Text("Your last listen was on Tuesday, May 8th.")
-                    .foregroundColor(Color("PrimaryGray"))
                 Spacer()
             }
         }
         .padding(.horizontal)
         .padding([.horizontal, .top])
+        .padding(.top)
     }
 }

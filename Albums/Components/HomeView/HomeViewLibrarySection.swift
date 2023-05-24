@@ -10,28 +10,19 @@ import SwiftUI
 import CoreData
 
 struct HomeViewLibrarySection: View {
-    @FetchRequest var libraryItems: FetchedResults<LibraryAlbum>
-    
-    init() {
-        let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
-        request.predicate = NSPredicate(format: "owned == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
-        request.fetchLimit = 2
-    
-        _libraryItems = FetchRequest(fetchRequest: request)
-    }
+    @EnvironmentObject var store: AlbumsViewModel
     
     var body: some View {
         VStack(spacing: 10) {
             SectionTitle(
                 text: "Your Library",
                 buttonText: "See All",
-                destination: { LibraryView() }
+                destination: { LibraryView(showNavigation: true) }
             )
             
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    ForEach(libraryItems, id: \.self) { item in
+                    ForEach(store.library[0..<2], id: \.self) { item in
                         NavigationLink(destination: AlbumDetail(album: item)) {
                             VStack(alignment: .leading) {
                                 AsyncImage(url: URL(string: item.artworkUrl!)) { image in
@@ -44,6 +35,7 @@ struct HomeViewLibrarySection: View {
                                 
                                 Text(item.title!)
                                     .font(.system(size: 16, weight: .bold))
+                                    .multilineTextAlignment(.leading)
                                 Text(item.artistName!)
                                     .foregroundColor(Color("PrimaryGray"))
                                     .font(.system(size: 14, weight: .semibold))
@@ -55,5 +47,6 @@ struct HomeViewLibrarySection: View {
             .padding(.horizontal)
         }
         .padding(.horizontal)
+        .foregroundColor(.primary)
     }
 }

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var store: AlbumsViewModel = AlbumsViewModel()
+    @StateObject var iTunesAPI: iTunesRequestService = iTunesRequestService()
+    
     @State private var activeView: RootView = .home
 
     var body: some View {
@@ -17,18 +20,19 @@ struct ContentView: View {
                     case .home:
                         HomeView()
                     case .library:
-                        LibraryView()
+                        LibraryView(showNavigation: false)
                     case .search:
                         SearchView()
                     case .settings:
                         SettingsView()
                 }
-                
             }
-            .background(Color.init(hex: "F5F5F5"))
+            .environmentObject(store)
+            .environmentObject(iTunesAPI)
             
             TabBar(activeView: $activeView)
         }
+        .frame(maxWidth: UIScreen.main.bounds.width)
     }
 }
 

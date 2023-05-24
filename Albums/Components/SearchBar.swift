@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 
 struct SearchBar: View {
+    var placeholder: String?
     @Binding var searchText: String
-
     var search: () async -> Void
 
     var body: some View {
         ZStack {
-            TextField("Search", text: $searchText)
+            TextField(placeholder != nil ? placeholder! : "Search", text: $searchText)
                 .onChange(of: searchText) { _ in
                     Task {
                         await search()

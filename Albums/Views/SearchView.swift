@@ -9,13 +9,15 @@ import SwiftUI
 import MusicKit
 
 struct SearchView: View {
+    @EnvironmentObject var store: AlbumsViewModel
+
     @Environment(\.managedObjectContext) var viewContext
     
     @State private var isDebounced: Bool = false
     
     @State private var searchText: String = ""
     @State private var artistsResults: [Artist] = []
-    @State private var albumsResults: [AlbumsAlbum] = []
+    @State private var albumsResults: [iTunesAlbum] = []
     
     @State private var showAlbumView: Bool = false
     @State private var selectedAlbum: Album?
@@ -40,20 +42,18 @@ struct SearchView: View {
         ZStack {
             if (albumsResults.count > 0) {
                 ScrollView(showsIndicators: false) {
-//                    VStack(spacing: 0) {
-//                        ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
-//                            NavigationLink(destination: AlbumDetail(album: mapAlbumsAlbumToLibraryStruct(album, viewContext: viewContext))) {
-//                                AlbumListItem(album: album)
-//                                    .cornerRadius(10, corners: index == 0 ? [.topLeft, .topRight] : index == albumsResults.count - 1 ? [.bottomLeft, .bottomRight] : [])
-//                            }
-//                        }
-//                    }
-//                    .padding(.horizontal)
-//                    .padding(.top, 90)
-//                    .padding(.bottom, 70)
-//                    .cornerRadius(16)
+                    VStack(spacing: 0) {
+                        ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
+                            let remappedAlbum = store.mapAlbumDataToLibraryModel(album)
+                            NavigationLink(destination: AlbumDetail(album: remappedAlbum)) {
+                                AlbumListItem(album: remappedAlbum)
+                                    .cornerRadius(10, corners: index == 0 ? [.topLeft, .topRight] : index == albumsResults.count - 1 ? [.bottomLeft, .bottomRight] : [])
+                            }
+                        }
+                    }
+                    .padding(.top, 63)
+                    .padding(.bottom, 49)
                 }
-                .padding(.horizontal)
             } else {
                 ScrollView {
                     VStack {
@@ -62,7 +62,6 @@ struct SearchView: View {
                                 .bold()
                             Spacer()
                             Button("Clear", action: {})
-                                .bold()
                                 .padding(.trailing)
                         }
                         .padding(.leading)
@@ -78,7 +77,7 @@ struct SearchView: View {
             
             Header(content: { SearchBar(searchText: $searchText, search: search) })
         }
-        .background(Color(.systemBackground))
+        .background(Color(.white))
         .padding(.horizontal)
     }
 }

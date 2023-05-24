@@ -15,12 +15,11 @@ struct Header<Content: View>: View {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     content
-                        .padding(.horizontal)
                 }
                 .padding(.horizontal)
                 .padding(.top, 5)
                 .padding(.bottom, 15)
-                .background(Color(.systemBackground))
+                .background(Color(.white))
                 Rectangle()
                     .fill(Color(.systemGray5))
                     .frame(height: 1)
