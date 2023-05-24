@@ -21,12 +21,16 @@ struct HomeView: View {
                         HomeViewWantlistSection()
                         GeometryReader { proxy in
                             let offset = proxy.frame(in: .named("scroll")).minY
-                            Color.clear.onChange(of: offset) { newState in
-                                withAnimation(.linear(duration: 0.1)) {
-                                    if (newState < 870 && showHeader == false) {
-                                        self.showHeader = true
-                                    } else if (newState > 870 && showHeader == true) {
-                                        self.showHeader = false
+
+                            if scrollTrackingInitialized {
+                                Color.clear.onChange(of: offset) { newState in
+                                    print(newState)
+                                    withAnimation(.linear(duration: 0.1)) {
+                                        if (newState < 850 && showHeader == false) {
+                                            self.showHeader = true
+                                        } else if (newState > 850 && showHeader == true) {
+                                            self.showHeader = false
+                                        }
                                     }
                                 }
                             }

@@ -17,7 +17,7 @@ struct SectionTitle<Destination: View>: View {
     var body: some View {
         HStack(spacing: 5) {
             Text(text)
-                .font(.system(size: 18, weight: .heavy))
+                .font(.system(size: 18, weight: .bold))
                 .foregroundColor(Color("PrimaryBlack"))
             Spacer()
             

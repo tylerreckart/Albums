@@ -22,23 +22,25 @@ struct HomeViewLibrarySection: View {
             
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    ForEach(store.library[0..<2], id: \.self) { item in
-                        NavigationLink(destination: AlbumDetail(album: item)) {
-                            VStack(alignment: .leading) {
-                                AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                                    image.resizable().aspectRatio(contentMode: .fit)
-                                } placeholder: {
-                                    ProgressView()
+                    if store.library.count > 1 {
+                        ForEach(store.library[0..<2], id: \.self) { item in
+                            NavigationLink(destination: AlbumDetail(album: item)) {
+                                VStack(alignment: .leading) {
+                                    AsyncImage(url: URL(string: item.artworkUrl!)) { image in
+                                        image.resizable().aspectRatio(contentMode: .fit)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .cornerRadius(6)
+                                    
+                                    Text(item.title!)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .multilineTextAlignment(.leading)
+                                    Text(item.artistName!)
+                                        .foregroundColor(Color("PrimaryGray"))
+                                        .font(.system(size: 14, weight: .semibold))
                                 }
-                                .frame(maxWidth: .infinity)
-                                .cornerRadius(6)
-                                
-                                Text(item.title!)
-                                    .font(.system(size: 16, weight: .bold))
-                                    .multilineTextAlignment(.leading)
-                                Text(item.artistName!)
-                                    .foregroundColor(Color("PrimaryGray"))
-                                    .font(.system(size: 14, weight: .semibold))
                             }
                         }
                     }
