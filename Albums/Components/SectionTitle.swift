@@ -16,12 +16,8 @@ struct SectionTitle<Destination: View>: View {
 
     var body: some View {
         HStack(spacing: 5) {
-            if symbol != nil {
-                Image(systemName: symbol!)
-                    .font(.system(size: 16, weight: .black))
-            }
             Text(text)
-                .fontWeight(.heavy)
+                .font(.system(size: 18, weight: .heavy))
                 .foregroundColor(Color("PrimaryBlack"))
             Spacer()
             

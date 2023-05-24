@@ -32,7 +32,13 @@
 		DB9B8CCA2A0D11E800CE4D74 /* MusicKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB9B8CC92A0D11E800CE4D74 /* MusicKit.framework */; };
 		DB9B8CD02A0DC5E300CE4D74 /* ColorKit in Frameworks */ = {isa = PBXBuildFile; productRef = DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */; };
 		DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CD22A11C81A00CE4D74 /* AlbumDetail.swift */; };
-		DB9B8CD52A11C85200CE4D74 /* SearchSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CD42A11C85200CE4D74 /* SearchSheet.swift */; };
+		DB9B8CD52A11C85200CE4D74 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9B8CD42A11C85200CE4D74 /* SearchView.swift */; };
+		DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43692A1D94D700183A8B /* TabBar.swift */; };
+		DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */; };
+		DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */; };
+		DBDC43722A1D963900183A8B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43712A1D963900183A8B /* RootView.swift */; };
+		DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43732A1D98C000183A8B /* Greeting.swift */; };
+		DBDC43762A1D993300183A8B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43752A1D993300183A8B /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +67,13 @@
 		DB9B8CC12A0D11CA00CE4D74 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DB9B8CC92A0D11E800CE4D74 /* MusicKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MusicKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.4.sdk/System/Library/Frameworks/MusicKit.framework; sourceTree = DEVELOPER_DIR; };
 		DB9B8CD22A11C81A00CE4D74 /* AlbumDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetail.swift; sourceTree = "<group>"; };
-		DB9B8CD42A11C85200CE4D74 /* SearchSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSheet.swift; sourceTree = "<group>"; };
+		DB9B8CD42A11C85200CE4D74 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		DBDC43692A1D94D700183A8B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewLibrarySection.swift; sourceTree = "<group>"; };
+		DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewWantlistSection.swift; sourceTree = "<group>"; };
+		DBDC43712A1D963900183A8B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		DBDC43732A1D98C000183A8B /* Greeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Greeting.swift; sourceTree = "<group>"; };
+		DBDC43752A1D993300183A8B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,11 +102,14 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DBDC436C2A1D953E00183A8B /* HomeView */,
+				DBDC43682A1D94CD00183A8B /* TabBar */,
 				DB96D4D52A1BFC54005C4CAE /* Extensions */,
 				DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */,
 				DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */,
 				DB96D4DA2A1C0125005C4CAE /* AlbumListItem.swift */,
 				DB96D4DC2A1C014F005C4CAE /* SearchBar.swift */,
+				DBDC43732A1D98C000183A8B /* Greeting.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -149,6 +164,7 @@
 		DB9B8CB32A0D11C900CE4D74 /* Albums */ = {
 			isa = PBXGroup;
 			children = (
+				DBDC436B2A1D94F700183A8B /* Constants */,
 				DB96D4C42A1BA09D005C4CAE /* Models */,
 				DB96D4C32A1BA096005C4CAE /* Services */,
 				DB96D4B92A1B0953005C4CAE /* Components */,
@@ -185,9 +201,35 @@
 			isa = PBXGroup;
 			children = (
 				DB9B8CD22A11C81A00CE4D74 /* AlbumDetail.swift */,
-				DB9B8CD42A11C85200CE4D74 /* SearchSheet.swift */,
+				DB9B8CD42A11C85200CE4D74 /* SearchView.swift */,
+				DBDC43752A1D993300183A8B /* HomeView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		DBDC43682A1D94CD00183A8B /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				DBDC43692A1D94D700183A8B /* TabBar.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		DBDC436B2A1D94F700183A8B /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				DBDC43712A1D963900183A8B /* RootView.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		DBDC436C2A1D953E00183A8B /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */,
+				DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */,
+			);
+			path = HomeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,27 +310,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBDC43762A1D993300183A8B /* HomeView.swift in Sources */,
 				DB96D4CA2A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift in Sources */,
 				DB96D4CC2A1BA0C7005C4CAE /* iTunesAlbumResponse.swift in Sources */,
 				DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */,
 				DB96D4D02A1BA0F2005C4CAE /* iTunesAlbum.swift in Sources */,
 				DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */,
 				DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */,
+				DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */,
 				DB96D4C62A1BA0A7005C4CAE /* AlbumsAlbum.swift in Sources */,
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,
 				DB96D4DD2A1C014F005C4CAE /* SearchBar.swift in Sources */,
+				DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */,
 				DB96D4DB2A1C0125005C4CAE /* AlbumListItem.swift in Sources */,
 				DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */,
 				DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */,
 				DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */,
 				DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */,
 				DB96D4D72A1BFC5F005C4CAE /* RoundedCorner.swift in Sources */,
-				DB9B8CD52A11C85200CE4D74 /* SearchSheet.swift in Sources */,
+				DB9B8CD52A11C85200CE4D74 /* SearchView.swift in Sources */,
 				DB96D4C82A1BA0B1005C4CAE /* AlbumsArtist.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
 				DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */,
+				DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */,
 				DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */,
 				DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */,
+				DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */,
+				DBDC43722A1D963900183A8B /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

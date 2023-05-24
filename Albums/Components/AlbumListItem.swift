@@ -20,11 +20,7 @@ struct AlbumListItem: View {
                     ProgressView()
                 }
                 .frame(width: 48, height: 48)
-                .overlay(
-                    LinearGradient(colors: [.white.opacity(0.1), .clear], startPoint: .top, endPoint: .bottom)
-                )
                 .cornerRadius(6)
-                .shadow(color: .black.opacity(0.2), radius: 3, y: 2)
                 
                 HStack(spacing: 0) {
                     VStack(alignment: .leading) {
@@ -45,8 +41,8 @@ struct AlbumListItem: View {
             
             
             Rectangle()
-                .fill(Color(.systemGray5))
-                .frame(height: 0.5)
+                .fill(Color(.systemGray6))
+                .frame(height: 1)
         }
         .background(.white)
         .foregroundColor(.primary)
