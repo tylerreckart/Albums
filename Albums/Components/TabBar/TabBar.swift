@@ -17,23 +17,64 @@ struct TabBarGroupItem: View {
 
     var frameWidth = UIScreen.main.bounds.width / 4
     
+    @State private var showBaseIcon: Bool = true
+    
     var body: some View {
-        Button(action: { self.activeView = targetView }) {
+        Button(action: {
+            withAnimation(.linear(duration: 0)) {
+                self.showBaseIcon = false
+            }
+            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.4, blendDuration: 1)) {
+                self.activeView = targetView
+            }
+            let impactMed = UIImpactFeedbackGenerator(style: .medium)
+            impactMed.impactOccurred()
+        }) {
             VStack(spacing: 5) {
                 ZStack {
-                    Image(image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxHeight: 24)
-                    Color(activeView == targetView ? "PrimaryRed" : "PrimaryGray").blendMode(.plusLighter)
+                    if (showBaseIcon) {
+                        Image(image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Color("PrimaryGray").blendMode(.plusLighter)
+                    }
+                    
+                    if activeView == targetView {
+                        Image(image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .transition(
+                                .asymmetric(
+                                    insertion: .scale(scale: 0.8),
+                                    removal: .identity
+                                )
+                            )
+                        Color("PrimaryRed").blendMode(.plusLighter)
+                            .transition(
+                                .asymmetric(
+                                    insertion: .scale(scale: 0.8),
+                                    removal: .identity
+                                )
+                            )
+                    }
                 }
                 .frame(maxWidth: 24, maxHeight: 24)
                 
-                Text(label)
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color(activeView == targetView ? "PrimaryRed" : "PrimaryGray"))
+                Circle()
+                    .fill(showBaseIcon ? .clear : Color("PrimaryRed"))
+                    .frame(width: 5, height: 5)
             }
             .frame(width: frameWidth)
+        }
+        .onAppear {
+            if activeView == targetView {
+                self.showBaseIcon = false
+            }
+        }
+        .onChange(of: activeView) { newState in
+            if newState != targetView {
+                self.showBaseIcon = true
+            }
         }
     }
 }
@@ -74,7 +115,7 @@ struct TabBar: View {
                 )
             }
             .padding([.horizontal])
-            .padding(.top, 10)
+            .padding(.top, 15)
             .background(.white)
         }
     }

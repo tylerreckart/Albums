@@ -17,6 +17,6 @@ struct HomeView: View {
                 HomeViewWantlistSection()
             }
         }
-        .background(Color(.systemGray6))
+        .background(Color(.systemBackground))
     }
 }

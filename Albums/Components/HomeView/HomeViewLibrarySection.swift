@@ -33,26 +33,30 @@ struct HomeViewLibrarySection: View {
             
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    ForEach(libraryItems[0...1], id: \.self) { item in
-                        AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                            image.resizable().aspectRatio(contentMode: .fit)
-                        } placeholder: {
-                            ProgressView()
+                    if libraryItems.count >= 2 {
+                        ForEach(libraryItems[0...1], id: \.self) { item in
+                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
+                                image.resizable().aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(maxWidth: columnWidth)
+                            .cornerRadius(6)
                         }
-                        .frame(maxWidth: columnWidth)
-                        .cornerRadius(6)
                     }
                 }
                 
-                HStack(spacing: 20) {
-                    ForEach(libraryItems[2...3], id: \.self) { item in
-                        AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                            image.resizable().aspectRatio(contentMode: .fit)
-                        } placeholder: {
-                            ProgressView()
+                if libraryItems.count >= 4 {
+                    HStack(spacing: 20) {
+                        ForEach(libraryItems[2...3], id: \.self) { item in
+                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
+                                image.resizable().aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(maxWidth: columnWidth)
+                            .cornerRadius(6)
                         }
-                        .frame(maxWidth: columnWidth)
-                        .cornerRadius(6)
                     }
                 }
             }

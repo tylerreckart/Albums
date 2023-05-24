@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RootView {
+enum RootView: Equatable {
     case home
     case library
     case search
