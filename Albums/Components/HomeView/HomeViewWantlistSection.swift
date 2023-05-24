@@ -10,44 +10,19 @@ import SwiftUI
 import CoreData
 
 struct HomeViewWantlistSection: View {
-    @FetchRequest var libraryItems: FetchedResults<LibraryAlbum>
-    
-    init() {
-        let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
-        request.predicate = NSPredicate(format: "wantlisted == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
-        request.fetchLimit = 1
-    
-        _libraryItems = FetchRequest(fetchRequest: request)
-    }
-    
+    @EnvironmentObject var store: AlbumsViewModel
+
     var body: some View {
         VStack {
             SectionTitle(
                 text: "Your Wantlist",
                 buttonText: "See All",
-                destination: { VStack { Text("Hello, World") } }
+                destination: { WantlistView().environmentObject(store) }
             )
             
             HStack(spacing: 20) {
-                ForEach(libraryItems, id: \.self) { item in
-                    NavigationLink(destination: AlbumDetail(album: item)) {
-                        VStack(alignment: .leading) {
-                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                                image.resizable().aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(6)
-                            
-                            Text(item.title!)
-                                .font(.system(size: 16, weight: .bold))
-                            Text(item.artistName!)
-                                .foregroundColor(Color("PrimaryGray"))
-                                .font(.system(size: 14, weight: .semibold))
-                        }
-                    }
+                if store.wantlist.count > 0 {
+                    AlbumGridItem(album: store.wantlist[0])
                 }
             }
         }

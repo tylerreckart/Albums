@@ -1,31 +1,29 @@
 //
-//  LibraryView.swift
+//  WantlistView.swift
 //  Albums
 //
-//  Created by Tyler Reckart on 5/23/23.
+//  Created by Tyler Reckart on 5/24/23.
 //
 
 import SwiftUI
 import CoreData
 
-struct LibraryView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+struct WantlistView: View {
     @EnvironmentObject var store: AlbumsViewModel
-
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
-    var showNavigation: Bool = false
     
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
-                SearchBar(placeholder: "Find in Your Library", searchText: $searchText, search: {})
+                SearchBar(placeholder: "Find in Your Wantlist", searchText: $searchText, search: {})
                     .padding(.top, 20)
                     .padding(.horizontal)
                     .padding(.bottom, 8 )
 
                 VStack(spacing: 5) {
-                    let evens = store.library.indices.filter { $0 % 2 == 0 }.map { return store.library[$0] }
-                    let odds = store.library.indices.filter { $0 % 2 != 0 }.map { return store.library[$0] }
+                    let evens = store.wantlist.indices.filter { $0 % 2 == 0 }.map { return store.library[$0] }
+                    let odds = store.wantlist.indices.filter { $0 % 2 != 0 }.map { return store.library[$0] }
                     let maxRows = max(evens.count, odds.count)
                     
                     ForEach(0..<maxRows, id: \.self) { row in
@@ -61,22 +59,18 @@ struct LibraryView: View {
             
             Header(content: {
                 HStack {
-                    if showNavigation {
-                        HStack {
-                            Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                                HStack(spacing: 5) {
-                                    Image(systemName: "chevron.backward")
-                                        .font(.system(size: 20, weight: .regular))
-                                    Text("Home")
-                                }
+                    HStack {
+                        Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                            HStack(spacing: 5) {
+                                Image(systemName: "chevron.backward")
+                                    .font(.system(size: 20, weight: .regular))
+                                Text("Home")
                             }
-                            Spacer()
                         }
-                        .frame(maxWidth: .infinity)
-                    } else {
-                        Rectangle().fill(.clear).frame(maxWidth: .infinity, maxHeight: 0.5)
+                        Spacer()
                     }
-                    Text("Your Library")
+                    .frame(maxWidth: .infinity)
+                    Text("Your Wantlist")
                         .font(.system(size: 16, weight: .semibold))
                         .frame(maxWidth: .infinity)
                     HStack {
@@ -92,6 +86,6 @@ struct LibraryView: View {
             })
         }
         .navigationBarHidden(true)
-        .transition(.push(from: .trailing))
     }
 }
+

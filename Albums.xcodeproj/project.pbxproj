@@ -37,6 +37,7 @@
 		DBD450062A1DB3DF00589220 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450052A1DB3DF00589220 /* Header.swift */; };
 		DBD450082A1DB65000589220 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450072A1DB65000589220 /* SettingsView.swift */; };
 		DBD4500A2A1E438B00589220 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450092A1E438B00589220 /* AlbumsViewModel.swift */; };
+		DBD4500C2A1E949100589220 /* WantlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4500B2A1E949100589220 /* WantlistView.swift */; };
 		DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43692A1D94D700183A8B /* TabBar.swift */; };
 		DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */; };
 		DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */; };
@@ -76,6 +77,7 @@
 		DBD450052A1DB3DF00589220 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		DBD450072A1DB65000589220 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DBD450092A1E438B00589220 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
+		DBD4500B2A1E949100589220 /* WantlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantlistView.swift; sourceTree = "<group>"; };
 		DBDC43692A1D94D700183A8B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewLibrarySection.swift; sourceTree = "<group>"; };
 		DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewWantlistSection.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				DBD450022A1DB1A700589220 /* LibraryView.swift */,
 				DBD450072A1DB65000589220 /* SettingsView.swift */,
 				DB9B8CBB2A0D11C900CE4D74 /* ContentView.swift */,
+				DBD4500B2A1E949100589220 /* WantlistView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */,
 				DB96D4B52A1A8986005C4CAE /* iTunesRequestService.swift in Sources */,
 				DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */,
+				DBD4500C2A1E949100589220 /* WantlistView.swift in Sources */,
 				DBDC43722A1D963900183A8B /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

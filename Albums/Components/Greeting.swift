@@ -81,48 +81,61 @@ let nightPhrases: [String] = [
 ]
 
 struct Greeting: View {
-    @State private var time: TimeOfDay? = .morning
-    @State private var phrases: [String] = [helloPhrases.randomElement() ?? ""]
+    @State private var phrase = UserDefaults.standard.string(forKey: "currentPhrase")
+    @State private var expirationHour = UserDefaults.standard.integer(forKey: "curentPhraseExpiringHour")
     @State private var showGreeting: Bool = false
-    
-    var phraseSets = [morningPhrases, afternoonPhrases, eveningPhrases, nightPhrases]
 
     var body: some View {
         VStack(spacing: 5) {
-            if showGreeting {
-                HStack {
-                    Text("\(phrases.randomElement() ?? "Hello"), Tyler")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Spacer()
-                }
-                .transition(.opacity)
+            HStack {
+                Text("\(phrase ?? "Hello"), Tyler")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Spacer()
             }
+            .transition(.opacity)
         }
         .padding([.horizontal, .top])
         .padding(.top)
         .onAppear {
+            let me = "Greeting.body<View>.onAppear{ } "
+        
             let currentHour: Int = Calendar.current.component(.hour, from: Date())
+            var targetPhrase: String = helloPhrases.randomElement()!
+            var targetHour: Int = expirationHour
             
-            if currentHour >= 0 && currentHour <= 12 {
-                time = .morning
+            print(phrase)
+            print(currentHour)
+            print(expirationHour)
+            
+            if phrase == nil || currentHour > expirationHour {
+                if currentHour >= 0 && currentHour <= 12 {
+                    targetPhrase = morningPhrases.randomElement()!
+                    targetHour = 12
+                }
+                
+                if currentHour >= 13 && currentHour <= 16 {
+                    targetPhrase = afternoonPhrases.randomElement()!
+                    targetHour = 16
+                }
+                
+                if currentHour >= 17 && currentHour <= 20 {
+                    targetPhrase = eveningPhrases.randomElement()!
+                    targetHour = 20
+                }
+                
+                if currentHour >= 21 && currentHour <= 24 {
+                    targetPhrase = nightPhrases.randomElement()!
+                    targetHour = 24
+                }
+                
+                phrase = targetPhrase
+                print(me + "next phrase=\(targetPhrase)")
+                print(me + "next expirationHour=\(targetHour)")
+                
+                UserDefaults.standard.set(targetPhrase, forKey: "currentPhrase")
+                UserDefaults.standard.set(targetHour, forKey: "currentSetPhraseExpiringHour")
             }
-            
-            if currentHour >= 12 && currentHour <= 16 {
-                time = .afternoon
-            }
-            
-            if currentHour >= 16 && currentHour <= 20 {
-                time = .evening
-            }
-            
-            if currentHour >= 20 && currentHour <= 24 {
-                time = .night
-            }
-            
-            phrases.append(phraseSets[time?.rawValue ?? 0].randomElement()!)
-            
-            showGreeting.toggle()
         }
     }
 }

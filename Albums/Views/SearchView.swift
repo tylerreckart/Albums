@@ -24,17 +24,9 @@ struct SearchView: View {
     @State private var selectedArtist: Artist?
     
     private func search() async {
-        if !isDebounced {
-            self.isDebounced = true
-            
-            let results = await iTunesRequestService().search(searchText)
-            if results.count != 0 {
-                self.albumsResults = results
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                self.isDebounced = false
-            }
+        let results = await iTunesRequestService().search(searchText)
+        if results.count != 0 {
+            self.albumsResults = results
         }
     }
     

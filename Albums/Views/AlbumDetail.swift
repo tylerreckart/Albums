@@ -123,7 +123,6 @@ struct AlbumDetail: View {
                     }
                     Spacer()
                 }
-                .padding(.horizontal)
             })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -9,6 +9,31 @@ import Foundation
 import SwiftUI
 import CoreData
 
+struct AlbumGridItem: View {
+    var album: LibraryAlbum
+
+    var body: some View {
+        NavigationLink(destination: AlbumDetail(album: album)) {
+            VStack(alignment: .leading) {
+                AsyncImage(url: URL(string: album.artworkUrl!)) { image in
+                    image.resizable().aspectRatio(contentMode: .fit)
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(maxWidth: .infinity)
+                .cornerRadius(8)
+                
+                Text(album.title!)
+                    .font(.system(size: 14, weight: .bold))
+                    .multilineTextAlignment(.leading)
+                Text(album.artistName!)
+                    .foregroundColor(Color("PrimaryGray"))
+                    .font(.system(size: 14, weight: .semibold))
+            }
+        }
+    }
+}
+
 struct HomeViewLibrarySection: View {
     @EnvironmentObject var store: AlbumsViewModel
     
@@ -24,24 +49,7 @@ struct HomeViewLibrarySection: View {
                 HStack(spacing: 20) {
                     if store.library.count > 1 {
                         ForEach(store.library[0..<2], id: \.self) { item in
-                            NavigationLink(destination: AlbumDetail(album: item)) {
-                                VStack(alignment: .leading) {
-                                    AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                                        image.resizable().aspectRatio(contentMode: .fit)
-                                    } placeholder: {
-                                        ProgressView()
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .cornerRadius(6)
-                                    
-                                    Text(item.title!)
-                                        .font(.system(size: 16, weight: .bold))
-                                        .multilineTextAlignment(.leading)
-                                    Text(item.artistName!)
-                                        .foregroundColor(Color("PrimaryGray"))
-                                        .font(.system(size: 14, weight: .semibold))
-                                }
-                            }
+                            AlbumGridItem(album: item)
                         }
                     }
                 }

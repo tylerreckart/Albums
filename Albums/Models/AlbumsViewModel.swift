@@ -52,6 +52,7 @@ class AlbumsViewModel: ObservableObject {
         do {
             self.wantlist = try container.viewContext.fetch(request)
             print(me + "success")
+            print(wantlist.map { $0.title })
         } catch let error {
             print(me + "error \(error)")
         }
