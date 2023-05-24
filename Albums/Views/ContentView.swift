@@ -17,11 +17,11 @@ struct ContentView: View {
                     case .home:
                         HomeView()
                     case .library:
-                        EmptyView()
+                        LibraryView()
                     case .search:
                         SearchView()
                     case .settings:
-                        EmptyView()
+                        SettingsView()
                 }
                 
             }

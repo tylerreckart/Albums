@@ -10,8 +10,6 @@ import SwiftUI
 import CoreData
 
 struct HomeViewWantlistSection: View {
-    let columnWidth = UIScreen.main.bounds.width / 2
-
     @FetchRequest var libraryItems: FetchedResults<LibraryAlbum>
     
     init() {
@@ -33,13 +31,23 @@ struct HomeViewWantlistSection: View {
             
             HStack(spacing: 20) {
                 ForEach(libraryItems, id: \.self) { item in
-                    AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                        image.resizable().aspectRatio(contentMode: .fit)
-                    } placeholder: {
-                        ProgressView()
+                    NavigationLink(destination: AlbumDetail(album: item)) {
+                        VStack(alignment: .leading) {
+                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
+                                image.resizable().aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(6)
+                            
+                            Text(item.title!)
+                                .font(.system(size: 16, weight: .bold))
+                            Text(item.artistName!)
+                                .foregroundColor(Color("PrimaryGray"))
+                                .font(.system(size: 14, weight: .semibold))
+                        }
                     }
-                    .frame(maxWidth: columnWidth)
-                    .cornerRadius(6)
                 }
             }
             .padding(.horizontal)

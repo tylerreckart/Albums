@@ -7,11 +7,27 @@
 
 import SwiftUI
 import MusicKit
+import CoreData
+
+func mapAlbumsAlbumToLibraryStruct(_ target: AlbumsAlbum, wantlisted: Bool = false, owned: Bool = true, viewContext: NSManagedObjectContext) -> LibraryAlbum {
+    let tmp = LibraryAlbum(context: viewContext)
+    tmp.appleId = Double(target.appleId)
+    tmp.artistAppleId = Double(target.artistId)
+    tmp.artistName = target.artistName
+    tmp.title = target.name
+    tmp.genre = target.genre
+    tmp.artworkUrl = target.artworkUrl
+    tmp.playCount = Double(0)
+    tmp.wantlisted = wantlisted
+    tmp.owned = owned
+    tmp.dateAdded = Date()
+    return tmp
+}
 
 struct AlbumDetail: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @ObservedObject var album: AlbumsAlbum
+    @ObservedObject var album: LibraryAlbum
     
     func dateFromReleaseStr(_ str: String) -> String {
         let dateFormatter = DateFormatter()
@@ -19,23 +35,10 @@ struct AlbumDetail: View {
         return (date ?? Date()).formatted(date: .long, time: .omitted)
     }
     
-    private func mapAlbumsAlbumToLibraryStruct(_ target: AlbumsAlbum, wantlisted: Bool = false, owned: Bool = true) -> Void {
-        let tmp = LibraryAlbum(context: viewContext)
-        tmp.appleId = Float(target.appleId)
-        tmp.artistAppleId = Float(target.artistId)
-        tmp.artistName = target.artistName
-        tmp.title = target.name
-        tmp.artworkUrl = target.artworkUrl
-        tmp.playCount = Float(0)
-        tmp.wantlisted = wantlisted
-        tmp.owned = owned
-        tmp.dateAdded = Date()
-    }
-    
-    private func addToLibrary(_ target: AlbumsAlbum) {
+    private func addToLibrary(_ target: LibraryAlbum) {
         withAnimation {
-            mapAlbumsAlbumToLibraryStruct(target, wantlisted: false, owned: true)
-
+            target.owned = true
+            target.wantlisted = false
             do {
                 try viewContext.save()
             } catch {
@@ -47,10 +50,10 @@ struct AlbumDetail: View {
         }
     }
     
-    private func addToWantlist(_ target: AlbumsAlbum) {
+    private func addToWantlist(_ target: LibraryAlbum) {
         withAnimation {
-            mapAlbumsAlbumToLibraryStruct(target, wantlisted: true, owned: false)
-
+            target.owned = false
+            target.wantlisted = true
             do {
                 try viewContext.save()
             } catch {
@@ -67,7 +70,7 @@ struct AlbumDetail: View {
             ScrollView {
                 VStack(spacing: 20) {
                     VStack(spacing: 5) {
-                        AsyncImage(url: URL(string: album.artworkUrl)) { image in
+                        AsyncImage(url: URL(string: album.artworkUrl!)) { image in
                             image.resizable().aspectRatio(contentMode: .fit)
                         } placeholder: {
                             ProgressView()
@@ -81,19 +84,19 @@ struct AlbumDetail: View {
                         .padding(.horizontal)
                         .padding([.bottom, .top], 10)
                         
-                        Text(album.name)
+                        Text(album.title!)
                             .font(.system(size: 18, weight: .bold))
                         
-                        Text(album.artistName)
+                        Text(album.artistName!)
                             .font(.system(size: 18, weight: .medium))
                             .foregroundColor(Color("PrimaryRed"))
                         
                         HStack(alignment: .center, spacing: 5) {
-                            Text(album.genre)
+                            Text(album.genre ?? "")
                             Circle()
                                 .fill(Color(.gray))
                                 .frame(width: 4, height: 4)
-                            Text(dateFromReleaseStr(album.releaseDate))
+                            Text(dateFromReleaseStr(album.releaseDate ?? ""))
                         }
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.gray)
@@ -126,6 +129,7 @@ struct AlbumDetail: View {
                 }
             }
             .frame(maxHeight: .infinity)
+            .padding(.horizontal)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemGray6))

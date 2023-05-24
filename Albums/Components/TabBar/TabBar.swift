@@ -33,26 +33,26 @@ struct TabBarGroupItem: View {
             VStack(spacing: 5) {
                 ZStack {
                     if (showBaseIcon) {
-                        Image(image)
+                        Image("\(image)Outlined")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                         Color("PrimaryGray").blendMode(.plusLighter)
                     }
                     
                     if activeView == targetView {
-                        Image(image)
+                        Image("\(image)Outlined")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .transition(
                                 .asymmetric(
-                                    insertion: .scale(scale: 0.8),
+                                    insertion: .scale(scale: 0.9),
                                     removal: .identity
                                 )
                             )
                         Color("PrimaryRed").blendMode(.plusLighter)
                             .transition(
                                 .asymmetric(
-                                    insertion: .scale(scale: 0.8),
+                                    insertion: .scale(scale: 0.9),
                                     removal: .identity
                                 )
                             )

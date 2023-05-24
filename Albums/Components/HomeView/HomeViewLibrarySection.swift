@@ -10,15 +10,13 @@ import SwiftUI
 import CoreData
 
 struct HomeViewLibrarySection: View {
-    let columnWidth = (UIScreen.main.bounds.width / 2)
-
     @FetchRequest var libraryItems: FetchedResults<LibraryAlbum>
     
     init() {
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
-        request.fetchLimit = 4
+        request.fetchLimit = 2
     
         _libraryItems = FetchRequest(fetchRequest: request)
     }
@@ -28,34 +26,28 @@ struct HomeViewLibrarySection: View {
             SectionTitle(
                 text: "Your Library",
                 buttonText: "See All",
-                destination: { VStack { Text("Hello, World") } }
+                destination: { LibraryView() }
             )
             
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    if libraryItems.count >= 2 {
-                        ForEach(libraryItems[0...1], id: \.self) { item in
-                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                                image.resizable().aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
+                    ForEach(libraryItems, id: \.self) { item in
+                        NavigationLink(destination: AlbumDetail(album: item)) {
+                            VStack(alignment: .leading) {
+                                AsyncImage(url: URL(string: item.artworkUrl!)) { image in
+                                    image.resizable().aspectRatio(contentMode: .fit)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(maxWidth: .infinity)
+                                .cornerRadius(6)
+                                
+                                Text(item.title!)
+                                    .font(.system(size: 16, weight: .bold))
+                                Text(item.artistName!)
+                                    .foregroundColor(Color("PrimaryGray"))
+                                    .font(.system(size: 14, weight: .semibold))
                             }
-                            .frame(maxWidth: columnWidth)
-                            .cornerRadius(6)
-                        }
-                    }
-                }
-                
-                if libraryItems.count >= 4 {
-                    HStack(spacing: 20) {
-                        ForEach(libraryItems[2...3], id: \.self) { item in
-                            AsyncImage(url: URL(string: item.artworkUrl!)) { image in
-                                image.resizable().aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(maxWidth: columnWidth)
-                            .cornerRadius(6)
                         }
                     }
                 }

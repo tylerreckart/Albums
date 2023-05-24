@@ -37,9 +37,9 @@ class iTunesRequestService {
         return mapiTunesResponseToAlbum(results)
     }
     
-    public func lookupAlbumArtwork(_ album: AlbumsAlbum) async -> String {
+    public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> String {
         let me = "iTunesRequestService.lookupAlbumArtwork(): "
-        let qs = "lookup?id=\(album.appleId)&country=us&limit=25"
+        let qs = "lookup?id=\(Int(album.appleId))&country=us&limit=25"
         print(me + qs)
         
         let value = try? await AF

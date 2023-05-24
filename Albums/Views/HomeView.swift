@@ -10,9 +10,9 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        ScrollView(showsIndicators: true) {
             VStack(spacing: 20) {
-                Greeting()
+//                Greeting()
                 HomeViewLibrarySection()
                 HomeViewWantlistSection()
             }

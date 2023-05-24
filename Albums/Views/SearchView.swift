@@ -9,6 +9,8 @@ import SwiftUI
 import MusicKit
 
 struct SearchView: View {
+    @Environment(\.managedObjectContext) var viewContext
+    
     @State private var isDebounced: Bool = false
     
     @State private var searchText: String = ""
@@ -34,47 +36,49 @@ struct SearchView: View {
         }
     }
     
-    var header: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                SearchBar(searchText: $searchText, search: search)
-                    .padding(.horizontal)
-            }
-            .padding()
-            .background(Color(.white))
-            Rectangle()
-                .fill(Color(.systemGray5))
-                .frame(height: 1)
-        }
-    }
-    
     var body: some View {
         ZStack {
             if (albumsResults.count > 0) {
                 ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
-                            NavigationLink(destination: AlbumDetail(album: album)) {
-                                AlbumListItem(album: album)
-                                    .cornerRadius(10, corners: index == 0 ? [.topLeft, .topRight] : index == albumsResults.count - 1 ? [.bottomLeft, .bottomRight] : [])
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 90)
-                    .padding(.bottom, 70)
-                    .cornerRadius(16)
+//                    VStack(spacing: 0) {
+//                        ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
+//                            NavigationLink(destination: AlbumDetail(album: mapAlbumsAlbumToLibraryStruct(album, viewContext: viewContext))) {
+//                                AlbumListItem(album: album)
+//                                    .cornerRadius(10, corners: index == 0 ? [.topLeft, .topRight] : index == albumsResults.count - 1 ? [.bottomLeft, .bottomRight] : [])
+//                            }
+//                        }
+//                    }
+//                    .padding(.horizontal)
+//                    .padding(.top, 90)
+//                    .padding(.bottom, 70)
+//                    .cornerRadius(16)
                 }
                 .padding(.horizontal)
             } else {
-                Spacer()
+                ScrollView {
+                    VStack {
+                        HStack {
+                            Text("Recently Searched")
+                                .bold()
+                            Spacer()
+                            Button("Clear", action: {})
+                                .bold()
+                                .padding(.trailing)
+                        }
+                        .padding(.leading)
+                        
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(height: 1)
+                            .padding(.leading)
+                    }
+                    .padding(.top, 80)
+                }
             }
             
-            VStack(spacing: 0) {
-                header
-                Spacer()
-            }
+            Header(content: { SearchBar(searchText: $searchText, search: search) })
         }
-        .background(Color(.systemGray6))
+        .background(Color(.systemBackground))
+        .padding(.horizontal)
     }
 }
