@@ -74,7 +74,7 @@ struct AlbumDetail: View {
                         
                         Text((store.activeAlbum?.artistName!) ?? "")
                             .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(Color("PrimaryRed"))
+                            .foregroundColor(Color("PrimaryPurple"))
                         
                         HStack(alignment: .center, spacing: 5) {
                             Text(store.activeAlbum?.genre ?? "")
@@ -94,7 +94,7 @@ struct AlbumDetail: View {
                                 .foregroundColor(.white)
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(Color("PrimaryRed"))
+                                .background(Color("PrimaryPurple"))
                                 .cornerRadius(10)
                         }
                         

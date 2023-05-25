@@ -53,7 +53,7 @@ struct TabBarGroupItem: View {
                 .frame(maxWidth: 24, maxHeight: 24)
                 
                 Circle()
-                    .fill(showBaseIcon ? .clear : Color("PrimaryRed"))
+                    .fill(showBaseIcon ? .clear : Color("PrimaryPurple"))
                     .frame(width: 5, height: 5)
             }
             .frame(width: frameWidth)

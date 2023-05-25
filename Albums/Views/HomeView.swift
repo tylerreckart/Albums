@@ -7,66 +7,39 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 struct HomeView: View {
-    @State private var scrollTrackingInitialized: Bool = false
-    @State private var lastOffset: CGFloat = 0
-    @State private var totalDistance: CGFloat = 0
-    @State private var showHeader: Bool = false
+    @State private var scrollOffset = CGPoint()
+
     var body: some View {
         ZStack {
-            ScrollViewReader { value in
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 20) {
-                        Greeting()
-                        HomeViewLibrarySection()
-                        HomeViewWantlistSection()
-                        GeometryReader { proxy in
-                            let offset = proxy.frame(in: .named("scroll")).origin.y
-
-                            if scrollTrackingInitialized {
-                                Color.clear.onChange(of: offset) { newState in
-                                    print(newState)
-                                    withAnimation(.linear(duration: 0.1)) {
-                                        if lastOffset == 0 {
-                                            lastOffset = newState
-                                        }
-                                        
-                                        if (newState < lastOffset) {
-                                            let delta = abs(Double((totalDistance * 2) / 100))
-                                            print(delta)
-                                            if delta == 0 || delta > 0.02 {
-                                                totalDistance = newState - lastOffset
-                                            } else {
-                                                totalDistance = 0
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding(.bottom, 60)
+            ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
+                VStack(spacing: 20) {
+                    Greeting()
+                    HomeViewLibrarySection()
+                    HomeViewWantlistSection()
+                }
+                .padding(.bottom, 60)
+                .onChange(of: scrollOffset) { newState in
+                    print(newState.y)
                 }
             }
             
-            Header(content: {
-                HStack {
-                    Spacer()
-                    Text("Albums")
-                        .font(.system(size: 16, weight: .semibold))
-                    Spacer()
-                }
-            })
-            .zIndex(1)
-            .opacity(abs(totalDistance * 2.25) < 100 ? abs(Double((totalDistance * 2.25)) / Double(100)) : 1)
+            Header(
+                content: {
+                    HStack {
+                        Spacer()
+                        Text("Albums")
+                            .font(.system(size: 16, weight: .semibold))
+                            .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
+                        Spacer()
+                    }
+                },
+                showDivider: false
+            )
         }
         .background(Color(.white))
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                scrollTrackingInitialized = true
-            }
-        }
         .transition(.push(from: .trailing))
     }
 }

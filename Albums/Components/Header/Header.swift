@@ -10,6 +10,8 @@ import SwiftUI
 struct Header<Content: View>: View {
     @ViewBuilder var content: Content
     
+    var showDivider: Bool = true
+    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
@@ -20,9 +22,12 @@ struct Header<Content: View>: View {
                 .padding(.top, 5)
                 .padding(.bottom, 10)
                 .background(Color(.white))
-                Rectangle()
-                    .fill(Color(.systemGray5))
-                    .frame(height: 0.5)
+                
+                if showDivider {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(height: 0.5)
+                }
             }
             
             Spacer()

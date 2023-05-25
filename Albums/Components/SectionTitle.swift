@@ -25,7 +25,7 @@ struct SectionTitle<Destination: View>: View {
                 NavigationLink(destination: destination) {
                     Text(buttonText!)
                 }
-                .foregroundColor(Color("PrimaryRed"))
+                .foregroundColor(Color("PrimaryPurple"))
             }
         }
     }

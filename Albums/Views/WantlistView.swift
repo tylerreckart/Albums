@@ -22,8 +22,8 @@ struct WantlistView: View {
                     .padding(.bottom, 8 )
 
                 VStack(spacing: 5) {
-                    let evens = store.wantlist.indices.filter { $0 % 2 == 0 }.map { return store.library[$0] }
-                    let odds = store.wantlist.indices.filter { $0 % 2 != 0 }.map { return store.library[$0] }
+                    let evens = store.wantlist.indices.filter { $0 % 2 == 0 }.map { return store.wantlist[$0] }
+                    let odds = store.wantlist.indices.filter { $0 % 2 != 0 }.map { return store.wantlist[$0] }
                     let maxRows = max(evens.count, odds.count)
                     
                     ForEach(0..<maxRows, id: \.self) { row in

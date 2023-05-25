@@ -38,6 +38,7 @@
 		DBD450082A1DB65000589220 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450072A1DB65000589220 /* SettingsView.swift */; };
 		DBD4500A2A1E438B00589220 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450092A1E438B00589220 /* AlbumsViewModel.swift */; };
 		DBD4500C2A1E949100589220 /* WantlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4500B2A1E949100589220 /* WantlistView.swift */; };
+		DBD4500F2A1EEF3D00589220 /* ScrollOffsetObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4500E2A1EEF3D00589220 /* ScrollOffsetObserver.swift */; };
 		DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43692A1D94D700183A8B /* TabBar.swift */; };
 		DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */; };
 		DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */; };
@@ -78,6 +79,7 @@
 		DBD450072A1DB65000589220 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DBD450092A1E438B00589220 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
 		DBD4500B2A1E949100589220 /* WantlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantlistView.swift; sourceTree = "<group>"; };
+		DBD4500E2A1EEF3D00589220 /* ScrollOffsetObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOffsetObserver.swift; sourceTree = "<group>"; };
 		DBDC43692A1D94D700183A8B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewLibrarySection.swift; sourceTree = "<group>"; };
 		DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewWantlistSection.swift; sourceTree = "<group>"; };
@@ -112,8 +114,9 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				DBD450042A1DB3D700589220 /* Header */,
+				DBD4500D2A1EEF2B00589220 /* ScrollOffsetObserver */,
 				DBDC436C2A1D953E00183A8B /* HomeView */,
+				DBD450042A1DB3D700589220 /* Header */,
 				DBDC43682A1D94CD00183A8B /* TabBar */,
 				DB96D4D52A1BFC54005C4CAE /* Extensions */,
 				DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */,
@@ -230,6 +233,14 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		DBD4500D2A1EEF2B00589220 /* ScrollOffsetObserver */ = {
+			isa = PBXGroup;
+			children = (
+				DBD4500E2A1EEF3D00589220 /* ScrollOffsetObserver.swift */,
+			);
+			path = ScrollOffsetObserver;
+			sourceTree = "<group>";
+		};
 		DBDC43682A1D94CD00183A8B /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +352,7 @@
 				DB96D4D02A1BA0F2005C4CAE /* iTunesAlbum.swift in Sources */,
 				DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */,
 				DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */,
+				DBD4500F2A1EEF3D00589220 /* ScrollOffsetObserver.swift in Sources */,
 				DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */,
 				DB96D4C62A1BA0A7005C4CAE /* AlbumsAlbum.swift in Sources */,
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,
