@@ -24,7 +24,7 @@ struct TabBarGroupItem: View {
             withAnimation(.linear(duration: 0)) {
                 self.showBaseIcon = false
             }
-            withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.75, blendDuration: 1)) {
+            withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.7, blendDuration: 1)) {
                 self.activeView = targetView
             }
             let impactMed = UIImpactFeedbackGenerator(style: .medium)
@@ -54,7 +54,7 @@ struct TabBarGroupItem: View {
                 
                 Circle()
                     .fill(showBaseIcon ? .clear : Color("PrimaryPurple"))
-                    .frame(width: 5, height: 5)
+                    .frame(width: 4, height: 4)
             }
             .frame(width: frameWidth)
         }

@@ -1,5 +1,5 @@
 //
-//  iTunesRequestService.swift
+//  iTunesAPI.swift
 //  Albums
 //
 //  Created by Tyler Reckart on 5/21/23.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class iTunesRequestService: ObservableObject {
+class iTunesAPI: ObservableObject {
     public func search(_ term: String, countryCode: String = "US") async -> [iTunesAlbum] {
         let me = "iTunesRequestService.search(): "
         let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=album"
@@ -30,7 +30,7 @@ class iTunesRequestService: ObservableObject {
         
         let value = try? await AF
             .request("https://itunes.apple.com/\(qs)")
-            .serializingDecodable(iTunesArtistSearchResponse.self)
+            .serializingDecodable(iTunesArtistLookupResponse.self)
             .value
         let results = value?.results ?? [] as [iTunesArtist]
         
@@ -56,6 +56,20 @@ class iTunesRequestService: ObservableObject {
             album.artworkUrl100 = updatedArtworkUrl
             return album
         }
+    }
+    
+    public func lookupTracksForAlbum(_ id: Int) async -> [iTunesTrack] {
+        let me = "iTunesRequestService.lookupReleatedAlbums(): "
+        let qs = "lookup?id=\(id)&entity=song"
+        print(me + qs)
+        
+        let value = try? await AF
+            .request("https://itunes.apple.com/\(qs)")
+            .serializingDecodable(iTunesTrackLookupResponse.self)
+            .value
+        let results = value?.results ?? [] as [iTunesTrack]
+        
+        return results.filter { $0.wrapperType == "track" }
     }
     
     public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> Void {

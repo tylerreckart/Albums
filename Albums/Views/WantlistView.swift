@@ -9,8 +9,10 @@ import SwiftUI
 import CoreData
 
 struct WantlistView: View {
-    @EnvironmentObject var store: AlbumsViewModel
+    @EnvironmentObject var store: AlbumsCommon
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State private var searchText: String = ""
     @State private var results: [iTunesAlbum] = []
     

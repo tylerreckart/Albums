@@ -9,7 +9,8 @@ import SwiftUI
 import MusicKit
 
 struct SearchView: View {
-    @EnvironmentObject var store: AlbumsViewModel
+    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var itunes: iTunesAPI
 
     @Environment(\.managedObjectContext) var viewContext
     
@@ -24,7 +25,7 @@ struct SearchView: View {
     @State private var selectedArtist: Artist?
     
     private func search() async {
-        let results = await iTunesRequestService().search(searchText)
+        let results = await itunes.search(searchText)
         if results.count != 0 {
             self.albumsResults = results
         }
@@ -52,13 +53,15 @@ struct SearchView: View {
                             Text("Recently Searched")
                                 .bold()
                             Spacer()
-                            Button("Clear", action: {})
+                            Button("Clear", action: { store.clearRecentSearches() })
                                 .padding(.trailing)
                         }
                         .padding(.leading)
                         
                         ForEach(store.recentSearches, id: \.self) { album in
-                            AlbumListItem(album: album.album!)
+                            NavigationLink(destination: AlbumDetail(album: album.album!)) {
+                                AlbumListItem(album: album.album!)
+                            }
                         }
                     }
                     .padding(.top, 80)

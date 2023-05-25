@@ -33,7 +33,7 @@ struct AlbumGridItem: View {
 }
 
 struct HomeViewLibrarySection: View {
-    @EnvironmentObject var store: AlbumsViewModel
+    @EnvironmentObject var store: AlbumsCommon
     
     var body: some View {
         VStack(spacing: 10) {

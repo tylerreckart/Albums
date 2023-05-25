@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var store: AlbumsViewModel = AlbumsViewModel()
-    @StateObject var iTunesAPI: iTunesRequestService = iTunesRequestService()
+    @StateObject var store = AlbumsCommon()
+    @StateObject var itunes = iTunesAPI()
     
     @State private var activeView: RootView = .home
 
@@ -32,7 +32,7 @@ struct ContentView: View {
             .ignoresSafeArea(.keyboard)
         }
         .environmentObject(store)
-        .environmentObject(iTunesAPI)
+        .environmentObject(itunes)
         .frame(maxWidth: UIScreen.main.bounds.width)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  AlbumViewModel.swift
+//  AlbumsCommon.swift
 //  Albums
 //
 //  Created by Tyler Reckart on 5/24/23.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class AlbumsViewModel: ObservableObject {
+class AlbumsCommon: ObservableObject {
     let container: NSPersistentContainer
     
     @Published var activeAlbum: LibraryAlbum?
@@ -17,7 +17,7 @@ class AlbumsViewModel: ObservableObject {
     @Published var recentSearches: [RecentSearch] = []
     
     init() {
-        let me = "AlbumViewModel.init(): "
+        let me = "AlbumsCommon.init(): "
         container = NSPersistentContainer(name:"Albums")
         container.loadPersistentStores {( description, error) in
             if let error = error {
@@ -32,7 +32,7 @@ class AlbumsViewModel: ObservableObject {
     }
     
     private func fetchAlbumsForLibrary() -> Void {
-        let me = "AlbumViewModel.fetchAlbumsForLibrary(): "
+        let me = "AlbumsCommon.fetchAlbumsForLibrary(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
@@ -46,7 +46,7 @@ class AlbumsViewModel: ObservableObject {
     }
     
     private func fetchAlbumsForWantlist() -> Void {
-        let me = "AlbumViewModel.fetchAlbumsForWantlist(): "
+        let me = "AlbumsCommon.fetchAlbumsForWantlist(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
@@ -60,7 +60,7 @@ class AlbumsViewModel: ObservableObject {
     }
     
     public func fetchRecentSearches() -> Void {
-        let me = "AlbumViewModel.fetchRecentSearches(): "
+        let me = "AlbumsCommon.fetchRecentSearches(): "
         let request: NSFetchRequest<RecentSearch> = RecentSearch.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: false)]
         request.fetchLimit = 10
@@ -93,7 +93,7 @@ class AlbumsViewModel: ObservableObject {
     }
 
     public func addAlbumToLibrary(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumViewModel.addAlbumToLibrary(): "
+        let me = "AlbumsCommon.addAlbumToLibrary(): "
         activeAlbum?.owned = true
         activeAlbum?.wantlisted = false
         print(me + activeAlbum.debugDescription)
@@ -102,7 +102,7 @@ class AlbumsViewModel: ObservableObject {
     }
     
     public func addAlbumToWantlist(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumViewModel.addAlbumToLibrary(): "
+        let me = "AlbumsCommon.addAlbumToLibrary(): "
         activeAlbum?.owned = false
         activeAlbum?.wantlisted = true
         print(me + activeAlbum.debugDescription)
@@ -111,7 +111,7 @@ class AlbumsViewModel: ObservableObject {
     }
     
     public func removeAlbum(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumViewModel.removeAlbum(): "
+        let me = "AlbumsCommon.removeAlbum(): "
         print(me + album.title!)
         container.viewContext.delete(album)
         saveData()
@@ -121,6 +121,13 @@ class AlbumsViewModel: ObservableObject {
         let search = RecentSearch(context: container.viewContext)
         search.timestamp = Date()
         search.album = album
+        saveData()
+    }
+    
+    public func clearRecentSearches() -> Void {
+        for search in recentSearches {
+            container.viewContext.delete(search)
+        }
         saveData()
     }
     
