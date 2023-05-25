@@ -19,13 +19,27 @@ class iTunesRequestService: ObservableObject {
             .serializingDecodable(iTunesAlbumsSearchResponse.self)
             .value
         let results = value?.results ?? [] as [iTunesAlbum]
+
+        return results
+    }
+    
+    private func artistSearch(_ term: String, countryCode: String = "US") async -> [iTunesArtist] {
+        let me = "iTunesRequestService.artistSearch(): "
+        let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=musicArtist"
+        print(me + qs)
+        
+        let value = try? await AF
+            .request("https://itunes.apple.com/\(qs)")
+            .serializingDecodable(iTunesArtistSearchResponse.self)
+            .value
+        let results = value?.results ?? [] as [iTunesArtist]
         
         return results
     }
     
     public func lookupRelatedAlbums(_ id: Int) async -> [iTunesAlbum] {
         let me = "iTunesRequestService.lookupReleatedAlbums(): "
-        let qs = "lookup?id=\(id)&entity=album"
+        let qs = "lookup?amgArtistId=\(id)&entity=album&limit=5"
         print(me + qs)
         
         let value = try? await AF
@@ -34,7 +48,14 @@ class iTunesRequestService: ObservableObject {
             .value
         let results = value?.results ?? [] as [iTunesAlbum]
         
-        return results
+        return results.filter { $0.wrapperType == "collection" }.map {
+            var album = $0
+            let width: Int = 1024
+            let height: Int = 1024
+            let updatedArtworkUrl = album.artworkUrl100!.replacingOccurrences(of: "100x100", with: "\(width)x\(height)")
+            album.artworkUrl100 = updatedArtworkUrl
+            return album
+        }
     }
     
     public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> Void {
@@ -55,7 +76,7 @@ class iTunesRequestService: ObservableObject {
             let artworkBaseUrl = target.artworkUrl100
             let width: Int = 1024
             let height: Int = 1024
-            let updatedArtworkUrl = artworkBaseUrl.replacingOccurrences(of: "100x100", with: "\(width)x\(height)")
+            let updatedArtworkUrl = artworkBaseUrl!.replacingOccurrences(of: "100x100", with: "\(width)x\(height)")
             print(me + "artwork retrieved (\(updatedArtworkUrl))")
             album.artworkUrl = updatedArtworkUrl
         }

@@ -76,8 +76,8 @@ class AlbumsViewModel: ObservableObject {
     public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum) -> LibraryAlbum {
         let album = LibraryAlbum(context: container.viewContext)
     
-        album.appleId = Double(iTunesData.collectionId)
-        album.artistAppleId = Double(iTunesData.artistId)
+        album.appleId = Double(iTunesData.collectionId!)
+        album.artistAppleId = Double(iTunesData.amgArtistId ?? 0)
         album.artistName = iTunesData.artistName
         album.artworkUrl = iTunesData.artworkUrl100
         album.dateAdded = Date()

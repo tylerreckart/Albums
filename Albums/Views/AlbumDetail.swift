@@ -33,7 +33,9 @@ struct AlbumDetail: View {
     @EnvironmentObject var iTunesAPI: iTunesRequestService
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State private var viewContext: NSManagedObjectContext?
+    @State private var related: [LibraryAlbum] = []
     
     var album: LibraryAlbum
     var searchResult: Bool = false
@@ -78,6 +80,7 @@ struct AlbumDetail: View {
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.gray)
                     }
+                    .padding(.horizontal)
 
                     VStack(spacing: 10) {
                         UIButton(
@@ -105,10 +108,38 @@ struct AlbumDetail: View {
                             background: Color(.systemGray5)
                         )
                     }
+                    .padding(.horizontal)
+                    
+                    if self.related.count > 0 {
+                        VStack(spacing: 10) {
+                            HStack {
+                                Text("More by \(store.activeAlbum?.artistName ?? "")")
+                                    .font(.system(size: 18, weight: .bold))
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(alignment: .top, spacing: 20) {
+                                    ForEach(related, id: \.self) { a in
+                                        VStack {
+                                            AlbumGridItem(album: a)
+                                                .frame(maxWidth: 175)
+                                            Spacer()
+                                        }
+                                    }
+                                }
+                                .padding([.horizontal, .top])
+                                .padding(.bottom, 10)
+                            }
+                            .frame(height: 300)
+                            .background(Color(.systemGray5))
+                            .edgesIgnoringSafeArea(.bottom)
+                        }
+                    }
                 }
             }
             .frame(maxHeight: .infinity)
-            .padding(.horizontal)
             .padding(.top, 35)
             
             Header(content: {
@@ -129,7 +160,7 @@ struct AlbumDetail: View {
             Task {
                 await iTunesAPI.lookupAlbumArtwork(store.activeAlbum!)
                 let relatedAlbums = await iTunesAPI.lookupRelatedAlbums(Int(store.activeAlbum!.artistAppleId))
-                print(relatedAlbums)
+                self.related = relatedAlbums.map { store.mapAlbumDataToLibraryModel($0) }
             }
             
             if searchResult == true {
@@ -137,6 +168,7 @@ struct AlbumDetail: View {
             }
         }
         .navigationBarHidden(true)
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 

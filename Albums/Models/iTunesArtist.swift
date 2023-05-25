@@ -7,4 +7,11 @@
 
 import Foundation
 
-struct iTunesArtist: Codable {}
+struct iTunesArtist: Codable {
+    var wrapperType: String?
+    var artistType: String
+    var artistName: String
+    var artistId: Int
+    var amgArtistId: Int
+    var primaryGenreName: String
+}
