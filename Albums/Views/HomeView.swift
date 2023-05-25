@@ -21,9 +21,6 @@ struct HomeView: View {
                     HomeViewWantlistSection()
                 }
                 .padding(.bottom, 60)
-                .onChange(of: scrollOffset) { newState in
-                    print(newState.y)
-                }
             }
             
             Header(

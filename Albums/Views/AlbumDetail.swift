@@ -9,49 +9,40 @@ import SwiftUI
 import MusicKit
 import CoreData
 
-func mapAlbumsAlbumToLibraryStruct(_ target: AlbumsAlbum, wantlisted: Bool = false, owned: Bool = true, viewContext: NSManagedObjectContext) -> LibraryAlbum {
-    let tmp = LibraryAlbum(context: viewContext)
-    tmp.appleId = Double(target.appleId)
-    tmp.artistAppleId = Double(target.artistId)
-    tmp.artistName = target.artistName
-    tmp.title = target.name
-    tmp.genre = target.genre
-    tmp.artworkUrl = target.artworkUrl
-    tmp.playCount = Double(0)
-    tmp.wantlisted = wantlisted
-    tmp.owned = owned
-    tmp.dateAdded = Date()
-    return tmp
+struct UIButton: View {
+    var text: String
+    var action: () -> Void
+    var foreground: Color = .white
+    var background: Color
+
+    var body: some View {
+        Button(action: action) {
+            Text(text)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundColor(foreground)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(background)
+                .cornerRadius(10)
+        }
+    }
 }
 
 struct AlbumDetail: View {
     @EnvironmentObject var store: AlbumsViewModel
+    @EnvironmentObject var iTunesAPI: iTunesRequestService
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var viewContext: NSManagedObjectContext?
     
     var album: LibraryAlbum
+    var searchResult: Bool = false
 
     
     func dateFromReleaseStr(_ str: String) -> String {
         let dateFormatter = DateFormatter()
         let date = dateFormatter.date(from: str)
         return (date ?? Date()).formatted(date: .long, time: .omitted)
-    }
-    
-    private func addToWantlist(_ target: LibraryAlbum) {
-        withAnimation {
-            target.owned = false
-            target.wantlisted = true
-            do {
-                try viewContext!.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
     }
 
     var body: some View {
@@ -67,7 +58,8 @@ struct AlbumDetail: View {
                         .frame(width: 320, height: 320)
                         .cornerRadius(6)
                         .padding(.horizontal)
-                        .padding([.bottom, .top], 10)
+                        .padding(.bottom, 10)
+                        .padding(.top, 20)
                         
                         Text((store.activeAlbum?.title!) ?? "")
                             .font(.system(size: 18, weight: .bold))
@@ -87,33 +79,37 @@ struct AlbumDetail: View {
                         .foregroundColor(.gray)
                     }
 
-                    HStack(spacing: 10) {
-                        Button(action: { store.addAlbumToLibrary((store.activeAlbum)!) }) {
-                            Text("Add To Library")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("PrimaryPurple"))
-                                .cornerRadius(10)
-                        }
+                    VStack(spacing: 10) {
+                        UIButton(
+                            text: store.activeAlbum?.owned != true ? "Add to Library" : "Remove from Library",
+                            action: {
+                                if store.activeAlbum?.owned != true {
+                                    store.addAlbumToLibrary(store.activeAlbum!)
+                                } else {
+                                    store.removeAlbum(store.activeAlbum!)
+                                }
+                            },
+                            background: Color("PrimaryPurple")
+                        )
                         
-                        Button(action: { store.addAlbumToWantlist((store.activeAlbum)!) }) {
-                            Text("Add To Wantlist")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color(.systemGray3))
-                                .cornerRadius(10)
-                        }
+                        UIButton(
+                            text: store.activeAlbum?.wantlisted != true ? "Add to Wantlist" : "Remove from Wantlist",
+                            action: {
+                                if store.activeAlbum?.wantlisted != true {
+                                    store.addAlbumToWantlist(store.activeAlbum!)
+                                } else {
+                                    store.removeAlbum(store.activeAlbum!)
+                                }
+                            },
+                            foreground: Color("PrimaryPurple"),
+                            background: Color(.systemGray5)
+                        )
                     }
-                    .padding(.horizontal)
                 }
             }
             .frame(maxHeight: .infinity)
             .padding(.horizontal)
-            .padding(.top, 55)
+            .padding(.top, 35)
             
             Header(content: {
                 HStack {
@@ -129,8 +125,15 @@ struct AlbumDetail: View {
         .background(Color(.white))
         .onAppear {
             store.setActiveAlbum(album)
+
             Task {
-                await iTunesRequestService().lookupAlbumArtwork(store.activeAlbum!)
+                await iTunesAPI.lookupAlbumArtwork(store.activeAlbum!)
+                let relatedAlbums = await iTunesAPI.lookupRelatedAlbums(Int(store.activeAlbum!.artistAppleId))
+                print(relatedAlbums)
+            }
+            
+            if searchResult == true {
+                store.saveRecentSearch(album)
             }
         }
         .navigationBarHidden(true)

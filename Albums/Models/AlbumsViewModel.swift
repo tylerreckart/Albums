@@ -14,6 +14,7 @@ class AlbumsViewModel: ObservableObject {
     @Published var activeAlbum: LibraryAlbum?
     @Published var library: [LibraryAlbum] = []
     @Published var wantlist: [LibraryAlbum] = []
+    @Published var recentSearches: [RecentSearch] = []
     
     init() {
         let me = "AlbumViewModel.init(): "
@@ -27,6 +28,7 @@ class AlbumsViewModel: ObservableObject {
         }
         fetchAlbumsForLibrary()
         fetchAlbumsForWantlist()
+        fetchRecentSearches()
     }
     
     private func fetchAlbumsForLibrary() -> Void {
@@ -52,7 +54,20 @@ class AlbumsViewModel: ObservableObject {
         do {
             self.wantlist = try container.viewContext.fetch(request)
             print(me + "success")
-            print(wantlist.map { $0.title })
+        } catch let error {
+            print(me + "error \(error)")
+        }
+    }
+    
+    public func fetchRecentSearches() -> Void {
+        let me = "AlbumViewModel.fetchRecentSearches(): "
+        let request: NSFetchRequest<RecentSearch> = RecentSearch.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: true)]
+        request.fetchLimit = 10
+        
+        do {
+            self.recentSearches = try container.viewContext.fetch(request)
+            print(me + "success")
         } catch let error {
             print(me + "error \(error)")
         }
@@ -95,6 +110,20 @@ class AlbumsViewModel: ObservableObject {
         saveData()
     }
     
+    public func removeAlbum(_ album: LibraryAlbum) -> Void {
+        let me = "AlbumViewModel.removeAlbum(): "
+        print(me + album.title!)
+        container.viewContext.delete(album)
+        saveData()
+    }
+    
+    public func saveRecentSearch(_ album: LibraryAlbum) -> Void {
+        let search = RecentSearch(context: container.viewContext)
+        search.timestamp = Date()
+        search.album = album
+        saveData()
+    }
+    
     public func setActiveAlbum(_ album: LibraryAlbum) -> Void {
         self.activeAlbum = album
     }
@@ -104,6 +133,7 @@ class AlbumsViewModel: ObservableObject {
           try container.viewContext.save()
             fetchAlbumsForLibrary()
             fetchAlbumsForWantlist()
+            fetchRecentSearches()
         } catch let error {
             print("Error saving... \(error)")
         }

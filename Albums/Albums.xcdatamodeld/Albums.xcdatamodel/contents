@@ -16,5 +16,10 @@
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="wantlisted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="searchResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecentSearch" inverseName="album" inverseEntity="RecentSearch"/>
+    </entity>
+    <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES" codeGenerationType="class">
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="searchResults" inverseEntity="LibraryAlbum"/>
     </entity>
 </model>

@@ -25,7 +25,7 @@ class iTunesRequestService: ObservableObject {
     
     public func lookupRelatedAlbums(_ id: Int) async -> [iTunesAlbum] {
         let me = "iTunesRequestService.lookupReleatedAlbums(): "
-        let qs = "lookup?id=\(id)&entity=album&limit=5"
+        let qs = "lookup?id=\(id)&entity=album"
         print(me + qs)
         
         let value = try? await AF

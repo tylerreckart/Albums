@@ -37,9 +37,8 @@ struct SearchView: View {
                     VStack(spacing: 0) {
                         ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
                             let remappedAlbum = store.mapAlbumDataToLibraryModel(album)
-                            NavigationLink(destination: AlbumDetail(album: remappedAlbum)) {
+                            NavigationLink(destination: AlbumDetail(album: remappedAlbum, searchResult: true)) {
                                 AlbumListItem(album: remappedAlbum)
-                                    .cornerRadius(10, corners: index == 0 ? [.topLeft, .topRight] : index == albumsResults.count - 1 ? [.bottomLeft, .bottomRight] : [])
                             }
                         }
                     }
@@ -48,7 +47,7 @@ struct SearchView: View {
                 }
             } else {
                 ScrollView {
-                    VStack {
+                    VStack(spacing: 0) {
                         HStack {
                             Text("Recently Searched")
                                 .bold()
@@ -58,10 +57,9 @@ struct SearchView: View {
                         }
                         .padding(.leading)
                         
-                        Rectangle()
-                            .fill(Color(.systemGray5))
-                            .frame(height: 0.5)
-                            .padding(.leading)
+                        ForEach(store.recentSearches, id: \.self) { album in
+                            AlbumListItem(album: album.album!)
+                        }
                     }
                     .padding(.top, 80)
                 }

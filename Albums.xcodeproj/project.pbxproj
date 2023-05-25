@@ -12,8 +12,6 @@
 		DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */; };
 		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
 		DB96D4C22A1B89EF005C4CAE /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DB96D4C12A1B89EF005C4CAE /* Alamofire */; };
-		DB96D4C62A1BA0A7005C4CAE /* AlbumsAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4C52A1BA0A7005C4CAE /* AlbumsAlbum.swift */; };
-		DB96D4C82A1BA0B1005C4CAE /* AlbumsArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4C72A1BA0B1005C4CAE /* AlbumsArtist.swift */; };
 		DB96D4CA2A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4C92A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift */; };
 		DB96D4CC2A1BA0C7005C4CAE /* iTunesAlbumResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4CB2A1BA0C7005C4CAE /* iTunesAlbumResponse.swift */; };
 		DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4CD2A1BA0D3005C4CAE /* iTunesArtistResponse.swift */; };
@@ -52,8 +50,6 @@
 		DB96D4B72A1B0932005C4CAE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		DB96D4BC2A1B0978005C4CAE /* ReccomendedAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReccomendedAlbum.swift; sourceTree = "<group>"; };
 		DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
-		DB96D4C52A1BA0A7005C4CAE /* AlbumsAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsAlbum.swift; sourceTree = "<group>"; };
-		DB96D4C72A1BA0B1005C4CAE /* AlbumsArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsArtist.swift; sourceTree = "<group>"; };
 		DB96D4C92A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAlbumsSearchResponse.swift; sourceTree = "<group>"; };
 		DB96D4CB2A1BA0C7005C4CAE /* iTunesAlbumResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAlbumResponse.swift; sourceTree = "<group>"; };
 		DB96D4CD2A1BA0D3005C4CAE /* iTunesArtistResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtistResponse.swift; sourceTree = "<group>"; };
@@ -139,8 +135,6 @@
 		DB96D4C42A1BA09D005C4CAE /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				DB96D4C52A1BA0A7005C4CAE /* AlbumsAlbum.swift */,
-				DB96D4C72A1BA0B1005C4CAE /* AlbumsArtist.swift */,
 				DB96D4C92A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift */,
 				DB96D4CB2A1BA0C7005C4CAE /* iTunesAlbumResponse.swift */,
 				DB96D4CD2A1BA0D3005C4CAE /* iTunesArtistResponse.swift */,
@@ -354,7 +348,6 @@
 				DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */,
 				DBD4500F2A1EEF3D00589220 /* ScrollOffsetObserver.swift in Sources */,
 				DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */,
-				DB96D4C62A1BA0A7005C4CAE /* AlbumsAlbum.swift in Sources */,
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,
 				DB96D4DD2A1C014F005C4CAE /* SearchBar.swift in Sources */,
 				DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */,
@@ -368,7 +361,6 @@
 				DB96D4BD2A1B0978005C4CAE /* ReccomendedAlbum.swift in Sources */,
 				DB96D4D72A1BFC5F005C4CAE /* RoundedCorner.swift in Sources */,
 				DB9B8CD52A11C85200CE4D74 /* SearchView.swift in Sources */,
-				DB96D4C82A1BA0B1005C4CAE /* AlbumsArtist.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
 				DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */,
 				DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */,
