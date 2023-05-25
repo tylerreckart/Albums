@@ -9,7 +9,7 @@ import SwiftUI
 import MusicKit
 
 struct SearchView: View {
-    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var store: AlbumsAPI
     @EnvironmentObject var itunes: iTunesAPI
 
     @Environment(\.managedObjectContext) var viewContext

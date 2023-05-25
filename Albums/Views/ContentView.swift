@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var store = AlbumsCommon()
+    @StateObject var store = AlbumsAPI()
     @StateObject var itunes = iTunesAPI()
     
     @State private var activeView: RootView = .home

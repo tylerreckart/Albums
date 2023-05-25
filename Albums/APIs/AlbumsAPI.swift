@@ -1,5 +1,5 @@
 //
-//  AlbumsCommon.swift
+//  AlbumsAPI.swift
 //  Albums
 //
 //  Created by Tyler Reckart on 5/24/23.
@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class AlbumsCommon: ObservableObject {
+class AlbumsAPI: ObservableObject {
     let container: NSPersistentContainer
     
     @Published var activeAlbum: LibraryAlbum?
@@ -17,7 +17,7 @@ class AlbumsCommon: ObservableObject {
     @Published var recentSearches: [RecentSearch] = []
     
     init() {
-        let me = "AlbumsCommon.init(): "
+        let me = "AlbumsAPI.init(): "
         container = NSPersistentContainer(name:"Albums")
         container.loadPersistentStores {( description, error) in
             if let error = error {
@@ -32,7 +32,7 @@ class AlbumsCommon: ObservableObject {
     }
     
     private func fetchAlbumsForLibrary() -> Void {
-        let me = "AlbumsCommon.fetchAlbumsForLibrary(): "
+        let me = "AlbumsAPI.fetchAlbumsForLibrary(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
@@ -46,7 +46,7 @@ class AlbumsCommon: ObservableObject {
     }
     
     private func fetchAlbumsForWantlist() -> Void {
-        let me = "AlbumsCommon.fetchAlbumsForWantlist(): "
+        let me = "AlbumsAPI.fetchAlbumsForWantlist(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
@@ -60,7 +60,7 @@ class AlbumsCommon: ObservableObject {
     }
     
     public func fetchRecentSearches() -> Void {
-        let me = "AlbumsCommon.fetchRecentSearches(): "
+        let me = "AlbumsAPI.fetchRecentSearches(): "
         let request: NSFetchRequest<RecentSearch> = RecentSearch.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: false)]
         request.fetchLimit = 10
@@ -93,7 +93,7 @@ class AlbumsCommon: ObservableObject {
     }
 
     public func addAlbumToLibrary(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumsCommon.addAlbumToLibrary(): "
+        let me = "AlbumsAPI.addAlbumToLibrary(): "
         activeAlbum?.owned = true
         activeAlbum?.wantlisted = false
         print(me + activeAlbum.debugDescription)
@@ -102,7 +102,7 @@ class AlbumsCommon: ObservableObject {
     }
     
     public func addAlbumToWantlist(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumsCommon.addAlbumToLibrary(): "
+        let me = "AlbumsAPI.addAlbumToLibrary(): "
         activeAlbum?.owned = false
         activeAlbum?.wantlisted = true
         print(me + activeAlbum.debugDescription)
@@ -111,7 +111,7 @@ class AlbumsCommon: ObservableObject {
     }
     
     public func removeAlbum(_ album: LibraryAlbum) -> Void {
-        let me = "AlbumsCommon.removeAlbum(): "
+        let me = "AlbumsAPI.removeAlbum(): "
         print(me + album.title!)
         container.viewContext.delete(album)
         saveData()

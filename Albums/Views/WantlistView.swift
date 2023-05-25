@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct WantlistView: View {
-    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var store: AlbumsAPI
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     

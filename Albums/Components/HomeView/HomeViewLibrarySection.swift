@@ -17,7 +17,13 @@ struct AlbumGridItem: View {
             AsyncImage(url: URL(string: album.artworkUrl!)) { image in
                 image.resizable().aspectRatio(contentMode: .fit)
             } placeholder: {
-                ProgressView()
+                ZStack {
+                    Rectangle()
+                        .fill(Color(.systemGray6))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .aspectRatio(contentMode: .fit)
+                    ProgressView()
+                }
             }
             .frame(maxWidth: .infinity)
             .cornerRadius(8)
@@ -33,7 +39,7 @@ struct AlbumGridItem: View {
 }
 
 struct HomeViewLibrarySection: View {
-    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var store: AlbumsAPI
     
     var body: some View {
         VStack(spacing: 10) {

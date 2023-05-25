@@ -10,7 +10,7 @@ import SwiftUI
 import CoreData
 
 struct HomeViewWantlistSection: View {
-    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var store: AlbumsAPI
 
     var body: some View {
         VStack {

@@ -10,7 +10,7 @@ import CoreData
 
 struct LibraryView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject var store: AlbumsCommon
+    @EnvironmentObject var store: AlbumsAPI
     
     @State private var results: [iTunesAlbum] = []
 
