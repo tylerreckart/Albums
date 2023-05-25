@@ -12,6 +12,7 @@ struct SearchBar: View {
     var placeholder: String?
     @Binding var searchText: String
     var search: () async -> Void
+    @Binding var results: [iTunesAlbum]
 
     var body: some View {
         ZStack {
@@ -39,7 +40,10 @@ struct SearchBar: View {
                 HStack {
                     Spacer()
                     
-                    Button(action: { self.searchText = "" }) {
+                    Button(action: {
+                        self.searchText = ""
+                        self.results = []
+                    }) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(Color("PrimaryGray"))

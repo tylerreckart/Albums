@@ -12,11 +12,12 @@ struct WantlistView: View {
     @EnvironmentObject var store: AlbumsViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @State private var searchText: String = ""
+    @State private var results: [iTunesAlbum] = []
     
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
-                SearchBar(placeholder: "Find in Your Wantlist", searchText: $searchText, search: {})
+                SearchBar(placeholder: "Find in Your Wantlist", searchText: $searchText, search: {}, results: $results)
                     .padding(.top, 20)
                     .padding(.horizontal)
                     .padding(.bottom, 8 )
@@ -33,7 +34,9 @@ struct WantlistView: View {
                         HStack(spacing: 20) {
                             VStack {
                                 if even != nil {
-                                    AlbumGridItem(album: even!)
+                                    NavigationLink(destination: AlbumDetail(album: even!)) {
+                                        AlbumGridItem(album: even!)
+                                    }
                                 } else {
                                     Rectangle().fill(.clear).aspectRatio(1.0, contentMode: .fit)
                                 }
@@ -41,7 +44,9 @@ struct WantlistView: View {
                             }
                             VStack {
                                 if odd != nil {
-                                    AlbumGridItem(album: odd!)
+                                    NavigationLink(destination: AlbumDetail(album: odd!)) {
+                                        AlbumGridItem(album: odd!)
+                                    }
                                 } else {
                                     Rectangle().fill(.clear).aspectRatio(1.0, contentMode: .fit)
                                 }

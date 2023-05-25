@@ -62,7 +62,7 @@ class AlbumsViewModel: ObservableObject {
     public func fetchRecentSearches() -> Void {
         let me = "AlbumViewModel.fetchRecentSearches(): "
         let request: NSFetchRequest<RecentSearch> = RecentSearch.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: false)]
         request.fetchLimit = 10
         
         do {

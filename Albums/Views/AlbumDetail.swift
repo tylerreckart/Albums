@@ -123,8 +123,12 @@ struct AlbumDetail: View {
                                 HStack(alignment: .top, spacing: 20) {
                                     ForEach(related, id: \.self) { a in
                                         VStack {
-                                            AlbumGridItem(album: a)
-                                                .frame(maxWidth: 175)
+                                            Button(action: {
+                                                withAnimation { store.setActiveAlbum(a) }
+                                            }) {
+                                                AlbumGridItem(album: a)
+                                                    .frame(maxWidth: 175)
+                                            }
                                             Spacer()
                                         }
                                     }

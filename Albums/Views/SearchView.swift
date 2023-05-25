@@ -65,7 +65,7 @@ struct SearchView: View {
                 }
             }
             
-            Header(content: { SearchBar(searchText: $searchText, search: search) })
+            Header(content: { SearchBar(searchText: $searchText, search: search, results: $albumsResults) })
         }
         .background(Color(.white))
         .transition(.push(from: .trailing))
