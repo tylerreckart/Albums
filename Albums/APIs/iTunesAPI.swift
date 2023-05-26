@@ -72,7 +72,7 @@ class iTunesAPI: ObservableObject {
         return results.filter { $0.wrapperType == "track" }
     }
     
-    public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> Void {
+    public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> String {
         let me = "iTunesRequestService.lookupAlbumArtwork(): "
         let qs = "lookup?id=\(Int(album.appleId))&country=us&limit=25"
         print(me + qs)
@@ -84,6 +84,8 @@ class iTunesAPI: ObservableObject {
         
         let results = value?.results ?? [] as [iTunesAlbum]
         
+        var str: String = ""
+        
         if (results.count > 0) {
             let target = results[0]
             
@@ -92,7 +94,9 @@ class iTunesAPI: ObservableObject {
             let height: Int = 1024
             let updatedArtworkUrl = artworkBaseUrl!.replacingOccurrences(of: "100x100", with: "\(width)x\(height)")
             print(me + "artwork retrieved (\(updatedArtworkUrl))")
-            album.artworkUrl = updatedArtworkUrl
+            str = updatedArtworkUrl
         }
+        
+        return str
     }
 }

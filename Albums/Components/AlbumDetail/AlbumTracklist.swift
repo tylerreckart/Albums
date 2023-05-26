@@ -11,6 +11,8 @@ import SwiftUI
 struct AlbumTracklist: View {
     @Binding var tracks: [iTunesTrack]
     
+    @State private var collapsed: Bool = true
+    
     func secondsToHoursMinutesSeconds(seconds: Double) -> (Double, Double, Double) {
       let (hr,  minf) = modf(seconds / 3600)
       let (min, secf) = modf(60 * minf)
@@ -19,58 +21,71 @@ struct AlbumTracklist: View {
 
     var body: some View {
         VStack {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text("Tracklist")
                     .font(.system(size: 18, weight: .bold))
                 Spacer()
-            }
-            .padding(.horizontal)
-
-            VStack(spacing: 0) {
-                ForEach(tracks, id: \.self) { track in
-                    let index = tracks.firstIndex(where: { $0.trackId == track.trackId })
-                    
-                    VStack(spacing: 0) {
-                        HStack(alignment: .top, spacing: 10) {
-                            Text("\(track.trackNumber!).")
-                                .font(.system(size: 14, weight: .bold))
-                                .frame(width: 24)
-                                .padding(.leading)
-                            VStack(spacing: 5) {
-                                HStack {
-                                    Text(track.trackCensoredName!.trunc(length: 30))
-                                        .font(.system(size: 14, weight: .regular))
-                                    Spacer()
-                                    Text(track.primaryGenreName!)
-                                        .font(.system(size: 12, weight: .regular))
-                                        .foregroundColor(Color("PrimaryGray"))
-                                }
-                                .padding(.trailing)
-                                
-                                HStack {
-                                    let (h, m, s) = secondsToHoursMinutesSeconds(seconds: Double(track.trackTimeMillis!) * 0.001)
-                                    Text("\(h != 0 ? "\(h < 10 ? "0" : "")\(Int(h)):" : "")\(m < 10 ? "0" : "")\(Int(m)):\(s < 10 ? "0" : "")\(Int(s))")
-                                        .font(.system(size: 12, weight: .regular))
-                                        .foregroundColor(Color("PrimaryGray"))
-                                    Spacer()
-                                }
-                                .padding(.bottom, 7)
-                                
-                                if index != nil && index != tracks.count - 1 {
-                                    Rectangle()
-                                        .fill(Color(.systemGray5))
-                                        .frame(height: 0.5)
-                                }
-                            }
-                        }
-                        .padding(.top, 12)
+                
+                Button(action: {
+                    withAnimation {
+                        self.collapsed.toggle()
+                    }
+                }) {
+                    if self.collapsed {
+                        Text("Show More")
+                    } else {
+                        Text("Show Less")
                     }
                 }
             }
-            .padding(.vertical, 5)
-            .background(Color(.systemGray6))
+            .padding(.horizontal)
+
+            ZStack {
+                VStack(spacing: 0) {
+                    let range = tracks[0...(collapsed ? 1 : tracks.count - 1)]
+                    ForEach(range, id: \.self) { track in
+                        let index = range.firstIndex(where: { $0.trackId == track.trackId })
+                        Button(action: {}) {
+                            VStack(spacing: 0) {
+                                HStack(alignment: .top, spacing: 10) {
+                                    Text("\(track.trackNumber!).")
+                                        .font(.system(size: 14, weight: .bold))
+                                        .frame(width: 24)
+                                        .padding(.leading)
+                                    VStack(spacing: 0) {
+                                        HStack {
+                                            Text(track.trackCensoredName!.trunc(length: 30))
+                                                .font(.system(size: 14, weight: .regular))
+                                            Spacer()
+                                            let (h, m, s) = secondsToHoursMinutesSeconds(seconds: Double(track.trackTimeMillis!) * 0.001)
+                                            Text("\(h != 0 ? "\(h < 10 ? "0" : "")\(Int(h)):" : "")\(m < 10 ? "0" : "")\(Int(m)):\(s < 10 ? "0" : "")\(Int(s))")
+                                                .font(.system(size: 12, weight: .regular))
+                                                .foregroundColor(Color("PrimaryGray"))
+                                        }
+                                        .padding(.trailing)
+                                        .padding(.bottom, 16)
+                                        
+                                        if index != nil && index != range.count - 1 {
+                                            Rectangle()
+                                                .fill(Color(.systemGray5))
+                                                .frame(height: 0.5)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.top, 16)
+                        }
+                        .foregroundColor(.primary)
+                    }
+                }
+                .background(.white)
+                .cornerRadius(9.5)
+                .padding(0.5)
+            }
+            .background(Color(.systemGray5))
             .cornerRadius(10)
             .padding(.horizontal)
+            .shadow(color: .black.opacity(0.035), radius: 3, y: 3)
         }
     }
 }

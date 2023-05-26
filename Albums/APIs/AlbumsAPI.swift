@@ -135,7 +135,7 @@ class AlbumsAPI: ObservableObject {
         self.activeAlbum = album
     }
 
-    private func saveData() {
+    public func saveData() {
         do {
           try container.viewContext.save()
             fetchAlbumsForLibrary()

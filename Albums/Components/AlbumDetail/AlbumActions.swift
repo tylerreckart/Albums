@@ -7,9 +7,14 @@
 
 import Foundation
 import SwiftUI
+import MusicKit
 
 struct AlbumActions: View {
     @EnvironmentObject var store: AlbumsAPI
+    
+    let player = ApplicationMusicPlayer.shared
+    
+    @ObservedObject private var state = ApplicationMusicPlayer.shared.state
 
     var body: some View {
         VStack(spacing: 10) {
@@ -36,18 +41,35 @@ struct AlbumActions: View {
             }
             
             HStack {
-                UIButton(
-                    text: "Play",
-                    symbol: "play.fill",
-                    action: {},
-                    foreground: Color("PrimaryPurple"),
-                    background: Color(.systemGray6)
-                )
+                if state.playbackStatus != .playing {
+                    UIButton(
+                        text: "Play",
+                        symbol: "play.fill",
+                        action: { Task { try? await player.play() }},
+                        foreground: Color("PrimaryPurple"),
+                        background: Color(.systemGray6)
+                    )
+                } else {
+                    UIButton(
+                        text: "Pause",
+                        symbol: "pause.fill",
+                        action: { Task { player.pause() }},
+                        foreground: Color("PrimaryPurple"),
+                        background: Color(.systemGray6)
+                    )
+                }
                 
                 UIButton(
                     text: "Shuffle",
                     symbol: "shuffle",
-                    action: {},
+                    action: {
+                        Task {
+                            player.pause()
+                            state.shuffleMode = .songs
+                            try? await player.skipToNextEntry()
+                            try? await player.play()
+                        }
+                    },
                     foreground: Color("PrimaryPurple"),
                     background: Color(.systemGray6)
                 )
