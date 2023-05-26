@@ -42,7 +42,7 @@ struct AlbumTracklist: View {
 
             ZStack {
                 VStack(spacing: 0) {
-                    let range = tracks[0...(collapsed ? 1 : tracks.count - 1)]
+                    let range = tracks.count == 1 ? tracks[0..<1] : tracks[0...(collapsed ? 1 : tracks.count - 1)]
                     ForEach(range, id: \.self) { track in
                         let index = range.firstIndex(where: { $0.trackId == track.trackId })
                         Button(action: {}) {

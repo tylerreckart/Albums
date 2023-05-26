@@ -23,7 +23,22 @@ class iTunesAPI: ObservableObject {
         return results
     }
     
-    private func artistSearch(_ term: String, countryCode: String = "US") async -> [iTunesArtist] {
+    public func lookupArtist(_ id: Double) async -> [iTunesArtist] {
+        let me = "iTunesRequestService.lookupArtist(): "
+        let qs = "lookup?amgArtistId=\(Int(id))"
+        print(me + qs)
+        
+        let value = try? await AF
+            .request("https://itunes.apple.com/\(qs)")
+            .serializingDecodable(iTunesArtistLookupResponse.self)
+            .value
+        let results = value?.results ?? [] as [iTunesArtist]
+        print(results)
+        
+        return results
+    }
+    
+    public func artistSearch(_ term: String, countryCode: String = "US") async -> [iTunesArtist] {
         let me = "iTunesRequestService.artistSearch(): "
         let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=musicArtist"
         print(me + qs)
@@ -37,9 +52,9 @@ class iTunesAPI: ObservableObject {
         return results
     }
     
-    public func lookupRelatedAlbums(_ id: Int) async -> [iTunesAlbum] {
+    public func lookupRelatedAlbums(_ id: Int, limit: Int = 5) async -> [iTunesAlbum] {
         let me = "iTunesRequestService.lookupReleatedAlbums(): "
-        let qs = "lookup?amgArtistId=\(id)&entity=album&limit=5"
+        let qs = "lookup?amgArtistId=\(id)&entity=album&limit=\(limit)"
         print(me + qs)
         
         let value = try? await AF

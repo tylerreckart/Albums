@@ -81,12 +81,11 @@ struct PlayerView: View {
 }
 
 struct AlbumDetail: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var store: AlbumsAPI
     @EnvironmentObject var iTunesAPI: iTunesAPI
     
     @StateObject var mbAPI: MusicBrainzAPI = MusicBrainzAPI()
-    
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var album: LibraryAlbum
     var searchResult: Bool = false
@@ -163,20 +162,20 @@ struct AlbumDetail: View {
                     )
                 
                 let metadata = await mbAPI.requestMetadata(store.activeAlbum!.title!, store.activeAlbum!.artistName!)
-                
+
                 if metadata.count > 0 && metadata[0].barcode != nil {
                     guard await MusicAuthorization.request() != .denied else { return }
-                    
+
                     let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: metadata[0].barcode!)
                     let response = try await request.response()
-                    
+
                     guard let album = response.items.first else { return }
-                    
-                    var globalPlayer = ApplicationMusicPlayer.shared
-                    
+
+                    let globalPlayer = ApplicationMusicPlayer.shared
+                    globalPlayer.queue = []
                     globalPlayer.stop()
                     globalPlayer.queue = [album]
-    
+
                     try await globalPlayer.prepareToPlay()
                 }
             }

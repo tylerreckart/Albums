@@ -13,13 +13,17 @@ struct ContentView: View {
     @StateObject var itunes = iTunesAPI()
     
     @State private var activeView: RootView = .home
+    
+    func setView(_ view: RootView) -> Void {
+        self.activeView = view
+    }
 
     var body: some View {
         NavigationView {
             ZStack {
                 switch (activeView) {
                     case .home:
-                        HomeView()
+                        HomeView(setView: setView)
                     case .library:
                         LibraryView(showNavigation: false)
                     case .search:

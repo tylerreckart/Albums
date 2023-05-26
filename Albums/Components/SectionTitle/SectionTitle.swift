@@ -13,6 +13,8 @@ struct SectionTitle<Destination: View>: View {
     var symbol: String?
     var buttonText: String?
     @ViewBuilder var destination: Destination
+    var useAction: Bool = false
+    var action: () -> Void = {}
 
     var body: some View {
         HStack(spacing: 5) {
@@ -21,11 +23,22 @@ struct SectionTitle<Destination: View>: View {
                 .foregroundColor(Color("PrimaryBlack"))
             Spacer()
             
-            if (buttonText != nil) {
-                NavigationLink(destination: destination) {
-                    Text(buttonText!)
+            if buttonText != nil {
+                if !useAction {
+                    NavigationLink(destination: destination) {
+                        Text(buttonText!)
+                    }
+                    .foregroundColor(Color("PrimaryPurple"))
+                } else {
+                    Button(action: {
+                        withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.7, blendDuration: 1)) {
+                            action()
+                        }
+                    }) {
+                        Text(buttonText!)
+                    }
+                    .foregroundColor(Color("PrimaryPurple"))
                 }
-                .foregroundColor(Color("PrimaryPurple"))
             }
         }
     }

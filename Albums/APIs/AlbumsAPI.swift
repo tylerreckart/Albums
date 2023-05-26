@@ -11,10 +11,26 @@ import CoreData
 class AlbumsAPI: ObservableObject {
     let container: NSPersistentContainer
     
+    // Data Stores.
     @Published var activeAlbum: LibraryAlbum?
     @Published var library: [LibraryAlbum] = []
     @Published var wantlist: [LibraryAlbum] = []
     @Published var recentSearches: [RecentSearch] = []
+    // Filters
+    @Published var filter: LibraryFilter = .library
+    
+    enum LibraryFilter: String {
+        case library
+        case wantlist
+    }
+
+    subscript(filter: String) -> [LibraryAlbum] {
+        get {
+            if filter == "library" { return library }
+            if filter == "wantlist" { return wantlist }
+            return library
+        }
+    }
     
     init() {
         let me = "AlbumsAPI.init(): "
@@ -31,11 +47,15 @@ class AlbumsAPI: ObservableObject {
         fetchRecentSearches()
     }
     
+    public func setFilter(_ filter: LibraryFilter) -> Void {
+        self.filter = filter
+    }
+    
     private func fetchAlbumsForLibrary() -> Void {
         let me = "AlbumsAPI.fetchAlbumsForLibrary(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: false)]
 
         do {
             self.library = try container.viewContext.fetch(request)
@@ -49,7 +69,7 @@ class AlbumsAPI: ObservableObject {
         let me = "AlbumsAPI.fetchAlbumsForWantlist(): "
         let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: false)]
 
         do {
             self.wantlist = try container.viewContext.fetch(request)

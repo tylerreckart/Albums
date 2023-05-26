@@ -7,8 +7,26 @@
 
 import Foundation
 import SwiftUI
+import Combine
+
+class SearchFieldObserver : ObservableObject {
+    @Published var debouncedText = ""
+    @Published var searchText = ""
+    
+    private var subscriptions = Set<AnyCancellable>()
+    
+    init() {
+        $searchText
+            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] t in
+                self?.debouncedText = t
+            } )
+            .store(in: &subscriptions)
+    }
+}
 
 struct SearchBar: View {
+    @StateObject var observer = SearchFieldObserver()
     var placeholder: String?
     @Binding var searchText: String
     var search: () async -> Void
@@ -16,12 +34,7 @@ struct SearchBar: View {
 
     var body: some View {
         ZStack {
-            TextField(placeholder != nil ? placeholder! : "Search", text: $searchText)
-                .onChange(of: searchText) { _ in
-                    Task {
-                        await search()
-                    }
-                }
+            TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
                 .padding(10)
                 .padding(.leading, 22)
                 .background(Color(.systemGray6))
@@ -50,6 +63,14 @@ struct SearchBar: View {
                     }
                 }
                 .padding(.horizontal, 10)
+            }
+        }
+        .onReceive(observer.$debouncedText) { (val) in
+            searchText = val
+        }
+        .onChange(of: searchText) { _ in
+            Task {
+                await search()
             }
         }
     }

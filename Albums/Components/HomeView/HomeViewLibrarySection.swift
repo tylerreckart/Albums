@@ -41,12 +41,19 @@ struct AlbumGridItem: View {
 struct HomeViewLibrarySection: View {
     @EnvironmentObject var store: AlbumsAPI
     
+    var setView: (_ view: RootView) -> Void
+    
     var body: some View {
         VStack(spacing: 10) {
             SectionTitle(
                 text: "Your Library",
                 buttonText: "See All",
-                destination: { LibraryView(showNavigation: true) }
+                destination: {},
+                useAction: true,
+                action: {
+                    store.setFilter(.library)
+                    setView(.library)
+                }
             )
             
             VStack(spacing: 20) {

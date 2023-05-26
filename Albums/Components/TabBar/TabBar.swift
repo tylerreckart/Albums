@@ -64,6 +64,10 @@ struct TabBarGroupItem: View {
             }
         }
         .onChange(of: activeView) { newState in
+            if activeView == targetView {
+                self.showBaseIcon = false
+            }
+            
             if newState != targetView {
                 self.showBaseIcon = true
             }

@@ -3,18 +3,24 @@
 //  Albums
 //
 //  Created by Tyler Reckart on 5/23/23.
-//
+//s
 
 import SwiftUI
 import CoreData
 
+enum LibraryFilter: String {
+    case library
+    case wantlist
+}
+
 struct LibraryView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+
     @EnvironmentObject var store: AlbumsAPI
     
+    @State private var searchText: String = ""
     @State private var results: [iTunesAlbum] = []
 
-    @State private var searchText: String = ""
     var showNavigation: Bool = false
     
     var body: some View {
@@ -26,8 +32,9 @@ struct LibraryView: View {
                     .padding(.bottom, 8 )
 
                 VStack(spacing: 5) {
-                    let evens = store.library.indices.filter { $0 % 2 == 0 }.map { return store.library[$0] }
-                    let odds = store.library.indices.filter { $0 % 2 != 0 }.map { return store.library[$0] }
+                    let filter = store.filter.rawValue
+                    let evens = store[filter].indices.filter { $0 % 2 == 0 }.map { return store[filter][$0] }
+                    let odds = store[filter].indices.filter { $0 % 2 != 0 }.map { return store[filter][$0] }
                     let maxRows = max(evens.count, odds.count)
                     
                     ForEach(0..<maxRows, id: \.self) { row in

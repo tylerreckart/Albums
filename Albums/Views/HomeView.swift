@@ -11,14 +11,16 @@ import Combine
 
 struct HomeView: View {
     @State private var scrollOffset = CGPoint()
+    
+    var setView: (_ view: RootView) -> Void
 
     var body: some View {
         ZStack {
-            ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
+            ScrollOffsetObserver(showsIndicators: false, soffset: $scrollOffset) {
                 VStack(spacing: 20) {
                     Greeting()
-                    HomeViewLibrarySection()
-                    HomeViewWantlistSection()
+                    HomeViewLibrarySection(setView: setView)
+                    HomeViewWantlistSection(setView: setView)
                 }
                 .padding(.bottom, 60)
             }

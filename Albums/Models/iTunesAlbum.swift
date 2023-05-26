@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct iTunesAlbum: Codable {
+struct iTunesAlbum: Codable, Hashable {
     var wrapperType: String? = ""
     var collectionType: String? = ""
     var artistId: Int? = 0

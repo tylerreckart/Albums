@@ -33,9 +33,11 @@ struct AlbumMeta: View {
             Text((store.activeAlbum?.title!) ?? "")
                 .font(.system(size: 18, weight: .bold))
             
-            Text((store.activeAlbum?.artistName!) ?? "")
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(Color("PrimaryPurple"))
+            NavigationLink(destination: ArtistDetail()) {
+                Text((store.activeAlbum?.artistName!) ?? "")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(Color("PrimaryPurple"))
+            }
             
             HStack(alignment: .center, spacing: 5) {
                 Text(store.activeAlbum?.genre ?? "")

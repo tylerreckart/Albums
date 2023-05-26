@@ -25,16 +25,9 @@ struct RelatedAlbums: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach(related, id: \.self) { a in
-                        VStack {
-                            Button(action: {
-                                withAnimation { store.setActiveAlbum(a) }
-                            }) {
-                                AlbumGridItem(album: a)
-                                    .frame(maxWidth: 200)
-                            }
-                            .foregroundColor(.primary)
-                            
-                            Spacer()
+                        NavigationLink(destination: AlbumDetail(album: a)) {
+                            AlbumGridItem(album: a)
+                                .frame(maxWidth: 200)
                         }
                     }
                 }

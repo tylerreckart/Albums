@@ -11,13 +11,20 @@ import CoreData
 
 struct HomeViewWantlistSection: View {
     @EnvironmentObject var store: AlbumsAPI
+    
+    var setView: (_ view: RootView) -> Void
 
     var body: some View {
         VStack {
             SectionTitle(
-                text: "Your Wantlist",
+                text: "Your Library",
                 buttonText: "See All",
-                destination: { WantlistView().environmentObject(store) }
+                destination: {},
+                useAction: true,
+                action: {
+                    store.setFilter(.wantlist)
+                    setView(.library)
+                }
             )
             
             HStack(spacing: 20) {
