@@ -37,6 +37,7 @@ struct RelatedAlbums: View {
             .frame(height: 300)
             .background(Color(.systemGray6))
             .edgesIgnoringSafeArea(.bottom)
+            .foregroundColor(.primary)
         }
     }
 }

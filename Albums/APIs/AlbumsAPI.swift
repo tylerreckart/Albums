@@ -93,7 +93,7 @@ class AlbumsAPI: ObservableObject {
         }
     }
     
-    public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum) -> LibraryAlbum {
+    public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum, upc: String? = nil) -> LibraryAlbum {
         let album = LibraryAlbum(context: container.viewContext)
     
         album.appleId = Double(iTunesData.collectionId!)
@@ -108,6 +108,7 @@ class AlbumsAPI: ObservableObject {
         album.releaseDate = iTunesData.releaseDate
         album.title = iTunesData.collectionName
         album.wantlisted = false
+        album.upc = upc
         
         return album
     }
@@ -151,7 +152,7 @@ class AlbumsAPI: ObservableObject {
         saveData()
     }
     
-    public func setActiveAlbum(_ album: LibraryAlbum) -> Void {
+    public func setActiveAlbum(_ album: LibraryAlbum?) -> Void {
         self.activeAlbum = album
     }
 

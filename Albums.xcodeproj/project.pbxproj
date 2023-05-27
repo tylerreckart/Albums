@@ -18,6 +18,7 @@
 		DB6F2EB32A1FD98F0042E845 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EB22A1FD98F0042E845 /* UIButton.swift */; };
 		DB6F2EBB2A1FE1FF0042E845 /* MusicBrainzAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EBA2A1FE1FF0042E845 /* MusicBrainzAPI.swift */; };
 		DB6F2EBD2A210C2A0042E845 /* ArtistDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EBC2A210C2A0042E845 /* ArtistDetail.swift */; };
+		DB6F2EC12A223E3D0042E845 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = DB6F2EC02A223E3D0042E845 /* CodeScanner */; };
 		DB96D4B52A1A8986005C4CAE /* iTunesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B42A1A8986005C4CAE /* iTunesAPI.swift */; };
 		DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B72A1B0932005C4CAE /* Color.swift */; };
 		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
@@ -107,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB6F2EC12A223E3D0042E845 /* CodeScanner in Frameworks */,
 				DB96D4C22A1B89EF005C4CAE /* Alamofire in Frameworks */,
 				DB9B8CCA2A0D11E800CE4D74 /* MusicKit.framework in Frameworks */,
 				DB9B8CD02A0DC5E300CE4D74 /* ColorKit in Frameworks */,
@@ -363,6 +365,7 @@
 			packageProductDependencies = (
 				DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */,
 				DB96D4C12A1B89EF005C4CAE /* Alamofire */,
+				DB6F2EC02A223E3D0042E845 /* CodeScanner */,
 			);
 			productName = Albums;
 			productReference = DB9B8CB12A0D11C900CE4D74 /* Albums.app */;
@@ -395,6 +398,7 @@
 			packageReferences = (
 				DB9B8CCE2A0DC5E300CE4D74 /* XCRemoteSwiftPackageReference "ColorKit" */,
 				DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */,
+				DB6F2EBF2A223E3D0042E845 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = DB9B8CB22A0D11C900CE4D74 /* Products */;
 			projectDirPath = "";
@@ -594,6 +598,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Albums would like access to Apple Music in order to retrieve information about Artists and their Albums.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Albums would like access to your iPhone's camera. Albums will only use the camera to scan barcodes and does not store any images captured through the scanner.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -602,8 +607,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -638,6 +643,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Albums;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Albums would like access to Apple Music in order to retrieve information about Artists and their Albums.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Albums would like access to your iPhone's camera. Albums will only use the camera to scan barcodes and does not store any images captured through the scanner.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -646,8 +652,8 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -689,6 +695,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DB6F2EBF2A223E3D0042E845 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -708,6 +722,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DB6F2EC02A223E3D0042E845 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB6F2EBF2A223E3D0042E845 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
 		DB96D4C12A1B89EF005C4CAE /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */;

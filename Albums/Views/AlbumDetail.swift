@@ -138,6 +138,7 @@ struct AlbumDetail: View {
                         }
                     }
                 }
+                .padding(.top, 10)
             })
             
             PlayerView()
@@ -160,24 +161,20 @@ struct AlbumDetail: View {
                     await iTunesAPI.lookupTracksForAlbum(
                         Int(store.activeAlbum!.appleId)
                     )
-                
-                let metadata = await mbAPI.requestMetadata(store.activeAlbum!.title!, store.activeAlbum!.artistName!)
 
-                if metadata.count > 0 && metadata[0].barcode != nil {
-                    guard await MusicAuthorization.request() != .denied else { return }
+                guard await MusicAuthorization.request() != .denied else { return }
 
-                    let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: metadata[0].barcode!)
-                    let response = try await request.response()
+                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
+                let response = try await request.response()
 
-                    guard let album = response.items.first else { return }
+                guard let album = response.items.first else { return }
 
-                    let globalPlayer = ApplicationMusicPlayer.shared
-                    globalPlayer.queue = []
-                    globalPlayer.stop()
-                    globalPlayer.queue = [album]
+                let globalPlayer = ApplicationMusicPlayer.shared
+                globalPlayer.queue = []
+                globalPlayer.stop()
+                globalPlayer.queue = [album]
 
-                    try await globalPlayer.prepareToPlay()
-                }
+                try await globalPlayer.prepareToPlay()
             }
             
             if searchResult == true {

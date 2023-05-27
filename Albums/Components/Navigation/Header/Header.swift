@@ -11,6 +11,7 @@ struct Header<Content: View>: View {
     @ViewBuilder var content: Content
     
     var showDivider: Bool = true
+    var background: Color = .white
     
     var body: some View {
         VStack(spacing: 0) {
@@ -21,7 +22,7 @@ struct Header<Content: View>: View {
                 .padding(.horizontal)
                 .padding(.top, 5)
                 .padding(.bottom, 10)
-                .background(Color(.white))
+                .background(background)
                 
                 if showDivider {
                     Rectangle()

@@ -15,6 +15,7 @@
         <attribute name="playCount" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="upc" optional="YES" attributeType="String"/>
         <attribute name="wantlisted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="searchResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecentSearch" inverseName="album" inverseEntity="RecentSearch"/>
     </entity>

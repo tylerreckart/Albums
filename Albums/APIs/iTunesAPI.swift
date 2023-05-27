@@ -23,6 +23,41 @@ class iTunesAPI: ObservableObject {
         return results
     }
     
+    public func artistSearch(_ term: String, countryCode: String = "US") async -> [iTunesArtist] {
+        let me = "iTunesRequestService.artistSearch(): "
+        let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=musicArtist"
+        print(me + qs)
+        
+        let value = try? await AF
+            .request("https://itunes.apple.com/\(qs)")
+            .serializingDecodable(iTunesArtistLookupResponse.self)
+            .value
+        let results = value?.results ?? [] as [iTunesArtist]
+        
+        return results
+    }
+    
+    public func lookupUPC(_ upc: String) async -> iTunesAlbum? {
+        let me = "iTunesRequestService.lookupUPC(): "
+        let qs = "lookup?upc=\(upc)"
+        print(me + qs)
+        
+        let value = try? await AF
+            .request("https://itunes.apple.com/\(qs)")
+            .serializingDecodable(iTunesAlbumsSearchResponse.self)
+            .value
+        let results = value?.results ?? [] as [iTunesAlbum]
+        
+        var res: iTunesAlbum? = nil
+        
+        if results.count > 0 {
+            res = results[0]
+        }
+        
+        return res
+    }
+    
+    
     public func lookupArtist(_ id: Double) async -> [iTunesArtist] {
         let me = "iTunesRequestService.lookupArtist(): "
         let qs = "lookup?amgArtistId=\(Int(id))"
@@ -34,20 +69,6 @@ class iTunesAPI: ObservableObject {
             .value
         let results = value?.results ?? [] as [iTunesArtist]
         print(results)
-        
-        return results
-    }
-    
-    public func artistSearch(_ term: String, countryCode: String = "US") async -> [iTunesArtist] {
-        let me = "iTunesRequestService.artistSearch(): "
-        let qs = "search?term=\(term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)&media=music&entity=musicArtist"
-        print(me + qs)
-        
-        let value = try? await AF
-            .request("https://itunes.apple.com/\(qs)")
-            .serializingDecodable(iTunesArtistLookupResponse.self)
-            .value
-        let results = value?.results ?? [] as [iTunesArtist]
         
         return results
     }
