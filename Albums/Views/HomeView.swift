@@ -16,7 +16,7 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            ScrollOffsetObserver(showsIndicators: false, soffset: $scrollOffset) {
+            ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                 VStack(spacing: 20) {
                     Greeting()
                     HomeViewLibrarySection(setView: setView)

@@ -45,7 +45,6 @@
 		DBD450062A1DB3DF00589220 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450052A1DB3DF00589220 /* Header.swift */; };
 		DBD450082A1DB65000589220 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450072A1DB65000589220 /* SettingsView.swift */; };
 		DBD4500A2A1E438B00589220 /* AlbumsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD450092A1E438B00589220 /* AlbumsAPI.swift */; };
-		DBD4500C2A1E949100589220 /* WantlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4500B2A1E949100589220 /* WantlistView.swift */; };
 		DBD4500F2A1EEF3D00589220 /* ScrollOffsetObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4500E2A1EEF3D00589220 /* ScrollOffsetObserver.swift */; };
 		DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43692A1D94D700183A8B /* TabBar.swift */; };
 		DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */; };
@@ -94,7 +93,6 @@
 		DBD450052A1DB3DF00589220 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		DBD450072A1DB65000589220 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DBD450092A1E438B00589220 /* AlbumsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsAPI.swift; sourceTree = "<group>"; };
-		DBD4500B2A1E949100589220 /* WantlistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WantlistView.swift; sourceTree = "<group>"; };
 		DBD4500E2A1EEF3D00589220 /* ScrollOffsetObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOffsetObserver.swift; sourceTree = "<group>"; };
 		DBDC43692A1D94D700183A8B /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewLibrarySection.swift; sourceTree = "<group>"; };
@@ -179,6 +177,16 @@
 			path = APIs;
 			sourceTree = "<group>";
 		};
+		DB6F2EBE2A2123BB0042E845 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				DB6F2EB72A1FDA970042E845 /* SearchBar */,
+				DBD450042A1DB3D700589220 /* Header */,
+				DBDC43682A1D94CD00183A8B /* TabBar */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		DB96D4B62A1B0928005C4CAE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,16 +200,14 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				DB6F2EB82A1FDAA00042E845 /* Greeting */,
-				DB6F2EB72A1FDA970042E845 /* SearchBar */,
+				DB6F2EBE2A2123BB0042E845 /* Navigation */,
+				DBDC436C2A1D953E00183A8B /* HomeView */,
+				DB6F2EA82A1FD8E70042E845 /* AlbumDetail */,
 				DB6F2EB62A1FDA8D0042E845 /* AlbumListItem */,
+				DB6F2EB82A1FDAA00042E845 /* Greeting */,
 				DB6F2EB52A1FDA780042E845 /* SectionTitle */,
 				DB6F2EB12A1FD97B0042E845 /* UIButton */,
-				DB6F2EA82A1FD8E70042E845 /* AlbumDetail */,
 				DBD4500D2A1EEF2B00589220 /* ScrollOffsetObserver */,
-				DBDC436C2A1D953E00183A8B /* HomeView */,
-				DBD450042A1DB3D700589220 /* Header */,
-				DBDC43682A1D94CD00183A8B /* TabBar */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -293,7 +299,6 @@
 				DBD450022A1DB1A700589220 /* LibraryView.swift */,
 				DB9B8CD42A11C85200CE4D74 /* SearchView.swift */,
 				DBD450072A1DB65000589220 /* SettingsView.swift */,
-				DBD4500B2A1E949100589220 /* WantlistView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -456,7 +461,6 @@
 				DB6F2EB32A1FD98F0042E845 /* UIButton.swift in Sources */,
 				DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */,
 				DB6F2EA72A1FCC540042E845 /* String.swift in Sources */,
-				DBD4500C2A1E949100589220 /* WantlistView.swift in Sources */,
 				DBDC43722A1D963900183A8B /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

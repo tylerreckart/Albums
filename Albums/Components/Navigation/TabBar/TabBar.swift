@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 struct TabBarGroupItem: View {
+    @EnvironmentObject var store: AlbumsAPI
+    
     @Binding var activeView: RootView
     
     var targetView: RootView
@@ -26,6 +28,10 @@ struct TabBarGroupItem: View {
             }
             withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.7, blendDuration: 1)) {
                 self.activeView = targetView
+                
+                if targetView == .library {
+                    store.setFilter(.library)
+                }
             }
             let impactMed = UIImpactFeedbackGenerator(style: .medium)
             impactMed.impactOccurred()

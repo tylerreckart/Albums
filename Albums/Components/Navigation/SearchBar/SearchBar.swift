@@ -34,20 +34,21 @@ struct SearchBar: View {
 
     var body: some View {
         ZStack {
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(Color(.systemGray6))
+                .frame(height: 40)
+            
             TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
-                .padding(10)
-                .padding(.leading, 22)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
+                .padding(.leading, 32)
             
             HStack {
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color("PrimaryGray"))
+                    .foregroundColor(Color("LighterGray"))
                 
                 Spacer()
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 10)
             
             if (searchText.count > 0) {
                 HStack {
@@ -59,10 +60,11 @@ struct SearchBar: View {
                     }) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(Color("PrimaryGray"))
+                            .foregroundColor(Color("LighterGray"))
                     }
                 }
                 .padding(.horizontal, 10)
+                .transition(.push(from: .trailing))
             }
         }
         .onReceive(observer.$debouncedText) { (val) in

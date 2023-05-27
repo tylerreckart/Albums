@@ -17,7 +17,7 @@ struct HomeViewWantlistSection: View {
     var body: some View {
         VStack {
             SectionTitle(
-                text: "Your Library",
+                text: "Your Wantlist",
                 buttonText: "See All",
                 destination: {},
                 useAction: true,
