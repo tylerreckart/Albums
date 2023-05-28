@@ -11,7 +11,7 @@ struct Header<Content: View>: View {
     @ViewBuilder var content: Content
     
     var showDivider: Bool = true
-    var background: Color = .white
+    var background: Color = Color(.systemBackground)
     
     var body: some View {
         VStack(spacing: 0) {

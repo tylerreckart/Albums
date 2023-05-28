@@ -38,7 +38,7 @@ struct HomeView: View {
                 showDivider: false
             )
         }
-        .background(Color(.white))
+        .background(Color(.systemBackground))
         .transition(.push(from: .trailing))
     }
 }

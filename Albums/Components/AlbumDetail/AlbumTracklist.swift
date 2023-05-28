@@ -78,7 +78,7 @@ struct AlbumTracklist: View {
                         .foregroundColor(.primary)
                     }
                 }
-                .background(.white)
+                .background(Color(.systemBackground))
                 .cornerRadius(9.5)
                 .padding(0.5)
             }

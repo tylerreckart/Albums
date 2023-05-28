@@ -144,7 +144,7 @@ struct AlbumDetail: View {
             PlayerView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.white))
+        .background(Color(.systemBackground))
         .onAppear {
             store.setActiveAlbum(album)
 

@@ -9,24 +9,34 @@ import Foundation
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var scrollOffset: CGPoint = CGPoint()
+
     var body: some View {
         ZStack {
-            VStack {
-                Text("Hello, World")
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.white))
-            .padding(.top, 40)
-            .padding(.bottom, 50)
-            
-            Header(content: {
+            ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                 HStack {
-                    Spacer()
                     Text("Settings")
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                     Spacer()
                 }
-            })
+                .padding([.horizontal])
+                .padding(.bottom, -1)
+            }
+            .padding(.top, 32)
+            
+            Header(
+                content: {
+                    HStack {
+                        Spacer()
+                        Text("Settings")
+                            .font(.system(size: 16, weight: .semibold))
+                            .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
+                        Spacer()
+                    }
+                },
+                showDivider: false
+            )
         }
         .transition(.push(from: .trailing))
     }

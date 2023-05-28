@@ -20,7 +20,7 @@ struct SectionTitle<Destination: View>: View {
         HStack(spacing: 5) {
             Text(text)
                 .font(.system(size: 18, weight: .bold))
-                .foregroundColor(Color("PrimaryBlack"))
+                .foregroundColor(.primary)
             Spacer()
             
             if buttonText != nil {

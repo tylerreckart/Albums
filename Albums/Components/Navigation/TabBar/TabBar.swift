@@ -118,7 +118,7 @@ struct TabBar: View {
             }
             .padding(.top, 15)
             .padding(.bottom, 30)
-            .background(.white)
+            .background(Color(.systemBackground))
         }
         .edgesIgnoringSafeArea(.bottom)
     }
