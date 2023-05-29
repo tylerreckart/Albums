@@ -41,6 +41,10 @@ struct SearchViewSearchBar: View {
     }
 }
 
+enum FocusField {
+    case search
+}
+
 struct SearchView: View {
     @EnvironmentObject var store: AlbumsAPI
     @EnvironmentObject var itunes: iTunesAPI

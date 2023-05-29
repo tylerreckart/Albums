@@ -179,16 +179,6 @@
 			path = APIs;
 			sourceTree = "<group>";
 		};
-		DB6F2EBE2A2123BB0042E845 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				DB6F2EB72A1FDA970042E845 /* SearchBar */,
-				DBD450042A1DB3D700589220 /* Header */,
-				DBDC43682A1D94CD00183A8B /* TabBar */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		DB96D4B62A1B0928005C4CAE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,7 +192,9 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				DB6F2EBE2A2123BB0042E845 /* Navigation */,
+				DB6F2EB72A1FDA970042E845 /* SearchBar */,
+				DBD450042A1DB3D700589220 /* Header */,
+				DBDC43682A1D94CD00183A8B /* TabBar */,
 				DBDC436C2A1D953E00183A8B /* HomeView */,
 				DB6F2EA82A1FD8E70042E845 /* AlbumDetail */,
 				DB6F2EB62A1FDA8D0042E845 /* AlbumListItem */,
