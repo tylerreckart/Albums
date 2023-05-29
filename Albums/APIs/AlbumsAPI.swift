@@ -133,8 +133,9 @@ class AlbumsAPI: ObservableObject {
     
     public func removeAlbum(_ album: LibraryAlbum) -> Void {
         let me = "AlbumsAPI.removeAlbum(): "
+        activeAlbum?.owned = false
+        activeAlbum?.wantlisted = false
         print(me + album.title!)
-        container.viewContext.delete(album)
         saveData()
     }
     

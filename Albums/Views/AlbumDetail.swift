@@ -22,7 +22,7 @@ struct PlayerView: View {
             Spacer()
             
             Rectangle()
-                .fill(Color(.systemGray5))
+                .fill(Color(.systemGray4))
                 .frame(height: 0.5)
             
             if visible {
@@ -131,7 +131,7 @@ struct AlbumDetail: View {
                     Button(action: {}) {
                         ZStack {
                             Circle()
-                                .fill(Color(.systemGray6))
+                                .fill(Color(.systemGray4))
                                 .frame(width: 24, height: 24)
                             Image(systemName: "ellipsis")
                                 .font(.system(size: 15, weight: .bold))
@@ -139,15 +139,12 @@ struct AlbumDetail: View {
                     }
                 }
                 .padding(.top, 10)
-            })
+            }, showDivider: false)
             
             PlayerView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemBackground))
         .onAppear {
-            store.setActiveAlbum(album)
-
             Task {
                 let artwork = await iTunesAPI.lookupAlbumArtwork(store.activeAlbum!)
                 store.activeAlbum?.artworkUrl = artwork
@@ -181,6 +178,7 @@ struct AlbumDetail: View {
                 store.saveRecentSearch(album)
             }
         }
+        .background(Color(.systemBackground))
         .navigationBarHidden(true)
         .edgesIgnoringSafeArea(.bottom)
     }

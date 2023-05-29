@@ -30,7 +30,7 @@ struct HomeViewWantlistSection: View {
             HStack(spacing: 20) {
                 if store.wantlist.count > 0 {
                     VStack {
-                        NavigationLink(destination: AlbumDetail(album: store.wantlist[0])) {
+                        Button(action: { store.setActiveAlbum(store.wantlist[0]) }) {
                             AlbumGridItem(album: store.wantlist[0])
                         }
                         Spacer()

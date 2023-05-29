@@ -36,7 +36,7 @@ struct ArtistDetail: View {
                                     ForEach(related[1..<related.count], id: \.self) { album in
                                         let r = store.mapAlbumDataToLibraryModel(album)
                                         
-                                        NavigationLink(destination: AlbumDetail(album: r)) {
+                                        Button(action: { store.setActiveAlbum(r) }) {
                                             AlbumGridItem(album: r)
                                                 .frame(maxWidth: 250)
                                         }
@@ -57,7 +57,7 @@ struct ArtistDetail: View {
                                     ForEach(related[1..<related.count], id: \.self) { album in
                                         let r = store.mapAlbumDataToLibraryModel(album)
                                         
-                                        NavigationLink(destination: AlbumDetail(album: r)) {
+                                        Button(action: { store.setActiveAlbum(r) }) {
                                             AlbumGridItem(album: r)
                                                 .frame(maxWidth: 250)
                                         }

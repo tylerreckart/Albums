@@ -102,13 +102,13 @@ struct SearchView: View {
                 if (albumsResults.count > 0) {
                     VStack(spacing: 0) {
                         ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
-                            let remappedAlbum = store.mapAlbumDataToLibraryModel(album)
-                            NavigationLink(destination: AlbumDetail(album: remappedAlbum, searchResult: true)) {
-                                AlbumListItem(album: remappedAlbum)
+                            let r = store.mapAlbumDataToLibraryModel(album)
+                            Button(action: { store.setActiveAlbum(r) }) {
+                                AlbumListItem(album: r)
                             }
                         }
                     }
-                } else {
+                } else if store.recentSearches.count > 0 {
                     VStack(spacing: 0) {
                         VStack(spacing: 5) {
                             HStack {
@@ -126,16 +126,28 @@ struct SearchView: View {
                         .padding(.leading)
                         
                         ForEach(store.recentSearches, id: \.self) { album in
-                            NavigationLink(destination: AlbumDetail(album: album.album!)) {
-                                AlbumListItem(album: album.album!)
+                            if album.album != nil {
+                                Button(action: { store.setActiveAlbum(album.album!) }) {
+                                    AlbumListItem(album: album.album!)
+                                }
                             }
                         }
                     }
+                } else {
+                    VStack {
+                        Spacer()
+                        Text("Albums and artists will start appearing here as you search.")
+                            .padding(.horizontal)
+                            .foregroundColor(Color(.systemGray3))
+                        Spacer()
+                    }
+                    .frame(maxHeight: .infinity)
                 }
             }
             .background(Color(.systemBackground))
             .padding(.top, 32)
             .padding(.bottom, 43)
+            .scrollDismissesKeyboard(.immediately)
             
             
             Header(
@@ -163,7 +175,6 @@ struct SearchView: View {
             )
         }
         .navigationBarHidden(true)
-        .transition(.push(from: .trailing))
         .sheet(isPresented: $isPresentingScanner) {
             ZStack {
                 CodeScannerView(
@@ -175,13 +186,10 @@ struct SearchView: View {
 
                         Task {
                             let res = await itunes.lookupUPC(result.string)
+                            let r = store.mapAlbumDataToLibraryModel(res!)
                             
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                if res != nil {
-                                    store.setActiveAlbum(nil)
-                                    scannerResult = store.mapAlbumDataToLibraryModel(res!, upc: result.string)
-                                    isPresentingScannerResult = true
-                                }
+                                store.setActiveAlbum(r)
                             }
                         }
                     }
@@ -209,8 +217,6 @@ struct SearchView: View {
                 )
             }
         }
-        .sheet(isPresented: $isPresentingScannerResult) {
-            AlbumDetail(album: scannerResult!)
-        }
+        .transition(.identity)
     }
 }

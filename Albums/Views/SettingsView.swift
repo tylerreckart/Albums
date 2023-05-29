@@ -38,7 +38,7 @@ struct SettingsView: View {
                 showDivider: false
             )
         }
-        .transition(.push(from: .trailing))
+        .transition(.identity)
     }
 }
 

@@ -25,7 +25,7 @@ struct RelatedAlbums: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 16) {
                     ForEach(related, id: \.self) { a in
-                        NavigationLink(destination: AlbumDetail(album: a)) {
+                        Button(action: { store.setActiveAlbum(a) }) {
                             AlbumGridItem(album: a)
                                 .frame(maxWidth: 200)
                         }

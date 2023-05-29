@@ -17,48 +17,36 @@ struct ContentView: View {
     func setView(_ view: RootView) -> Void {
         self.activeView = view
     }
+    
+    @State private var presentAlbumDetail: Bool = false
 
     var body: some View {
         NavigationView {
             ZStack {
-                ZStack {
-                    switch (activeView) {
-                        case .home:
-                            HomeView(setView: setView)
-                        case .library:
-                            LibraryView(showNavigation: false)
-                        case .search:
-                            SearchView()
-                        case .settings:
-                            SettingsView()
-                    }
-                    
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                                Button(action: {}) {
-                                    ZStack {
-                                        Circle()
-                                            .fill(Color("PrimaryPurple"))
-                                            .frame(width: 48, height: 48)
-                                            .shadow(color: .black.opacity(0.2), radius: 3, y: 2)
-                                        
-                                        Image(systemName: "plus")
-                                            .font(.system(size: 24, weight: .medium))
-                                    }
-                                }
-                                .foregroundColor(.white)
-                                .frame(width: 48, height: 48)
-                        }
-                        .padding()
-                    }
-                    .padding(.bottom, 45)
+                switch (activeView) {
+                    case .home:
+                        HomeView(setView: setView)
+                    case .library:
+                        LibraryView(showNavigation: false)
+                    case .search:
+                        SearchView()
+                    case .settings:
+                        SettingsView()
                 }
                 
                 TabBar(activeView: $activeView)
             }
             .ignoresSafeArea(.keyboard)
+            .sheet(isPresented: $presentAlbumDetail, onDismiss: { store.activeAlbum = nil }) {
+                AlbumDetail(album: store.activeAlbum!)
+            }
+            .onChange(of: store.activeAlbum) { activeState in
+                if activeState == nil {
+                    presentAlbumDetail = false
+                } else {
+                    presentAlbumDetail = true
+                }
+            }
         }
         .environmentObject(store)
         .environmentObject(itunes)

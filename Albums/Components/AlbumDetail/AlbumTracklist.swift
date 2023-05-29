@@ -67,7 +67,7 @@ struct AlbumTracklist: View {
                                         
                                         if index != nil && index != range.count - 1 {
                                             Rectangle()
-                                                .fill(Color(.systemGray5))
+                                                .fill(Color(.systemGray4))
                                                 .frame(height: 0.5)
                                         }
                                     }
@@ -78,11 +78,11 @@ struct AlbumTracklist: View {
                         .foregroundColor(.primary)
                     }
                 }
-                .background(Color(.systemBackground))
+                .background(Color(.systemGray5))
                 .cornerRadius(9.5)
                 .padding(0.5)
             }
-            .background(Color(.systemGray5))
+            .background(Color(.systemGray4))
             .cornerRadius(10)
             .padding(.horizontal)
             .shadow(color: .black.opacity(0.035), radius: 3, y: 3)

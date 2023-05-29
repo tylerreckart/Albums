@@ -36,7 +36,7 @@ struct AlbumActions: View {
                         }
                     },
                     foreground: Color("PrimaryPurple"),
-                    background: Color(.systemGray6)
+                    background: Color(.systemGray5)
                 )
             }
             
@@ -47,7 +47,7 @@ struct AlbumActions: View {
                         symbol: "play.fill",
                         action: { Task { try? await player.play() }},
                         foreground: Color("PrimaryPurple"),
-                        background: Color(.systemGray6)
+                        background: Color(.systemGray5)
                     )
                 } else {
                     UIButton(
@@ -55,7 +55,7 @@ struct AlbumActions: View {
                         symbol: "pause.fill",
                         action: { Task { player.pause() }},
                         foreground: Color("PrimaryPurple"),
-                        background: Color(.systemGray6)
+                        background: Color(.systemGray5)
                     )
                 }
                 
@@ -71,7 +71,7 @@ struct AlbumActions: View {
                         }
                     },
                     foreground: Color("PrimaryPurple"),
-                    background: Color(.systemGray6)
+                    background: Color(.systemGray5)
                 )
                 
                 if store.activeAlbum?.owned == true {

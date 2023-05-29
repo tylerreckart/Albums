@@ -59,10 +59,10 @@ struct HomeViewLibrarySection: View {
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
                     if store.library.count > 1 {
-                        ForEach(store.library[0..<2], id: \.self) { item in
+                        ForEach(store.library[0..<2], id: \.self) { album in
                             VStack {
-                                NavigationLink(destination: AlbumDetail(album: item)) {
-                                    AlbumGridItem(album: item)
+                                Button(action: { store.setActiveAlbum(album) }) {
+                                    AlbumGridItem(album: album)
                                 }
                                 Spacer()
                             }

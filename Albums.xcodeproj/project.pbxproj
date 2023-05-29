@@ -19,6 +19,7 @@
 		DB6F2EBB2A1FE1FF0042E845 /* MusicBrainzAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EBA2A1FE1FF0042E845 /* MusicBrainzAPI.swift */; };
 		DB6F2EBD2A210C2A0042E845 /* ArtistDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EBC2A210C2A0042E845 /* ArtistDetail.swift */; };
 		DB6F2EC12A223E3D0042E845 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = DB6F2EC02A223E3D0042E845 /* CodeScanner */; };
+		DB6F2EC82A2509BB0042E845 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = DB6F2EC72A2509BB0042E845 /* CachedAsyncImage */; };
 		DB96D4B52A1A8986005C4CAE /* iTunesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B42A1A8986005C4CAE /* iTunesAPI.swift */; };
 		DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B72A1B0932005C4CAE /* Color.swift */; };
 		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
@@ -109,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB6F2EC12A223E3D0042E845 /* CodeScanner in Frameworks */,
+				DB6F2EC82A2509BB0042E845 /* CachedAsyncImage in Frameworks */,
 				DB96D4C22A1B89EF005C4CAE /* Alamofire in Frameworks */,
 				DB9B8CCA2A0D11E800CE4D74 /* MusicKit.framework in Frameworks */,
 				DB9B8CD02A0DC5E300CE4D74 /* ColorKit in Frameworks */,
@@ -358,6 +360,7 @@
 				DB9B8CCF2A0DC5E300CE4D74 /* ColorKit */,
 				DB96D4C12A1B89EF005C4CAE /* Alamofire */,
 				DB6F2EC02A223E3D0042E845 /* CodeScanner */,
+				DB6F2EC72A2509BB0042E845 /* CachedAsyncImage */,
 			);
 			productName = Albums;
 			productReference = DB9B8CB12A0D11C900CE4D74 /* Albums.app */;
@@ -391,6 +394,7 @@
 				DB9B8CCE2A0DC5E300CE4D74 /* XCRemoteSwiftPackageReference "ColorKit" */,
 				DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */,
 				DB6F2EBF2A223E3D0042E845 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				DB6F2EC62A2509BB0042E845 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = DB9B8CB22A0D11C900CE4D74 /* Products */;
 			projectDirPath = "";
@@ -695,6 +699,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		DB6F2EC62A2509BB0042E845 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		DB96D4C02A1B89EF005C4CAE /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -718,6 +730,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DB6F2EBF2A223E3D0042E845 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		DB6F2EC72A2509BB0042E845 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DB6F2EC62A2509BB0042E845 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 		DB96D4C12A1B89EF005C4CAE /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

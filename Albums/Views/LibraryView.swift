@@ -109,7 +109,7 @@ struct LibraryView: View {
                         HStack(spacing: 20) {
                             VStack {
                                 if even != nil {
-                                    NavigationLink(destination: AlbumDetail(album: even!)) {
+                                    Button(action: { store.setActiveAlbum(even!) }) {
                                         AlbumGridItem(album: even!)
                                     }
                                 } else {
@@ -119,7 +119,7 @@ struct LibraryView: View {
                             }
                             VStack {
                                 if odd != nil {
-                                    NavigationLink(destination: AlbumDetail(album: odd!)) {
+                                    Button(action: { store.setActiveAlbum(odd!) }) {
                                         AlbumGridItem(album: odd!)
                                     }
                                 } else {
@@ -151,6 +151,6 @@ struct LibraryView: View {
             )
         }
         .navigationBarHidden(true)
-        .transition(.push(from: .trailing))
+        .transition(.identity)
     }
 }

@@ -17,7 +17,12 @@ struct UIButton: View {
     var maxWidth: CGFloat = .infinity
 
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            action()
+            
+            let impactMed = UIImpactFeedbackGenerator(style: .medium)
+            impactMed.impactOccurred()
+        }) {
             HStack(alignment: .center) {
                 if (symbol != nil) {
                     Image(systemName: symbol!)

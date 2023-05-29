@@ -27,11 +27,14 @@ class SearchFieldObserver : ObservableObject {
 
 struct SearchBar: View {
     @StateObject var observer = SearchFieldObserver()
+    
     var placeholder: String?
+    
     @Binding var searchText: String
+    
     var search: () async -> Void
+    
     @Binding var results: [iTunesAlbum]
-    @FocusState var focused: Bool
 
     var body: some View {
         HStack {
@@ -42,7 +45,6 @@ struct SearchBar: View {
                 
                 TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
                     .padding(.leading, 32)
-                    .focused($focused)
                 
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -58,8 +60,7 @@ struct SearchBar: View {
                         Spacer()
                         
                         Button(action: {
-                            self.searchText = ""
-                            self.results = []
+                            observer.searchText = ""
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 16, weight: .bold))
@@ -70,13 +71,6 @@ struct SearchBar: View {
                     .transition(.push(from: .trailing))
                 }
             }
-            
-            if searchText.count > 0 {
-                Button(action: {
-                    self.searchText = ""
-                    self.focused = false
-                }, label: { Text("Cancel") })
-            }
         }
         .onReceive(observer.$debouncedText) { (val) in
             searchText = val
@@ -85,9 +79,6 @@ struct SearchBar: View {
             Task {
                 await search()
             }
-        }
-        .onAppear {
-            self.focused = true
         }
     }
 }
