@@ -127,16 +127,6 @@ struct AlbumDetail: View {
                         .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
                     
                     Spacer()
-                    
-                    Button(action: {}) {
-                        ZStack {
-                            Circle()
-                                .fill(Color(.systemGray4))
-                                .frame(width: 24, height: 24)
-                            Image(systemName: "ellipsis")
-                                .font(.system(size: 15, weight: .bold))
-                        }
-                    }
                 }
                 .padding(.top, 10)
             }, showDivider: false)
@@ -159,24 +149,22 @@ struct AlbumDetail: View {
                         Int(store.activeAlbum!.appleId)
                     )
 
-                guard await MusicAuthorization.request() != .denied else { return }
+//                guard await MusicAuthorization.request() != .denied else { return }
 
-                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
-                let response = try await request.response()
-
-                guard let album = response.items.first else { return }
-
-                let globalPlayer = ApplicationMusicPlayer.shared
-                globalPlayer.queue = []
-                globalPlayer.stop()
-                globalPlayer.queue = [album]
-
-                try await globalPlayer.prepareToPlay()
+//                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
+//                let response = try await request.response()
+//
+//                guard let album = response.items.first else { return }
+//
+//                let globalPlayer = ApplicationMusicPlayer.shared
+//                globalPlayer.queue = []
+//                globalPlayer.stop()
+//                globalPlayer.queue = [album]
+//
+//                try await globalPlayer.prepareToPlay()
             }
             
-            if searchResult == true {
-                store.saveRecentSearch(album)
-            }
+            store.saveRecentSearch(album)
         }
         .background(Color(.systemBackground))
         .navigationBarHidden(true)

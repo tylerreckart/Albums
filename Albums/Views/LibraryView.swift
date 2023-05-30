@@ -13,6 +13,12 @@ enum LibraryFilter: String {
     case wantlist
 }
 
+enum LibrarySortFitler {
+    case date
+    case albumName
+    case artistName
+}
+
 struct LibraryView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
@@ -22,6 +28,9 @@ struct LibraryView: View {
     @State private var results: [iTunesAlbum] = []
     @State private var scrollOffset: CGPoint = CGPoint()
 
+    @State private var presentSortMenu: Bool = false
+    @State private var sortFilter: LibrarySortFitler = .date
+    
     var showNavigation: Bool = false
     
     var body: some View {
@@ -87,7 +96,7 @@ struct LibraryView: View {
                             .frame(width: 90)
                             Spacer()
                             
-                            Button(action: {}) {
+                            Button(action: { presentSortMenu.toggle() }) {
                                 Image(systemName: "arrow.up.arrow.down")
                                     .font(.system(size: 16))
                             }
@@ -149,6 +158,19 @@ struct LibraryView: View {
                 },
                 showDivider: false
             )
+        }
+        .confirmationDialog("Sort your Library", isPresented: $presentSortMenu, titleVisibility: .visible) {
+            Button("Date Added") {
+                sortFilter = .date
+            }
+
+            Button("Artist Name") {
+                sortFilter = .artistName
+            }
+
+            Button("Album Name") {
+                sortFilter = .albumName
+            }
         }
         .navigationBarHidden(true)
         .transition(.identity)

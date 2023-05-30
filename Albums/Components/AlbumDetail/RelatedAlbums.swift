@@ -14,7 +14,7 @@ struct RelatedAlbums: View {
     @Binding var related: [LibraryAlbum]
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 00) {
             HStack {
                 Text("More by \(store.activeAlbum?.artistName ?? "")")
                     .font(.system(size: 18, weight: .bold))
@@ -31,11 +31,10 @@ struct RelatedAlbums: View {
                         }
                     }
                 }
-                .padding([.horizontal, .top])
+                .padding([.horizontal])
                 .padding(.bottom, 10)
             }
-            .frame(height: 300)
-            .background(Color(.systemGray6))
+            .frame(height: 280)
             .edgesIgnoringSafeArea(.bottom)
             .foregroundColor(.primary)
         }
