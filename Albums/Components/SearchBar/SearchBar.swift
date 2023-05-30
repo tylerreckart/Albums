@@ -35,6 +35,7 @@ struct SearchBar: View {
     var search: () async -> Void
     
     @Binding var results: [iTunesAlbum]
+    @FocusState var focused: Bool
 
     var body: some View {
         HStack {
@@ -44,6 +45,7 @@ struct SearchBar: View {
                     .frame(height: 40)
                 
                 TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
+                    .focused($focused)
                     .padding(.leading, 32)
                 
                 HStack {

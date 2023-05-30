@@ -16,9 +16,11 @@ struct SearchViewSearchBar: View {
     
     var search: () async -> Void
     
+    @FocusState var focused: Bool
+    
     var body: some View {
         HStack {
-            SearchBar(searchText: $searchText, search: search, results: $albumsResults)
+            SearchBar(searchText: $searchText, search: search, results: $albumsResults, focused: _focused)
             
             Button(action: { isPresentingScanner.toggle() }) {
                 ZStack {
@@ -38,6 +40,9 @@ struct SearchViewSearchBar: View {
             }
             .frame(width: 90)
         }
+        .onAppear {
+            focused = true
+        }
     }
 }
 
@@ -51,23 +56,13 @@ struct SearchView: View {
 
     @Environment(\.managedObjectContext) var viewContext
     
-    @State private var isDebounced: Bool = false
-    
     @State private var searchText: String = ""
-    @State private var artistsResults: [Artist] = []
     @State private var albumsResults: [iTunesAlbum] = []
-    
-    @State private var showAlbumView: Bool = false
-    @State private var selectedAlbum: Album?
-    @State private var selectedArtist: Artist?
     
     @State private var scrollOffset: CGPoint = CGPoint()
     
     @State private var isPresentingScanner: Bool = false
-    @State private var scannedCode: String?
-    @State private var isPresentingScannerResult: Bool = false
-    @State private var scannerResult: LibraryAlbum?
-    
+
     private func search() async {
         let results = await itunes.search(searchText)
         if results.count != 0 {
@@ -78,27 +73,6 @@ struct SearchView: View {
     var body: some View {
         ZStack {
             ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
-                HStack {
-                    Text("Search")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Spacer()
-                }
-                .padding([.horizontal])
-                .padding(.bottom, -1)
-                
-                SearchViewSearchBar(
-                    searchText: $searchText,
-                    albumsResults: $albumsResults,
-                    isPresentingScanner: $isPresentingScanner,
-                    search: search
-                )
-                .padding(.horizontal)
-                .padding(.top, 5)
-                .padding(.bottom, 10)
-                
-                Text(scannedCode ?? "")
-                
                 if (albumsResults.count > 0) {
                     VStack(spacing: 0) {
                         ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
@@ -133,22 +107,12 @@ struct SearchView: View {
                             }
                         }
                     }
-                } else {
-                    VStack {
-                        Spacer()
-                        Text("Albums and artists will start appearing here as you search.")
-                            .padding(.horizontal)
-                            .foregroundColor(Color(.systemGray3))
-                        Spacer()
-                    }
-                    .frame(maxHeight: .infinity)
                 }
             }
             .background(Color(.systemBackground))
-            .padding(.top, 32)
+            .padding(.top, 75)
             .padding(.bottom, 43)
             .scrollDismissesKeyboard(.immediately)
-            
             
             Header(
                 content: {
@@ -157,18 +121,15 @@ struct SearchView: View {
                             Spacer()
                             Text("Search")
                                 .font(.system(size: 16, weight: .semibold))
-                                .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
                             Spacer()
                         }
-                        
-                        if scrollOffset.y >= 50 {
-                            SearchViewSearchBar(
-                                searchText: $searchText,
-                                albumsResults: $albumsResults,
-                                isPresentingScanner: $isPresentingScanner,
-                                search: search
-                            )
-                        }
+
+                        SearchViewSearchBar(
+                            searchText: $searchText,
+                            albumsResults: $albumsResults,
+                            isPresentingScanner: $isPresentingScanner,
+                            search: search
+                        )
                     }
                 },
                 showDivider: false
@@ -176,46 +137,7 @@ struct SearchView: View {
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $isPresentingScanner) {
-            ZStack {
-                CodeScannerView(
-                    codeTypes: [.code39, .code93, .code128, .code39Mod43, .ean8, .ean13, .upce],
-                    scanMode: .once
-                ) { response in
-                    if case let .success(result) = response {
-                        isPresentingScanner = false
-
-                        Task {
-                            let res = await itunes.lookupUPC(result.string)
-                            let r = store.mapAlbumDataToLibraryModel(res!)
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                store.setActiveAlbum(r)
-                            }
-                        }
-                    }
-                }
-                .edgesIgnoringSafeArea(.bottom)
-                
-                Image("BarcodeContainer")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 190)
-                
-                Header(
-                    content: {
-                        HStack {
-                            Spacer()
-                            
-                            Button(action: { isPresentingScanner = false }) {
-                                Text("Cancel")
-                            }
-                            .padding(.top, 10)
-                        }
-                    },
-                    showDivider: false,
-                    background: .black
-                )
-            }
+            BarcodeScannerView()
         }
         .transition(.identity)
     }
