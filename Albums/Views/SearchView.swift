@@ -72,6 +72,9 @@ struct SearchView: View {
     
     var body: some View {
         ZStack {
+            if albumsResults.count == 0 && store.recentSearches.count == 0 {
+                Color(.systemBackground)
+            }
             ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                 if (albumsResults.count > 0) {
                     VStack(spacing: 0) {
@@ -140,5 +143,8 @@ struct SearchView: View {
             BarcodeScannerView()
         }
         .transition(.identity)
+        .onTapGesture {
+              self.endTextEditing()
+        }
     }
 }

@@ -12,9 +12,12 @@ struct AlbumMeta: View {
     @EnvironmentObject var store: AlbumsAPI
     
     func dateFromReleaseStr(_ str: String) -> String {
+        print(str)
         let dateFormatter = DateFormatter()
-        let date = dateFormatter.date(from: str)
-        return (date ?? Date()).formatted(date: .long, time: .omitted)
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX") // set locale to reliable US_POSIX
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        let date = dateFormatter.date(from: str) ?? Date()
+        return date.formatted(date: .long, time: .omitted)
     }
     
     var body: some View {

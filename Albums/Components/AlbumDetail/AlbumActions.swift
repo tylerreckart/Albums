@@ -77,7 +77,7 @@ struct AlbumActions: View {
                 if store.activeAlbum?.owned == true {
                     UIButton(
                         symbol: "trash.fill",
-                        action: { store.removeAlbum(store.activeAlbum!) },
+                        action: { withAnimation { store.removeAlbum(store.activeAlbum!) } },
                         foreground: Color("PrimaryRed"),
                         background: Color(.systemGray6),
                         maxWidth: 60

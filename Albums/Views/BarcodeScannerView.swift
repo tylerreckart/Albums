@@ -12,23 +12,30 @@ struct BarcodeScannerView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var itunes: iTunesAPI
     @EnvironmentObject var store: AlbumsAPI
+    
+    @State private var presentAlert: Bool = false
 
     var body: some View {
         ZStack {
             CodeScannerView(
-                codeTypes: [.code39, .code93, .code128, .code39Mod43, .ean8, .ean13, .upce],
+                codeTypes: [.code39, .code93, .code128, .code39Mod43, .ean8, .ean13, .upce, .gs1DataBar],
                 scanMode: .once
             ) { response in
                 if case let .success(result) = response {
                     Task {
                         let res = await itunes.lookupUPC(result.string)
-                        let r = store.mapAlbumDataToLibraryModel(res!)
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            store.setActiveAlbum(r)
+                        if res != nil {
+                            let r = store.mapAlbumDataToLibraryModel(res!)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                store.setActiveAlbum(r)
+                            }
+                            
+                            presentationMode.wrappedValue.dismiss()
+                        } else {
+                            presentAlert.toggle()
                         }
-                        
-                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
@@ -88,5 +95,8 @@ struct BarcodeScannerView: View {
             .padding()
         }
         .edgesIgnoringSafeArea(.bottom)
+        .alert(isPresented: $presentAlert) {
+            Alert(title: Text("That's a rare copy!"), message: Text("Unfortunately we were not able to match the scanned barcode with any albums in our database.\n\nTry scanning again or using the search bar to find what you are looking for."))
+        }
     }
 }
