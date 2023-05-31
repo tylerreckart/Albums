@@ -60,7 +60,7 @@ class MusicBrainzAPI: ObservableObject {
         let sanatizedArtist = artist
             .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         
-    let qs = "release?query=release:\(sanatizedSearchTerm)%20AND%20artistName:\(sanatizedArtist)%20AND%20primarytype:\(type.rawValue)&fmt=json"
+        let qs = "release?query=release:\(sanatizedSearchTerm)%20AND%20artistName:\(sanatizedArtist)&fmt=json"
         print(me + qs)
         
         let value = try? await AF

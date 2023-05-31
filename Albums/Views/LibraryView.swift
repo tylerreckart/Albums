@@ -91,8 +91,15 @@ struct LibraryView: View {
                     .padding(.bottom, 10)
                     
                     let filter = store.filter.rawValue
-                    let evens = store[filter].indices.filter { $0 % 2 == 0 }.map { return store[filter][$0] }
-                    let odds = store[filter].indices.filter { $0 % 2 != 0 }.map { return store[filter][$0] }
+                    let filteredResults = store[filter].filter {
+                        if searchText.count > 0 {
+                            return $0.title!.lowercased().contains(searchText.lowercased()) || $0.artistName!.lowercased().contains(searchText.lowercased())
+                        }
+                        
+                        return true
+                    }
+                    let evens = filteredResults.indices.filter { $0 % 2 == 0 }.map { return filteredResults[$0] }
+                    let odds = filteredResults.indices.filter { $0 % 2 != 0 }.map { return filteredResults[$0] }
                     let maxRows = max(evens.count, odds.count)
                     
                     ForEach(0..<maxRows, id: \.self) { row in
