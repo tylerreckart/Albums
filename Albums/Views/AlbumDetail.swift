@@ -137,8 +137,8 @@ struct AlbumDetail: View {
         .onAppear {
             Task {
                 let artwork = await iTunesAPI.lookupAlbumArtwork(store.activeAlbum!)
+                
                 store.activeAlbum?.artworkUrl = artwork
-                store.saveData()
                 
                 self.related =
                     await iTunesAPI.lookupRelatedAlbums(
@@ -148,20 +148,30 @@ struct AlbumDetail: View {
                     await iTunesAPI.lookupTracksForAlbum(
                         Int(store.activeAlbum!.appleId)
                     )
+                
+                if store.activeAlbum!.upc == nil {
+                    let data = await mbAPI.requestMetadata(store.activeAlbum!.title!, store.activeAlbum!.artistName!)
+                    
+                    if !data.isEmpty && data[0].barcode != nil {
+                        store.activeAlbum!.upc = data[0].barcode
+                    }
+                }
+                
+                store.saveData()
 
-//                guard await MusicAuthorization.request() != .denied else { return }
+                guard await MusicAuthorization.request() != .denied else { return }
 
-//                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
-//                let response = try await request.response()
-//
-//                guard let album = response.items.first else { return }
-//
-//                let globalPlayer = ApplicationMusicPlayer.shared
-//                globalPlayer.queue = []
-//                globalPlayer.stop()
-//                globalPlayer.queue = [album]
-//
-//                try await globalPlayer.prepareToPlay()
+                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
+                let response = try await request.response()
+
+                guard let album = response.items.first else { return }
+
+                let globalPlayer = ApplicationMusicPlayer.shared
+                globalPlayer.queue = []
+                globalPlayer.stop()
+                globalPlayer.queue = [album]
+
+                try await globalPlayer.prepareToPlay()
             }
             
             store.saveRecentSearch(album)

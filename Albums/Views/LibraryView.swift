@@ -36,23 +36,7 @@ struct LibraryView: View {
     var body: some View {
         ZStack {
             ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
-                VStack(spacing: 0) {
-                    HStack {
-                        Text("Your Library")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        Spacer()
-                    }
-                    .transition(.opacity)
-                }
-                .padding([.horizontal])
-                .padding(.bottom, -1)
-                
-                SearchBar(placeholder: "Find in Your Library", searchText: $searchText, search: {}, results: $results)
-                    .padding(.horizontal)
-                    .padding(.bottom, 4)
-                    .padding(.top, 5)
-
+                Rectangle().fill(.clear).frame(height: 120)
                 VStack(spacing: 5) {
                     ZStack {
                         HStack {
@@ -144,20 +128,22 @@ struct LibraryView: View {
                 
                 Spacer()
             }
-            .padding(.top, 32)
             
-            Header(
-                content: {
+            DynamicOffsetHeader(content: {
+                VStack(spacing: 10) {
                     HStack {
-                        Spacer()
-                        Text("Your Library")
-                            .font(.system(size: 16, weight: .semibold))
-                            .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
-                        Spacer()
+                        HStack {
+                            Text("Your Library")
+                                .font(.system(size: 34, weight: .bold))
+                            Spacer()
+                        }
                     }
-                },
-                showDivider: false
-            )
+                    
+                    
+                    SearchBar(placeholder: "Find in Your Library", searchText: $searchText, search: {}, results: $results)
+                        .padding(.bottom, 10)
+                }
+            }, yOffset: scrollOffset.y, title: "Your Library")
         }
         .confirmationDialog("Sort your Library", isPresented: $presentSortMenu, titleVisibility: .visible) {
             Button("Date Added") {

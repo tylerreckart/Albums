@@ -70,19 +70,20 @@ struct SearchView: View {
         }
     }
     
+    @State private var expandHeader: Bool = false
+    
     var body: some View {
         ZStack {
             if albumsResults.count == 0 && store.recentSearches.count == 0 {
                 Color(.systemBackground)
             }
             ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
+                Rectangle().fill(.clear).frame(height: 110)
+                
                 if (albumsResults.count > 0) {
                     VStack(spacing: 0) {
                         ForEach(Array(albumsResults.enumerated()), id: \.offset) { index, album in
-                            let r = store.mapAlbumDataToLibraryModel(album)
-                            Button(action: { store.setActiveAlbum(r) }) {
-                                AlbumListItem(album: r)
-                            }
+                            DynamicTargetSearchResult(album: album)
                         }
                     }
                 } else if store.recentSearches.count > 0 {
@@ -114,30 +115,28 @@ struct SearchView: View {
                 }
             }
             .background(Color(.systemBackground))
-            .padding(.top, 75)
             .padding(.bottom, 43)
             .scrollDismissesKeyboard(.immediately)
             
-            Header(
-                content: {
-                    VStack(spacing: 10) {
+            DynamicOffsetHeader(content: {
+                VStack(spacing: 10) {
+                    HStack {
                         HStack {
-                            Spacer()
                             Text("Search")
-                                .font(.system(size: 16, weight: .semibold))
+                                .font(.system(size: 34, weight: .bold))
                             Spacer()
                         }
-
-                        SearchViewSearchBar(
-                            searchText: $searchText,
-                            albumsResults: $albumsResults,
-                            isPresentingScanner: $isPresentingScanner,
-                            search: search
-                        )
                     }
-                },
-                showDivider: false
-            )
+                    
+                    SearchViewSearchBar(
+                        searchText: $searchText,
+                        albumsResults: $albumsResults,
+                        isPresentingScanner: $isPresentingScanner,
+                        search: search
+                    )
+                    .padding(.bottom, 10)
+                }
+            }, yOffset: scrollOffset.y, title: "Search")
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $isPresentingScanner) {

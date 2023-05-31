@@ -22,7 +22,6 @@ struct Header<Content: View>: View {
                 .padding(.horizontal)
                 .padding(.top, 5)
                 .padding(.bottom, 10)
-                .background(background)
                 
                 if showDivider {
                     Rectangle()
