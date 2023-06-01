@@ -113,6 +113,7 @@ struct AlbumDetail: View {
             }
             .frame(maxHeight: .infinity)
             .padding(.top, 35)
+            .background(Color(.systemBackground))
             
             Header(content: {
                 HStack {
@@ -122,16 +123,23 @@ struct AlbumDetail: View {
                     }
                     Spacer()
                     
-                    Text(album.title ?? "")
+                    Text(album.title?.trunc(length: 20) ?? "")
                         .font(.system(size: 16, weight: .semibold))
                         .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
                     
                     Spacer()
+                    
+                    Button(action: {}) {
+                        Image(systemName: "tag")
+                            .font(.system(size: 20, weight: .regular))
+                    }
                 }
-                .padding(.top, 10)
+                .frame(height: 50)
+                
+                .background(Color(.systemBackground))
             }, showDivider: false)
             
-            PlayerView()
+//            PlayerView()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
@@ -159,19 +167,19 @@ struct AlbumDetail: View {
                 
                 store.saveData()
 
-                guard await MusicAuthorization.request() != .denied else { return }
-
-                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
-                let response = try await request.response()
-
-                guard let album = response.items.first else { return }
-
-                let globalPlayer = ApplicationMusicPlayer.shared
-                globalPlayer.queue = []
-                globalPlayer.stop()
-                globalPlayer.queue = [album]
-
-                try await globalPlayer.prepareToPlay()
+//                guard await MusicAuthorization.request() != .denied else { return }
+//
+//                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
+//                let response = try await request.response()
+//
+//                guard let album = response.items.first else { return }
+//
+//                let globalPlayer = ApplicationMusicPlayer.shared
+//                globalPlayer.queue = []
+//                globalPlayer.stop()
+//                globalPlayer.queue = [album]
+//
+//                try await globalPlayer.prepareToPlay()
             }
             
             store.saveRecentSearch(album)

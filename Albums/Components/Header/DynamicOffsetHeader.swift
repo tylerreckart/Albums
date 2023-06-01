@@ -30,7 +30,7 @@ struct DynamicOffsetHeader<Content: View>: View {
                         }
                     
                     VStack {
-                        Color.white
+                        Color(.systemBackground)
                         Spacer()
                     }
                     .frame(maxHeight: 100)
