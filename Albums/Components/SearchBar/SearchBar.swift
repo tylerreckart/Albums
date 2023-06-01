@@ -46,12 +46,12 @@ struct SearchBar: View {
                 
                 TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
                     .focused($focused)
-                    .padding(.leading, 32)
+                    .padding(.leading, 34)
                 
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(Color("LighterGray"))
+                        .foregroundColor(Color("PrimaryPurple"))
                     
                     Spacer()
                 }
@@ -63,6 +63,7 @@ struct SearchBar: View {
                         
                         Button(action: {
                             observer.searchText = ""
+                            self.endTextEditing()
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 16, weight: .bold))

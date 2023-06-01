@@ -41,7 +41,7 @@ struct LibraryView: View {
                     ZStack {
                         HStack {
                             Spacer()
-                                .frame(width: store.filter == .wantlist ? 90 : 0)
+                                .frame(width: store.filter == .wantlist ? 90 : store.filter == .playlists ? 180 : 0)
                             RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .fill(Color("PrimaryPurple"))
                                 .frame(width: 90, height: 36)
@@ -74,6 +74,20 @@ struct LibraryView: View {
                                 Text("Wantlist")
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(store.filter == .wantlist ? .white : .primary)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 15)
+                            }
+                            .frame(width: 90)
+                            
+                            Button(action: {
+                                withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.7, blendDuration: 1)) {
+                                    store.setFilter(.playlists)
+                                }
+                                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                            }) {
+                                Text("Playlists")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(store.filter == .playlists ? .white : .primary)
                                     .padding(.vertical, 10)
                                     .padding(.horizontal, 15)
                             }
@@ -135,6 +149,7 @@ struct LibraryView: View {
                 
                 Spacer()
             }
+            .scrollDismissesKeyboard(.immediately)
             
             DynamicOffsetHeader(content: {
                 VStack(spacing: 10) {
@@ -167,5 +182,8 @@ struct LibraryView: View {
         }
         .navigationBarHidden(true)
         .transition(.identity)
+        .onTapGesture {
+            self.endTextEditing()
+        }
     }
 }

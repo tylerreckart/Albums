@@ -22,6 +22,7 @@ class AlbumsAPI: ObservableObject {
     enum LibraryFilter: String {
         case library
         case wantlist
+        case playlists
     }
 
     subscript(filter: String) -> [LibraryAlbum] {

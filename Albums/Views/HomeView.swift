@@ -24,28 +24,27 @@ struct HomeView: View {
             } else {
                 ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                     VStack(spacing: 20) {
-                        Greeting()
-                        HomeViewLibrarySection(setView: setView)
-                        HomeViewWantlistSection(setView: setView)
+                        if !store.library.isEmpty {
+                            HomeViewLibrarySection(setView: setView)
+                        }
+                        if !store.wantlist.isEmpty {
+                            HomeViewWantlistSection(setView: setView)
+                        }
+                        HomeViewPlaylistSection()
                     }
                     .padding(.bottom, 60)
+                    .padding(.top, 85)
                 }
             }
             
-            if !store.library.isEmpty || !store.wantlist.isEmpty {
-                Header(
-                    content: {
-                        HStack {
-                            Spacer()
-                            Text("Albums")
-                                .font(.system(size: 16, weight: .semibold))
-                                .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
-                            Spacer()
-                        }
-                    },
-                    showDivider: false
-                )
-            }
+            DynamicOffsetHeader(content: {
+                HStack(alignment: .bottom) {
+                    Text("Albums")
+                        .font(.system(size: 34, weight: .bold))
+                    Spacer()
+                }
+                .padding(.top, -40 + (scrollOffset.y > 0 ? -scrollOffset.y * 0.4 : 0))
+            }, yOffset: scrollOffset.y, title: "Albums", useTitlePadding: true)
         }
         .background(Color(.systemBackground))
         .transition(.identity)

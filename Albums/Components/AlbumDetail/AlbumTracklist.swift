@@ -96,13 +96,15 @@ struct AlbumTracklist: View {
             .shadow(color: .black.opacity(0.035), radius: 3, y: 3)
             .transition(.opacity)
             .onChange(of: store.activeAlbum) { _ in
-                Task {
-                    self.isLoadingTracks = true
-                    self.tracks =
-                        await itunes.lookupTracksForAlbum(
-                            Int(store.activeAlbum!.appleId)
-                        )
-                    self.isLoadingTracks = false
+                if store.activeAlbum != nil {
+                    Task {
+                        self.isLoadingTracks = true
+                        self.tracks =
+                            await itunes.lookupTracksForAlbum(
+                                Int(store.activeAlbum!.appleId)
+                            )
+                        self.isLoadingTracks = false
+                    }
                 }
             }
         }

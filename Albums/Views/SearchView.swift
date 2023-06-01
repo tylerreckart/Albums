@@ -115,7 +115,7 @@ struct SearchView: View {
                 }
             }
             .background(Color(.systemBackground))
-            .padding(.bottom, 43)
+            .padding(.bottom, 42)
             .scrollDismissesKeyboard(.immediately)
             
             DynamicOffsetHeader(content: {

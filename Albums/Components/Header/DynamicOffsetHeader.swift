@@ -12,6 +12,7 @@ struct DynamicOffsetHeader<Content: View>: View {
     
     var yOffset: CGFloat
     var title: String
+    var useTitlePadding: Bool = false
     
     @State private var expandHeader: Bool = false
     
@@ -44,6 +45,7 @@ struct DynamicOffsetHeader<Content: View>: View {
                         Spacer()
                     }
                     .frame(maxHeight: 100)
+                    .padding(.bottom, useTitlePadding ? 15 : 0)
                 }
             },
             showDivider: false
