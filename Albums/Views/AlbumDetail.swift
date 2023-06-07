@@ -94,6 +94,8 @@ struct AlbumDetail: View {
     @State private var related: [LibraryAlbum] = []
     @State private var tracks: [iTunesTrack] = []
     @State private var scrollOffset: CGPoint = CGPoint()
+    
+    @State private var showOptionsCard: Bool = false
 
     var body: some View {
         ZStack {
@@ -112,26 +114,45 @@ struct AlbumDetail: View {
                 }
             }
             .frame(maxHeight: .infinity)
-            .padding(.top, 35)
+            .padding(.top, 40)
             .background(Color(.systemBackground))
             
             Header(content: {
                 HStack {
-                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                        Image(systemName: "chevron.backward")
-                            .font(.system(size: 20, weight: .regular))
+                    Button(action: {
+                        withAnimation(.linear(duration: 0.25)) {
+                            store.setActiveAlbum(nil)
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color("PrimaryPurple"))
+                                .frame(width: 20)
+                            Image(systemName: "chevron.down.circle.fill")
+                                .font(.system(size: 26, weight: .regular))
+                                .foregroundColor(Color(.systemGray6))
+                        }
                     }
-                    Spacer()
                     
-                    Text(album.title?.trunc(length: 20) ?? "")
+                    Spacer()
+                    Text(album.title?.trunc(length: 24) ?? "")
                         .font(.system(size: 16, weight: .semibold))
                         .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
-                    
                     Spacer()
                     
-                    Button(action: {}) {
-                        Image(systemName: "tag")
-                            .font(.system(size: 20, weight: .regular))
+                    Button(action: {
+                        withAnimation {
+                            showOptionsCard.toggle()
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .fill(Color("PrimaryPurple"))
+                                .frame(width: 20)
+                            Image(systemName: "ellipsis.circle.fill")
+                                .font(.system(size: 26, weight: .regular))
+                                .foregroundColor(Color(.systemGray6))
+                        }
                     }
                 }
                 .frame(height: 50)
@@ -139,7 +160,114 @@ struct AlbumDetail: View {
                 .background(Color(.systemBackground))
             }, showDivider: false)
             
-//            PlayerView()
+
+            
+            if showOptionsCard {
+                Color.black.opacity(0.2)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        withAnimation {
+                            showOptionsCard.toggle()
+                        }
+                    }
+                
+                VStack {
+                    Spacer()
+                        
+                    VStack(spacing: 20) {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(width: 40, height: 4)
+                            .cornerRadius(.infinity)
+                        
+                        Button(action: {}) {
+                            HStack(alignment: .center, spacing: 10) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(.systemGray6))
+                                        .frame(width: 36)
+                                    Image(systemName: "square.stack.3d.up")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(Color("PrimaryPurple"))
+                                }
+  
+                                
+                                Text("Add to a playlist...")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 16, weight: .medium))
+                                    
+                                Spacer()
+                            }
+                        }
+                        
+                        Button(action: {}) {
+                            HStack(alignment: .center, spacing: 10) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(.systemGray6))
+                                        .frame(width: 36)
+                                    Image(systemName: "heart")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(Color("PrimaryPurple"))
+                                }
+                                
+                                Text("Add to favorites")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 16, weight: .medium))
+                                
+                                Spacer()
+                            }
+                        }
+                        
+                        Button(action: {}) {
+                            HStack(alignment: .center, spacing: 10) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(.systemGray6))
+                                        .frame(width: 36)
+                                    Image(systemName: "square.and.arrow.up")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(Color("PrimaryPurple"))
+                                }
+                                
+                                Text("Share this album")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 16, weight: .medium))
+                                
+                                Spacer()
+                            }
+                        }
+                        
+                        Button(action: {}) {
+                            HStack(alignment: .center, spacing: 10) {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color(.systemGray6))
+                                        .frame(width: 36)
+                                    Image(systemName: "exclamationmark.bubble")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(Color("PrimaryPurple"))
+                                }
+                                
+                                Text("Report a problem...")
+                                    .foregroundColor(.primary)
+                                    .font(.system(size: 16, weight: .medium))
+                                
+                                Spacer()
+                            }
+                        }
+                        
+                        Spacer()
+                            .frame(height: 10)
+                    }
+                    .padding()
+                    .background(Color(.systemBackground))
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
+                }
+                .transition(
+                    .asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top))
+                )
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
@@ -189,4 +317,3 @@ struct AlbumDetail: View {
         .edgesIgnoringSafeArea(.bottom)
     }
 }
-

@@ -28,7 +28,9 @@ struct DynamicTargetSearchResult: View {
                 target = store.library[wantlistIndexMatch!]
             }
             
-            store.setActiveAlbum(target)
+            withAnimation(.easeOut(duration: 0.5)) {
+                store.setActiveAlbum(target)
+            }
         }) {
             AlbumListItem(album: target)
         }

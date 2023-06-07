@@ -35,18 +35,13 @@ struct ContentView: View {
                 }
                 
                 TabBar(activeView: $activeView)
-            }
-            .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $presentAlbumDetail, onDismiss: { store.activeAlbum = nil }) {
-                AlbumDetail(album: store.activeAlbum!)
-            }
-            .onChange(of: store.activeAlbum) { activeState in
-                if activeState == nil {
-                    presentAlbumDetail = false
-                } else {
-                    presentAlbumDetail = true
+                
+                if store.activeAlbum != nil {
+                    AlbumDetail(album: store.activeAlbum!)
+                        .transition(.push(from: .bottom))
                 }
             }
+            .ignoresSafeArea(.keyboard)
         }
         .environmentObject(store)
         .environmentObject(itunes)

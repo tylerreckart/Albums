@@ -61,7 +61,11 @@ struct HomeViewLibrarySection: View {
                     if store.library.count > 1 {
                         ForEach(store.library[0..<2], id: \.self) { album in
                             VStack {
-                                Button(action: { store.setActiveAlbum(album) }) {
+                                Button(action: {
+                                    withAnimation(.linear(duration: 0.25)) {
+                                        store.setActiveAlbum(album)
+                                    }
+                                }) {
                                     AlbumGridItem(album: album)
                                 }
                                 Spacer()

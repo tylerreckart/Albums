@@ -28,7 +28,7 @@ struct AlbumMeta: View {
                 ProgressView()
             }
             .frame(width: 320, height: 320)
-            .cornerRadius(6)
+            .cornerRadius(20)
             .padding(.horizontal)
             .padding(.bottom, 10)
             .padding(.top, 20)
