@@ -7,11 +7,13 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 class AlbumsAPI: ObservableObject {
     let container: NSPersistentContainer
     
     // Data Stores.
+    @Published var presentAlbum: Bool = false
     @Published var activeAlbum: LibraryAlbum?
     @Published var library: [LibraryAlbum] = []
     @Published var wantlist: [LibraryAlbum] = []
@@ -155,7 +157,20 @@ class AlbumsAPI: ObservableObject {
     }
     
     public func setActiveAlbum(_ album: LibraryAlbum?) -> Void {
-        self.activeAlbum = album
+        if album != nil {
+            self.activeAlbum = album
+            
+            withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.7, blendDuration: 1)) {
+                self.presentAlbum = true
+            }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                self.activeAlbum = album
+            }
+            withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.7, blendDuration: 1)) {
+                self.presentAlbum = false
+            }
+        }
     }
 
     public func saveData() {

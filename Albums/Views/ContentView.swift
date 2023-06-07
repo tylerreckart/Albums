@@ -17,8 +17,6 @@ struct ContentView: View {
     func setView(_ view: RootView) -> Void {
         self.activeView = view
     }
-    
-    @State private var presentAlbumDetail: Bool = false
 
     var body: some View {
         NavigationView {
@@ -36,10 +34,8 @@ struct ContentView: View {
                 
                 TabBar(activeView: $activeView)
                 
-                if store.activeAlbum != nil {
-                    AlbumDetail(album: store.activeAlbum!)
-                        .transition(.push(from: .bottom))
-                }
+                AlbumDetail(album: store.activeAlbum)
+                    .offset(y: store.presentAlbum ? 0 : UIScreen.main.bounds.height)
             }
             .ignoresSafeArea(.keyboard)
         }

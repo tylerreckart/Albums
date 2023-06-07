@@ -80,6 +80,168 @@ struct PlayerView: View {
     }
 }
 
+struct AlbumOptionsCard: View {
+    @Binding var showOptionsCard: Bool
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.2)
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    withAnimation {
+                        showOptionsCard.toggle()
+                    }
+                }
+            
+            VStack {
+                Spacer()
+                
+                VStack(spacing: 20) {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(width: 40, height: 4)
+                        .cornerRadius(.infinity)
+                    
+                    Button(action: {}) {
+                        HStack(alignment: .center, spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(width: 36)
+                                Image(systemName: "square.stack.3d.up")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(Color("PrimaryPurple"))
+                            }
+                            
+                            
+                            Text("Add to a playlist...")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 16, weight: .medium))
+                            
+                            Spacer()
+                        }
+                    }
+                    
+                    Button(action: {}) {
+                        HStack(alignment: .center, spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(width: 36)
+                                Image(systemName: "heart")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(Color("PrimaryPurple"))
+                            }
+                            
+                            Text("Add to favorites")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 16, weight: .medium))
+                            
+                            Spacer()
+                        }
+                    }
+                    
+                    Button(action: {}) {
+                        HStack(alignment: .center, spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(width: 36)
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(Color("PrimaryPurple"))
+                            }
+                            
+                            Text("Share this album")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 16, weight: .medium))
+                            
+                            Spacer()
+                        }
+                    }
+                    
+                    Button(action: {}) {
+                        HStack(alignment: .center, spacing: 10) {
+                            ZStack {
+                                Circle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(width: 36)
+                                Image(systemName: "exclamationmark.bubble")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(Color("PrimaryPurple"))
+                            }
+                            
+                            Text("Report a problem...")
+                                .foregroundColor(.primary)
+                                .font(.system(size: 16, weight: .medium))
+                            
+                            Spacer()
+                        }
+                    }
+                    
+                    Spacer()
+                        .frame(height: 10)
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                .cornerRadius(20, corners: [.topLeft, .topRight])
+            }
+        }
+    }
+}
+
+struct AlbumDetailHeader: View {
+    @EnvironmentObject var store: AlbumsAPI
+    
+    var album: LibraryAlbum?
+    
+    @Binding var scrollOffset: CGPoint
+    @Binding var showOptionsCard: Bool
+    
+    var body: some View {
+        Header(content: {
+            HStack {
+                Button(action: {
+                    store.setActiveAlbum(nil)
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color("PrimaryPurple"))
+                            .frame(width: 20)
+                        Image(systemName: "chevron.down.circle.fill")
+                            .font(.system(size: 26, weight: .regular))
+                            .foregroundColor(Color(.systemGray6))
+                    }
+                }
+                
+                Spacer()
+                Text(album?.title?.trunc(length: 24) ?? "")
+                    .font(.system(size: 16, weight: .semibold))
+                    .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
+                Spacer()
+                
+                Button(action: {
+                    withAnimation {
+                        showOptionsCard.toggle()
+                    }
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color("PrimaryPurple"))
+                            .frame(width: 20)
+                        Image(systemName: "ellipsis.circle.fill")
+                            .font(.system(size: 26, weight: .regular))
+                            .foregroundColor(Color(.systemGray6))
+                    }
+                }
+            }
+            .frame(height: 50)
+            
+            .background(Color(.systemBackground))
+        }, showDivider: false)
+    }
+}
+
 struct AlbumDetail: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var store: AlbumsAPI
@@ -87,7 +249,7 @@ struct AlbumDetail: View {
     
     @StateObject var mbAPI: MusicBrainzAPI = MusicBrainzAPI()
     
-    var album: LibraryAlbum
+    var album: LibraryAlbum?
     var searchResult: Bool = false
     
     @State private var viewContext: NSManagedObjectContext?
@@ -99,221 +261,65 @@ struct AlbumDetail: View {
 
     var body: some View {
         ZStack {
-            ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
-                VStack(spacing: 20) {
-                    AlbumMeta()
-                    AlbumActions()
-
-                    if self.tracks.count > 0 {
-                        AlbumTracklist(tracks: $tracks)
-                    }
-                    
-                    if self.related.count > 0 {
-                        RelatedAlbums(related: $related)
-                    }
-                }
-            }
-            .frame(maxHeight: .infinity)
-            .padding(.top, 40)
-            .background(Color(.systemBackground))
-            
-            Header(content: {
-                HStack {
-                    Button(action: {
-                        withAnimation(.linear(duration: 0.25)) {
-                            store.setActiveAlbum(nil)
-                        }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(Color("PrimaryPurple"))
-                                .frame(width: 20)
-                            Image(systemName: "chevron.down.circle.fill")
-                                .font(.system(size: 26, weight: .regular))
-                                .foregroundColor(Color(.systemGray6))
-                        }
-                    }
-                    
-                    Spacer()
-                    Text(album.title?.trunc(length: 24) ?? "")
-                        .font(.system(size: 16, weight: .semibold))
-                        .opacity(scrollOffset.y * 1.5 < 100 ? (scrollOffset.y * 1.5) / CGFloat(100) : 1)
-                    Spacer()
-                    
-                    Button(action: {
-                        withAnimation {
-                            showOptionsCard.toggle()
-                        }
-                    }) {
-                        ZStack {
-                            Circle()
-                                .fill(Color("PrimaryPurple"))
-                                .frame(width: 20)
-                            Image(systemName: "ellipsis.circle.fill")
-                                .font(.system(size: 26, weight: .regular))
-                                .foregroundColor(Color(.systemGray6))
-                        }
-                    }
-                }
-                .frame(height: 50)
-                
-                .background(Color(.systemBackground))
-            }, showDivider: false)
-            
-
-            
-            if showOptionsCard {
-                Color.black.opacity(0.2)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        withAnimation {
-                            showOptionsCard.toggle()
-                        }
-                    }
-                
-                VStack {
-                    Spacer()
-                        
+            if album != nil {
+                ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                     VStack(spacing: 20) {
-                        Rectangle()
-                            .fill(Color(.systemGray5))
-                            .frame(width: 40, height: 4)
-                            .cornerRadius(.infinity)
-                        
-                        Button(action: {}) {
-                            HStack(alignment: .center, spacing: 10) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(.systemGray6))
-                                        .frame(width: 36)
-                                    Image(systemName: "square.stack.3d.up")
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(Color("PrimaryPurple"))
-                                }
-  
-                                
-                                Text("Add to a playlist...")
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 16, weight: .medium))
-                                    
-                                Spacer()
-                            }
+                        AlbumMeta()
+                        AlbumActions()
+
+                        if self.tracks.count > 0 {
+                            AlbumTracklist(tracks: $tracks)
+                        }
+
+                        if self.related.count > 0 {
+                            RelatedAlbums(related: $related)
                         }
                         
-                        Button(action: {}) {
-                            HStack(alignment: .center, spacing: 10) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(.systemGray6))
-                                        .frame(width: 36)
-                                    Image(systemName: "heart")
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(Color("PrimaryPurple"))
-                                }
-                                
-                                Text("Add to favorites")
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 16, weight: .medium))
-                                
-                                Spacer()
-                            }
-                        }
-                        
-                        Button(action: {}) {
-                            HStack(alignment: .center, spacing: 10) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(.systemGray6))
-                                        .frame(width: 36)
-                                    Image(systemName: "square.and.arrow.up")
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(Color("PrimaryPurple"))
-                                }
-                                
-                                Text("Share this album")
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 16, weight: .medium))
-                                
-                                Spacer()
-                            }
-                        }
-                        
-                        Button(action: {}) {
-                            HStack(alignment: .center, spacing: 10) {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color(.systemGray6))
-                                        .frame(width: 36)
-                                    Image(systemName: "exclamationmark.bubble")
-                                        .font(.system(size: 16, weight: .medium))
-                                        .foregroundColor(Color("PrimaryPurple"))
-                                }
-                                
-                                Text("Report a problem...")
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 16, weight: .medium))
-                                
-                                Spacer()
-                            }
-                        }
-                        
-                        Spacer()
-                            .frame(height: 10)
+                        Spacer().frame(height: 10)
                     }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .cornerRadius(20, corners: [.topLeft, .topRight])
                 }
-                .transition(
-                    .asymmetric(insertion: .push(from: .bottom), removal: .push(from: .top))
-                )
+                .frame(maxHeight: .infinity)
+                .padding(.top, 40)
+                .background(Color(.systemBackground))
+            } else {
+                ProgressView()
+            }
+                
+            AlbumDetailHeader(album: album, scrollOffset: $scrollOffset, showOptionsCard: $showOptionsCard)
+                
+            if showOptionsCard {
+                AlbumOptionsCard(showOptionsCard: $showOptionsCard)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear {
-            Task {
-                let artwork = await iTunesAPI.lookupAlbumArtwork(store.activeAlbum!)
-                
-                store.activeAlbum?.artworkUrl = artwork
-                
-                self.related =
-                    await iTunesAPI.lookupRelatedAlbums(
-                        Int(store.activeAlbum!.artistAppleId)
-                    ).map { store.mapAlbumDataToLibraryModel($0) }
-                self.tracks =
-                    await iTunesAPI.lookupTracksForAlbum(
-                        Int(store.activeAlbum!.appleId)
-                    )
-                
-                if store.activeAlbum!.upc == nil {
-                    let data = await mbAPI.requestMetadata(store.activeAlbum!.title!, store.activeAlbum!.artistName!)
-                    
-                    if !data.isEmpty && data[0].barcode != nil {
-                        store.activeAlbum!.upc = data[0].barcode
-                    }
+        .onChange(of: store.activeAlbum) { state in
+            if state != nil {
+                Task {
+                    await loadAlbumMeta(state: state!)
                 }
-                
-                store.saveData()
-
-//                guard await MusicAuthorization.request() != .denied else { return }
-//
-//                let request = MusicCatalogResourceRequest<Album>(matching: \.upc, equalTo: store.activeAlbum!.upc ?? "")
-//                let response = try await request.response()
-//
-//                guard let album = response.items.first else { return }
-//
-//                let globalPlayer = ApplicationMusicPlayer.shared
-//                globalPlayer.queue = []
-//                globalPlayer.stop()
-//                globalPlayer.queue = [album]
-//
-//                try await globalPlayer.prepareToPlay()
             }
-            
-            store.saveRecentSearch(album)
         }
         .background(Color(.systemBackground))
         .navigationBarHidden(true)
         .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    func loadAlbumMeta(state: LibraryAlbum) async -> Void {
+        let artwork = await iTunesAPI.lookupAlbumArtwork(state)
+        
+        state.artworkUrl = artwork
+        
+        self.related = await iTunesAPI.lookupRelatedAlbums(Int(state.artistAppleId)).map { store.mapAlbumDataToLibraryModel($0) }
+        self.tracks  = await iTunesAPI.lookupTracksForAlbum(Int(state.appleId))
+        
+        if state.upc == nil {
+            let data = await mbAPI.requestMetadata(state.title!, state.artistName!)
+            
+            if !data.isEmpty && data[0].barcode != nil {
+                state.upc = data[0].barcode
+            }
+        }
+        
+        store.saveData()
     }
 }
