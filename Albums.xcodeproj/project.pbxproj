@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB628B062A323B94006A95F6 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B052A323B94006A95F6 /* PlayerView.swift */; };
+		DB628B092A323FE4006A95F6 /* AlbumOptionsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */; };
+		DB628B0B2A324015006A95F6 /* AlbumDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */; };
+		DB628B0D2A324089006A95F6 /* AddToPlaylistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */; };
 		DB6F2EA12A1FC3020042E845 /* iTunesTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */; };
 		DB6F2EA32A1FC3370042E845 /* iTunesTrackLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */; };
 		DB6F2EA52A1FC4080042E845 /* iTunesArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */; };
@@ -62,6 +66,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB628B052A323B94006A95F6 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumOptionsCard.swift; sourceTree = "<group>"; };
+		DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailHeader.swift; sourceTree = "<group>"; };
+		DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToPlaylistSheet.swift; sourceTree = "<group>"; };
 		DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrack.swift; sourceTree = "<group>"; };
 		DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrackLookupResponse.swift; sourceTree = "<group>"; };
 		DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtistLookupResponse.swift; sourceTree = "<group>"; };
@@ -130,6 +138,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DB628B042A323B89006A95F6 /* PlayerView */ = {
+			isa = PBXGroup;
+			children = (
+				DB628B052A323B94006A95F6 /* PlayerView.swift */,
+			);
+			path = PlayerView;
+			sourceTree = "<group>";
+		};
+		DB628B072A323FD8006A95F6 /* AlbumOptionsCard */ = {
+			isa = PBXGroup;
+			children = (
+				DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */,
+			);
+			path = AlbumOptionsCard;
+			sourceTree = "<group>";
+		};
 		DB6F2EA82A1FD8E70042E845 /* AlbumDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +161,7 @@
 				DB6F2EAB2A1FD9290042E845 /* AlbumTracklist.swift */,
 				DB6F2EAD2A1FD9490042E845 /* AlbumActions.swift */,
 				DB6F2EAF2A1FD95E0042E845 /* AlbumMeta.swift */,
+				DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */,
 			);
 			path = AlbumDetail;
 			sourceTree = "<group>";
@@ -212,6 +237,8 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DB628B072A323FD8006A95F6 /* AlbumOptionsCard */,
+				DB628B042A323B89006A95F6 /* PlayerView */,
 				DB6F2ECF2A27BC130042E845 /* DynamicTargetSearchResult */,
 				DB6F2EB72A1FDA970042E845 /* SearchBar */,
 				DBD450042A1DB3D700589220 /* Header */,
@@ -316,6 +343,7 @@
 				DBD450072A1DB65000589220 /* SettingsView.swift */,
 				DB6F2EC92A25172C0042E845 /* OnboardingView.swift */,
 				DB6F2ECD2A2596E70042E845 /* BarcodeScannerView.swift */,
+				DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -464,6 +492,7 @@
 				DB6F2ECE2A2596E70042E845 /* BarcodeScannerView.swift in Sources */,
 				DB96D4DD2A1C014F005C4CAE /* SearchBar.swift in Sources */,
 				DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */,
+				DB628B062A323B94006A95F6 /* PlayerView.swift in Sources */,
 				DB6F2ED12A27BC300042E845 /* DynamicTargetSearchResult.swift in Sources */,
 				DB6F2EAC2A1FD9290042E845 /* AlbumTracklist.swift in Sources */,
 				DB96D4DB2A1C0125005C4CAE /* AlbumListItem.swift in Sources */,
@@ -478,11 +507,13 @@
 				DBD450062A1DB3DF00589220 /* Header.swift in Sources */,
 				DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */,
 				DB96D4D72A1BFC5F005C4CAE /* RoundedCorner.swift in Sources */,
+				DB628B0D2A324089006A95F6 /* AddToPlaylistSheet.swift in Sources */,
 				DB9B8CD52A11C85200CE4D74 /* SearchView.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
 				DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */,
 				DB6F2EA12A1FC3020042E845 /* iTunesTrack.swift in Sources */,
 				DBDC436A2A1D94D700183A8B /* TabBar.swift in Sources */,
+				DB628B092A323FE4006A95F6 /* AlbumOptionsCard.swift in Sources */,
 				DB6F2ED42A27CC0E0042E845 /* DynamicOffsetHeader.swift in Sources */,
 				DB9B8CB72A0D11C900CE4D74 /* Persistence.swift in Sources */,
 				DB96D4B52A1A8986005C4CAE /* iTunesAPI.swift in Sources */,
@@ -490,6 +521,7 @@
 				DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */,
 				DB6F2EA72A1FCC540042E845 /* String.swift in Sources */,
 				DBDC43722A1D963900183A8B /* RootView.swift in Sources */,
+				DB628B0B2A324015006A95F6 /* AlbumDetailHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

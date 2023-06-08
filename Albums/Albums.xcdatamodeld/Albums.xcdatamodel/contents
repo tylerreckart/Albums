@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D49" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-    </entity>
     <entity name="LibraryAlbum" representedClassName="LibraryAlbum" syncable="YES" codeGenerationType="class">
         <attribute name="appleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="artistAppleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
@@ -17,7 +14,12 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="upc" optional="YES" attributeType="String"/>
         <attribute name="wantlisted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="albums" inverseEntity="Playlist"/>
         <relationship name="searchResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecentSearch" inverseName="album" inverseEntity="RecentSearch"/>
+    </entity>
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
+        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="playlists" inverseEntity="LibraryAlbum"/>
     </entity>
     <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES" codeGenerationType="class">
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
