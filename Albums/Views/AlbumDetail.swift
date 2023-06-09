@@ -30,14 +30,18 @@ struct AlbumDetail: View {
     @State private var showAddToPlaylistSheet: Bool = false
     
     @State private var shouldScrollToTop: Bool = false
-
+    
+    @State private var showArtistDetail: Bool = false
+    
+    @State private var selectedArtist: Artist?
+    
     var body: some View {
         ZStack {
             if album != nil {
                 ScrollViewReader { reader in
                     ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
                         VStack(spacing: 20) {
-                            AlbumMeta()
+                            AlbumMeta(selectedArtist: $selectedArtist)
                             AlbumActions()
                             
                             if self.tracks.count > 0 {
@@ -70,6 +74,10 @@ struct AlbumDetail: View {
             if showOptionsCard {
                 AlbumOptionsCard(showOptionsCard: $showOptionsCard, showAddToPlaylistSheet: $showAddToPlaylistSheet)
             }
+            
+            if selectedArtist != nil {
+                ArtistDetail(artist: $selectedArtist)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: store.activeAlbum) { state in
@@ -86,6 +94,8 @@ struct AlbumDetail: View {
     }
     
     func loadAlbumMeta(state: LibraryAlbum) async -> Void {
+        let audioDB = AudioDB(cont: store.container)
+        
         let artwork = await iTunesAPI.lookupAlbumArtwork(state)
         
         state.artworkUrl = artwork
@@ -93,13 +103,28 @@ struct AlbumDetail: View {
         self.related = await iTunesAPI.lookupRelatedAlbums(Int(state.artistAppleId)).map { store.mapAlbumDataToLibraryModel($0) }
         self.tracks  = await iTunesAPI.lookupTracksForAlbum(Int(state.appleId))
         
+        print("Stored MBID: \(state.artistMbId ?? "")")
+        
         if state.upc == nil {
             let data = await mbAPI.requestMetadata(state.title!, state.artistName!)
+            print(data)
             
-            if !data.isEmpty && data[0].barcode != nil {
+            if !data.isEmpty && data[0].barcode?.count ?? 0 > 0 {
                 state.upc = data[0].barcode
+                state.artistMbId = data[0].artistcredit![0].artist?.id
+                print("Retrived MBID: \(state.artistMbId ?? "")")
             }
         }
+        
+        if !(state.artistMbId?.isEmpty ?? true && state.artists == nil) {
+            let artist = await audioDB.lookupArtist(state.artistMbId!)
+            
+            if artist != nil {
+                state.artists = [artist!]
+            }
+        }
+        
+        print(state.artists)
         
         store.saveData()
     }

@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB36E1292A339B4600D0EA8C /* ArtistDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB36E1282A339B4600D0EA8C /* ArtistDetail.swift */; };
 		DB628B062A323B94006A95F6 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B052A323B94006A95F6 /* PlayerView.swift */; };
 		DB628B092A323FE4006A95F6 /* AlbumOptionsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */; };
 		DB628B0B2A324015006A95F6 /* AlbumDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */; };
 		DB628B0D2A324089006A95F6 /* AddToPlaylistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */; };
 		DB628B0F2A336DBF006A95F6 /* CreatePlaylistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */; };
+		DB628B112A337865006A95F6 /* AudioDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B102A337865006A95F6 /* AudioDB.swift */; };
 		DB6F2EA12A1FC3020042E845 /* iTunesTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */; };
 		DB6F2EA32A1FC3370042E845 /* iTunesTrackLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */; };
 		DB6F2EA52A1FC4080042E845 /* iTunesArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */; };
@@ -67,11 +69,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DB36E1282A339B4600D0EA8C /* ArtistDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetail.swift; sourceTree = "<group>"; };
 		DB628B052A323B94006A95F6 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumOptionsCard.swift; sourceTree = "<group>"; };
 		DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailHeader.swift; sourceTree = "<group>"; };
 		DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToPlaylistSheet.swift; sourceTree = "<group>"; };
 		DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlaylistSheet.swift; sourceTree = "<group>"; };
+		DB628B102A337865006A95F6 /* AudioDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDB.swift; sourceTree = "<group>"; };
 		DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrack.swift; sourceTree = "<group>"; };
 		DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrackLookupResponse.swift; sourceTree = "<group>"; };
 		DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtistLookupResponse.swift; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 				DBD450092A1E438B00589220 /* AlbumsAPI.swift */,
 				DB96D4B42A1A8986005C4CAE /* iTunesAPI.swift */,
 				DB6F2EBA2A1FE1FF0042E845 /* MusicBrainzAPI.swift */,
+				DB628B102A337865006A95F6 /* AudioDB.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -347,6 +352,7 @@
 				DB6F2ECD2A2596E70042E845 /* BarcodeScannerView.swift */,
 				DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */,
 				DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */,
+				DB36E1282A339B4600D0EA8C /* ArtistDetail.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -486,10 +492,12 @@
 				DB9B8CB52A0D11C900CE4D74 /* AlbumsApp.swift in Sources */,
 				DB96D4D02A1BA0F2005C4CAE /* iTunesAlbum.swift in Sources */,
 				DB6F2ECA2A25172C0042E845 /* OnboardingView.swift in Sources */,
+				DB628B112A337865006A95F6 /* AudioDB.swift in Sources */,
 				DB96D4CE2A1BA0D3005C4CAE /* iTunesArtistResponse.swift in Sources */,
 				DB6F2EBB2A1FE1FF0042E845 /* MusicBrainzAPI.swift in Sources */,
 				DB96D4D92A1BFC6D005C4CAE /* View.swift in Sources */,
 				DB6F2EA32A1FC3370042E845 /* iTunesTrackLookupResponse.swift in Sources */,
+				DB36E1292A339B4600D0EA8C /* ArtistDetail.swift in Sources */,
 				DBD4500F2A1EEF3D00589220 /* ScrollOffsetObserver.swift in Sources */,
 				DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */,
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,

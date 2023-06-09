@@ -10,7 +10,7 @@ import CoreData
 import SwiftUI
 
 class AlbumsAPI: ObservableObject {
-    let container: NSPersistentContainer
+    @Published var container: NSPersistentContainer
     
     // Data Stores.
     @Published var presentAlbum: Bool = false
@@ -145,7 +145,7 @@ class AlbumsAPI: ObservableObject {
     public func saveRecentSearch(_ album: LibraryAlbum) -> Void {
         let search = RecentSearch(context: container.viewContext)
         search.timestamp = Date()
-        search.album = album
+//        search.album = album
         saveData()
     }
     

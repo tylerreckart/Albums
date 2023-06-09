@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D49" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Artist" representedClassName="Artist" syncable="YES" codeGenerationType="class">
+        <attribute name="alternateName" optional="YES" attributeType="String"/>
+        <attribute name="bio" optional="YES" attributeType="String"/>
+        <attribute name="born" optional="YES" attributeType="String"/>
+        <attribute name="died" optional="YES" attributeType="String"/>
+        <attribute name="genre" optional="YES" attributeType="String"/>
+        <attribute name="label" optional="YES" attributeType="String"/>
+        <attribute name="mood" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="style" optional="YES" attributeType="String"/>
+        <attribute name="thumbnail" optional="YES" attributeType="String"/>
+        <attribute name="website" optional="YES" attributeType="String"/>
+        <attribute name="yearDisbanded" optional="YES" attributeType="String"/>
+        <attribute name="yearFormed" optional="YES" attributeType="String"/>
+        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="artists" inverseEntity="LibraryAlbum"/>
+    </entity>
     <entity name="LibraryAlbum" representedClassName="LibraryAlbum" syncable="YES" codeGenerationType="class">
         <attribute name="appleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="artistAppleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="artistMbId" optional="YES" attributeType="String"/>
         <attribute name="artistName" optional="YES" attributeType="String"/>
         <attribute name="artworkUrl" optional="YES" attributeType="String" defaultValueString=" "/>
         <attribute name="dateAdded" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -14,15 +31,15 @@
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="upc" optional="YES" attributeType="String"/>
         <attribute name="wantlisted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="albums" inverseEntity="Artist"/>
         <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="albums" inverseEntity="Playlist"/>
-        <relationship name="searchResults" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecentSearch" inverseName="album" inverseEntity="RecentSearch"/>
     </entity>
     <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
         <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="playlists" inverseEntity="LibraryAlbum"/>
     </entity>
     <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES" codeGenerationType="class">
+        <attribute name="appleId" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="searchResults" inverseEntity="LibraryAlbum"/>
     </entity>
 </model>

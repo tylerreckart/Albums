@@ -103,13 +103,13 @@ struct SearchView: View {
                         }
                         .padding(.leading)
                         
-                        ForEach(store.recentSearches, id: \.self) { album in
-                            if album.album != nil {
-                                Button(action: { store.setActiveAlbum(album.album!) }) {
-                                    AlbumListItem(album: album.album!)
-                                }
-                            }
-                        }
+//                        ForEach(store.recentSearches, id: \.self) { album in
+//                            if album.album != nil {
+//                                Button(action: { store.setActiveAlbum(album.album!) }) {
+//                                    AlbumListItem(album: album.album!)
+//                                }
+//                            }
+//                        }
                     }
                     .padding(.top, 20)
                 }

@@ -11,6 +11,8 @@ import SwiftUI
 struct AlbumMeta: View {
     @EnvironmentObject var store: AlbumsAPI
     
+    @Binding var selectedArtist: Artist?
+    
     func dateFromReleaseStr(_ str: String) -> String {
         print(str)
         let dateFormatter = DateFormatter()
@@ -44,9 +46,21 @@ struct AlbumMeta: View {
             Text((store.activeAlbum?.title!) ?? "")
                 .font(.system(size: 18, weight: .bold))
             
-            Text((store.activeAlbum?.artistName!) ?? "")
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(Color("PrimaryPurple"))
+            Button(action: {
+                let album = store.activeAlbum
+                
+                if album != nil {
+                    let arr = Array(album!.artists!)
+                    let index = arr.firstIndex(where: { ($0 as! Artist).name == store.activeAlbum?.artistName })
+                    if index != nil {
+                        selectedArtist = arr[index!] as? Artist
+                    }
+                }
+            }) {
+                Text((store.activeAlbum?.artistName!) ?? "")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(Color("PrimaryPurple"))
+            }
             
             HStack(alignment: .center, spacing: 5) {
                 Text(store.activeAlbum?.genre ?? "")
