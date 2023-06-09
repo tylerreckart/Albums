@@ -23,9 +23,16 @@ struct AlbumMeta: View {
     var body: some View {
         VStack(spacing: 5) {
             AsyncImage(url: URL(string: (store.activeAlbum?.artworkUrl!) ?? "")) { image in
-                image.resizable().aspectRatio(contentMode: .fit)
+                withAnimation {
+                    image.resizable().aspectRatio(contentMode: .fit)
+                }
             } placeholder: {
-                ProgressView()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color(.systemGray4))
+                        .frame(width: 320, height: 320)
+                    ProgressView()
+                }
             }
             .frame(width: 320, height: 320)
             .cornerRadius(20)

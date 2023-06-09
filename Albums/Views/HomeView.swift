@@ -35,16 +35,16 @@ struct HomeView: View {
                     .padding(.bottom, 60)
                     .padding(.top, 85)
                 }
+                
+                DynamicOffsetHeader(content: {
+                    HStack(alignment: .bottom) {
+                        Text("Albums")
+                            .font(.system(size: 34, weight: .bold))
+                        Spacer()
+                    }
+                    .padding(.top, -40 + (scrollOffset.y > 0 ? -scrollOffset.y * 0.4 : 0))
+                }, yOffset: scrollOffset.y, title: "Albums", useTitlePadding: true)
             }
-            
-            DynamicOffsetHeader(content: {
-                HStack(alignment: .bottom) {
-                    Text("Albums")
-                        .font(.system(size: 34, weight: .bold))
-                    Spacer()
-                }
-                .padding(.top, -40 + (scrollOffset.y > 0 ? -scrollOffset.y * 0.4 : 0))
-            }, yOffset: scrollOffset.y, title: "Albums", useTitlePadding: true)
         }
         .background(Color(.systemBackground))
         .transition(.identity)

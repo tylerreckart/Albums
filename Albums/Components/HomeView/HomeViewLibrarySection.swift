@@ -26,7 +26,8 @@ struct AlbumGridItem: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .cornerRadius(8)
+            .cornerRadius(10)
+            .shadow(color: .black.opacity(0.075), radius: 6, y: 6)
             
             Text(album.title!)
                 .font(.system(size: 14, weight: .bold))

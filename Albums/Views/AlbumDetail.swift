@@ -28,29 +28,39 @@ struct AlbumDetail: View {
     @State private var showOptionsCard: Bool = false
     
     @State private var showAddToPlaylistSheet: Bool = false
+    
+    @State private var shouldScrollToTop: Bool = false
 
     var body: some View {
         ZStack {
             if album != nil {
-                ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
-                    VStack(spacing: 20) {
-                        AlbumMeta()
-                        AlbumActions()
-
-                        if self.tracks.count > 0 {
-                            AlbumTracklist(tracks: $tracks)
+                ScrollViewReader { reader in
+                    ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
+                        VStack(spacing: 20) {
+                            AlbumMeta()
+                            AlbumActions()
+                            
+                            if self.tracks.count > 0 {
+                                AlbumTracklist(tracks: $tracks)
+                            }
+                            
+                            if self.related.count > 0 {
+                                RelatedAlbums(related: $related, scrollToTop: { shouldScrollToTop.toggle() })
+                            }
+                            
+                            Spacer().frame(height: 10)
                         }
-
-                        if self.related.count > 0 {
-                            RelatedAlbums(related: $related)
+                        .id("meta")
+                        .onChange(of: shouldScrollToTop) { _ in
+                            withAnimation {
+                               reader.scrollTo("meta", anchor: .top)
+                            }
                         }
-                        
-                        Spacer().frame(height: 10)
                     }
+                    .frame(maxHeight: .infinity)
+                    .padding(.top, 40)
+                    .background(Color(.systemBackground))
                 }
-                .frame(maxHeight: .infinity)
-                .padding(.top, 40)
-                .background(Color(.systemBackground))
             } else {
                 ProgressView()
             }

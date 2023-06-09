@@ -46,7 +46,6 @@ struct AlbumDetailHeader: View {
                 }
             }
             .frame(height: 50)
-            
             .background(Color(.systemBackground))
         }, showDivider: false)
     }
