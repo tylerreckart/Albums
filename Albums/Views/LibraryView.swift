@@ -96,7 +96,7 @@ struct LibraryView: View {
                             
                             Button(action: { presentSortMenu.toggle() }) {
                                 Image(systemName: "arrow.up.arrow.down")
-                                    .font(.system(size: 16))
+                                    .font(.system(size: 18, weight: .regular))
                             }
                             .foregroundColor(Color("PrimaryPurple"))
                         }

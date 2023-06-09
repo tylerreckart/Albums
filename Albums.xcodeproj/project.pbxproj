@@ -11,6 +11,7 @@
 		DB628B092A323FE4006A95F6 /* AlbumOptionsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */; };
 		DB628B0B2A324015006A95F6 /* AlbumDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */; };
 		DB628B0D2A324089006A95F6 /* AddToPlaylistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */; };
+		DB628B0F2A336DBF006A95F6 /* CreatePlaylistSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */; };
 		DB6F2EA12A1FC3020042E845 /* iTunesTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */; };
 		DB6F2EA32A1FC3370042E845 /* iTunesTrackLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */; };
 		DB6F2EA52A1FC4080042E845 /* iTunesArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */; };
@@ -70,6 +71,7 @@
 		DB628B082A323FE4006A95F6 /* AlbumOptionsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumOptionsCard.swift; sourceTree = "<group>"; };
 		DB628B0A2A324015006A95F6 /* AlbumDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailHeader.swift; sourceTree = "<group>"; };
 		DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToPlaylistSheet.swift; sourceTree = "<group>"; };
+		DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlaylistSheet.swift; sourceTree = "<group>"; };
 		DB6F2EA02A1FC3020042E845 /* iTunesTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrack.swift; sourceTree = "<group>"; };
 		DB6F2EA22A1FC3370042E845 /* iTunesTrackLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesTrackLookupResponse.swift; sourceTree = "<group>"; };
 		DB6F2EA42A1FC4080042E845 /* iTunesArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesArtistLookupResponse.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				DB6F2EC92A25172C0042E845 /* OnboardingView.swift */,
 				DB6F2ECD2A2596E70042E845 /* BarcodeScannerView.swift */,
 				DB628B0C2A324089006A95F6 /* AddToPlaylistSheet.swift */,
+				DB628B0E2A336DBF006A95F6 /* CreatePlaylistSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD450032A1DB1A700589220 /* LibraryView.swift in Sources */,
+				DB628B0F2A336DBF006A95F6 /* CreatePlaylistSheet.swift in Sources */,
 				DBDC43762A1D993300183A8B /* HomeView.swift in Sources */,
 				DB96D4CA2A1BA0BC005C4CAE /* iTunesAlbumsSearchResponse.swift in Sources */,
 				DB6F2EF62A28EB020042E845 /* HomeViewPlaylistSection.swift in Sources */,

@@ -40,13 +40,13 @@ struct SearchBar: View {
     var body: some View {
         HStack {
             ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
                     .fill(Color(.systemGray6))
-                    .frame(height: 40)
+                    .frame(height: 42)
                 
                 TextField(placeholder != nil ? placeholder! : "Search", text: $observer.searchText)
                     .focused($focused)
-                    .padding(.leading, 34)
+                    .padding(.leading, 35)
                 
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -55,7 +55,7 @@ struct SearchBar: View {
                     
                     Spacer()
                 }
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 11)
                 
                 if (searchText.count > 0) {
                     HStack {

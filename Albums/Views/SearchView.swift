@@ -26,7 +26,7 @@ struct SearchViewSearchBar: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(Color(.systemGray6))
-                        .frame(width: 90, height: 40)
+                        .frame(width: 90, height: 42)
                     HStack(spacing: 5) {
                         Image(systemName: "viewfinder")
                             .font(.system(size: 12, weight: .heavy))
