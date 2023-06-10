@@ -17,11 +17,11 @@ struct AlbumDetail: View {
     
     @StateObject var mbAPI: MusicBrainzAPI = MusicBrainzAPI()
     
-    var album: LibraryAlbum?
+    var album: Release?
     var searchResult: Bool = false
     
     @State private var viewContext: NSManagedObjectContext?
-    @State private var related: [LibraryAlbum] = []
+    @State private var related: [Release] = []
     @State private var tracks: [iTunesTrack] = []
     @State private var scrollOffset: CGPoint = CGPoint()
     
@@ -93,7 +93,7 @@ struct AlbumDetail: View {
         .edgesIgnoringSafeArea(.bottom)
     }
     
-    func loadAlbumMeta(state: LibraryAlbum) async -> Void {
+    func loadAlbumMeta(state: Release) async -> Void {
         let audioDB = AudioDB(cont: store.container)
         
         let artwork = await iTunesAPI.lookupAlbumArtwork(state)

@@ -67,8 +67,8 @@ struct ArtistDetail: View {
     
     @State private var animateIn: Bool = false
     
-    @State private var related: [LibraryAlbum] = []
-    @State private var inLibraryAlbums: [LibraryAlbum] = []
+    @State private var related: [Release] = []
+    @State private var inReleases: [Release] = []
     
     struct Biography: View {
         @Binding var artist: Artist?
@@ -94,6 +94,7 @@ struct ArtistDetail: View {
                         }
                     }
                 }
+                .padding(.horizontal)
                 
                 VStack {
                     VStack {
@@ -119,11 +120,14 @@ struct ArtistDetail: View {
     }
     
     struct Discography: View {
-        @Binding var artist: Artist?
-        @Binding var inLibraryAlbums: [LibraryAlbum]
+        @EnvironmentObject var store: AlbumsAPI
         
-        @State private var latestRelease: LibraryAlbum?
-        @State private var discographyForDisplay: [LibraryAlbum] = []
+        @Binding var artist: Artist?
+        @Binding var inReleases: [Release]
+        @Binding var animateIn: Bool
+        
+        @State private var latestRelease: Release?
+        @State private var discographyForDisplay: [Release] = []
         
         func convertToEpochTime(_ dateStr: String) -> Int {
             let formatter = DateFormatter()
@@ -131,7 +135,7 @@ struct ArtistDetail: View {
             return Int(formatter.date(from: dateStr)?.timeIntervalSince1970 ?? 0)
         }
         
-        func buildDiscography(_ albums: [LibraryAlbum]) -> [LibraryAlbum] {
+        func buildDiscography(_ albums: [Release]) -> [Release] {
             var result = albums
             
             let crossReference = Dictionary(grouping: result, by: \.appleId)
@@ -156,6 +160,14 @@ struct ArtistDetail: View {
             }
         }
         
+        func dateFromReleaseStr(_ str: String) -> String {
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            let date = dateFormatter.date(from: str) ?? Date()
+            return date.formatted(date: .abbreviated, time: .omitted)
+        }
+        
         var body: some View {
             VStack(spacing: 0) {
                 VStack {
@@ -166,7 +178,7 @@ struct ArtistDetail: View {
                     }
                     .padding(.horizontal)
                     
-                    HStack {
+                    HStack(spacing: 10) {
                         AsyncImage(url: URL(string: latestRelease?.artworkUrl ?? "")) { image in
                             image.resizable().aspectRatio(contentMode: .fit)
                         } placeholder: {
@@ -178,19 +190,64 @@ struct ArtistDetail: View {
                                 ProgressView()
                             }
                         }
-                        .frame(maxWidth: 200)
+                        .frame(maxWidth: 160)
                         .cornerRadius(10)
-                        .shadow(color: .black.opacity(0.075), radius: 6, y: 6)
+                        .shadow(color: .black.opacity(0.075), radius: 3, y: 3)
                         
-                        Text(latestRelease?.title ?? "")
+                        HStack(spacing: 0) {
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(dateFromReleaseStr(latestRelease?.releaseDate ?? ""))
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(Color("PrimaryGray"))
+                                Text(latestRelease?.title ?? "")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .multilineTextAlignment(.leading)
+                                Text("12 Tracks")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(Color("PrimaryGray"))
+                                Spacer()
+                                Button(action: {
+                                    store.setActiveAlbum(latestRelease!)
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                                        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.7, blendDuration: 1)) {
+                                            animateIn.toggle()
+                                        }
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                            artist = nil
+                                        }
+                                    }
+                                }) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                            .fill(Color("PrimaryGray").opacity(0.15))
+                                            .frame(maxWidth: 125, maxHeight: 50)
+                                        Text("View Album")
+                                            .font(.system(size: 16, weight: .bold))
+                                            .foregroundColor(Color("PrimaryPurple"))
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical)
+                            
+                            Spacer()
+                        }
                     }
                 }
+                .padding([.horizontal, .bottom])
+                .padding(.bottom)
                 
                 HStack(alignment: .firstTextBaseline) {
                     Text("Discography")
                         .font(.system(size: 18, weight: .bold))
                     Spacer()
+                    Button(action: {}) {
+                        Text("View All")
+                    }
                 }
+                .padding(.horizontal)
                 .padding(.horizontal)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -209,7 +266,7 @@ struct ArtistDetail: View {
                 .edgesIgnoringSafeArea(.bottom)
                 .foregroundColor(.primary)
                 
-                if inLibraryAlbums.count > 0 {
+                if inReleases.count > 0 {
                     HStack(alignment: .firstTextBaseline) {
                         Text("In Your Library")
                             .font(.system(size: 18, weight: .bold))
@@ -219,7 +276,7 @@ struct ArtistDetail: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(alignment: .top, spacing: 16) {
-                            ForEach(inLibraryAlbums, id: \.self) { album in
+                            ForEach(inReleases, id: \.self) { album in
                                 Button(action: {}) {
                                     AlbumGridItem(album: album)
                                         .frame(maxWidth: 200)
@@ -236,7 +293,7 @@ struct ArtistDetail: View {
             }
             .onAppear {
                 if discographyForDisplay.count == 0 {
-                    let albums = Array(artist?.albums as? Set<LibraryAlbum> ?? [])
+                    let albums = Array(artist?.albums as? Set<Release> ?? [])
                     var discography = buildDiscography(albums)
                     latestRelease = discography[0]
                     discography.remove(at: 0)
@@ -284,13 +341,39 @@ struct ArtistDetail: View {
                         .padding(.top, 20)
                         .shadow(color: .black.opacity(0.075), radius: 10, y: 6)
                         
+                        HStack {
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack {
+                                    Image(systemName: "calendar")
+                                        .font(.system(size: 16, weight: .bold))
+                                    Text("Formed in \(artist?.yearFormed ?? "")")
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                                HStack {
+                                    Image(systemName: "music.mic")
+                                        .font(.system(size: 16, weight: .bold))
+                                    Text(artist?.genre ?? "")
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                                HStack {
+                                    Image(systemName: "globe.americas.fill")
+                                        .font(.system(size: 16, weight: .bold))
+                                    Text(artist?.country ?? "")
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
+                            }
+                            .foregroundColor(Color("PrimaryGray"))
+                            Spacer()
+                        }
+                        .padding([.bottom, .horizontal])
+                        
                         
                         Biography(artist: $artist)
                     }
                     .padding(.horizontal)
                     
                     VStack {
-                        Discography(artist: $artist, inLibraryAlbums: $inLibraryAlbums)
+                        Discography(artist: $artist, inReleases: $inReleases, animateIn: $animateIn)
                         
                         Spacer().frame(height: 20)
                     }
@@ -312,7 +395,7 @@ struct ArtistDetail: View {
             let activeAlbum = store.activeAlbum
             let artist = activeAlbum?.artistAppleId
             
-            inLibraryAlbums  = store.library.filter {
+            inReleases  = store.library.filter {
                 $0.artistAppleId == artist && $0.appleId != activeAlbum?.appleId
             }
         }

@@ -4,6 +4,7 @@
         <attribute name="alternateName" optional="YES" attributeType="String"/>
         <attribute name="bio" optional="YES" attributeType="String"/>
         <attribute name="born" optional="YES" attributeType="String"/>
+        <attribute name="country" optional="YES" attributeType="String"/>
         <attribute name="died" optional="YES" attributeType="String"/>
         <attribute name="genre" optional="YES" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
@@ -14,9 +15,18 @@
         <attribute name="website" optional="YES" attributeType="String"/>
         <attribute name="yearDisbanded" optional="YES" attributeType="String"/>
         <attribute name="yearFormed" optional="YES" attributeType="String"/>
-        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="artists" inverseEntity="LibraryAlbum"/>
+        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Release" inverseName="artists" inverseEntity="Release"/>
+        <relationship name="tracks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Track" inverseName="artist" inverseEntity="Track"/>
     </entity>
-    <entity name="LibraryAlbum" representedClassName="LibraryAlbum" syncable="YES" codeGenerationType="class">
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
+        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Release" inverseName="playlists" inverseEntity="Release"/>
+    </entity>
+    <entity name="RecentView" representedClassName="RecentView" syncable="YES" codeGenerationType="class">
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Release" inverseName="recentViews" inverseEntity="Release"/>
+    </entity>
+    <entity name="Release" representedClassName="Release" syncable="YES" codeGenerationType="class">
         <attribute name="appleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="artistAppleId" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="artistMbId" optional="YES" attributeType="String"/>
@@ -26,20 +36,23 @@
         <attribute name="favorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="genre" optional="YES" attributeType="String"/>
         <attribute name="owned" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="playCount" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="plays" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="releaseDate" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="upc" optional="YES" attributeType="String"/>
         <attribute name="wantlisted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="artists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Artist" inverseName="albums" inverseEntity="Artist"/>
         <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="albums" inverseEntity="Playlist"/>
+        <relationship name="recentViews" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RecentView" inverseName="album" inverseEntity="RecentView"/>
+        <relationship name="tracklist" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Track" inverseName="album" inverseEntity="Track"/>
     </entity>
-    <entity name="Playlist" representedClassName="Playlist" syncable="YES" codeGenerationType="class">
-        <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
-        <relationship name="albums" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryAlbum" inverseName="playlists" inverseEntity="LibraryAlbum"/>
-    </entity>
-    <entity name="RecentSearch" representedClassName="RecentSearch" syncable="YES" codeGenerationType="class">
-        <attribute name="appleId" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    <entity name="Track" representedClassName="Track" syncable="YES" codeGenerationType="class">
+        <attribute name="duration" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="releaseDate" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="trackNo" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="album" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Release" inverseName="tracklist" inverseEntity="Release"/>
+        <relationship name="artist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Artist" inverseName="tracks" inverseEntity="Artist"/>
     </entity>
 </model>

@@ -140,7 +140,7 @@ class iTunesAPI: ObservableObject {
         return results.filter { $0.wrapperType == "track" }
     }
     
-    public func lookupAlbumArtwork(_ album: LibraryAlbum) async -> String {
+    public func lookupAlbumArtwork(_ album: Release) async -> String {
         let me = "iTunesRequestService.lookupAlbumArtwork(): "
         let qs = "lookup?id=\(Int(album.appleId))&country=us&limit=25"
         print(me + qs)

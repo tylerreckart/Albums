@@ -14,7 +14,7 @@ struct DynamicTargetSearchResult: View {
     var album: iTunesAlbum
     
     var body: some View {
-        var target: LibraryAlbum = store.mapAlbumDataToLibraryModel(album)
+        var target: Release = store.mapAlbumDataToLibraryModel(album)
     
         Button(action: {
             let libraryIndexMatch = store.library.firstIndex(where: { $0.appleId == Double(album.collectionId!) })

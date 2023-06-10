@@ -11,16 +11,16 @@ import SwiftUI
 struct RelatedAlbums: View {
     @EnvironmentObject var store: AlbumsAPI
     
-    @Binding var related: [LibraryAlbum]
+    @Binding var related: [Release]
     
     var scrollToTop: () -> Void
     
-    @State private var inLibraryAlbums: [LibraryAlbum] = []
+    @State private var inReleases: [Release] = []
     
     struct Carousel: View {
         @EnvironmentObject var store: AlbumsAPI
         
-        var data: [LibraryAlbum]
+        var data: [Release]
         
         var scrollToTop: () -> Void
         
@@ -62,10 +62,10 @@ struct RelatedAlbums: View {
                 Carousel(data: related, scrollToTop: scrollToTop)
             }
             
-            if inLibraryAlbums.count > 0 {
+            if inReleases.count > 0 {
                 VStack(spacing: 0) {
                     SectionHeader(text: "In your Library")
-                    Carousel(data: inLibraryAlbums, scrollToTop: scrollToTop)
+                    Carousel(data: inReleases, scrollToTop: scrollToTop)
                 }
             }
         }
@@ -73,7 +73,7 @@ struct RelatedAlbums: View {
             let activeAlbum = store.activeAlbum
             let artist = activeAlbum?.artistAppleId
             
-            inLibraryAlbums  = store.library.filter {
+            inReleases  = store.library.filter {
                 $0.artistAppleId == artist && $0.appleId != activeAlbum?.appleId
             }
         }

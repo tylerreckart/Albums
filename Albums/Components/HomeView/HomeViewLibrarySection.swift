@@ -10,7 +10,7 @@ import SwiftUI
 import CoreData
 
 struct AlbumGridItem: View {
-    var album: LibraryAlbum
+    var album: Release
 
     var body: some View {
         VStack(alignment: .leading) {

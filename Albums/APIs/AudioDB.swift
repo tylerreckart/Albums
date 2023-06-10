@@ -23,6 +23,7 @@ struct AudioDBArtist: Codable {
     var strWebsite: String?
     var strBiographyEN: String?
     var strArtistThumb: String?
+    var strCountry: String?
 }
 
 struct AudioDBAristResponse: Decodable {
@@ -73,6 +74,7 @@ class AudioDB: ObservableObject {
         artist.website = data.strWebsite
         artist.bio = data.strBiographyEN
         artist.thumbnail = data.strArtistThumb
+        artist.country = data.strCountry
         
         return artist
     }

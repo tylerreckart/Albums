@@ -11,7 +11,7 @@ import SwiftUI
 struct AlbumDetailHeader: View {
     @EnvironmentObject var store: AlbumsAPI
     
-    var album: LibraryAlbum?
+    var album: Release?
     
     @Binding var scrollOffset: CGPoint
     @Binding var showOptionsCard: Bool

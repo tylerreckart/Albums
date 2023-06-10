@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct AlbumListItem: View {
-    var album: LibraryAlbum
+    var album: Release
 
     var body: some View {
         VStack(spacing: 0) {

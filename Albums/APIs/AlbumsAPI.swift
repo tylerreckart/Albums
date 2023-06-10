@@ -14,10 +14,10 @@ class AlbumsAPI: ObservableObject {
     
     // Data Stores.
     @Published var presentAlbum: Bool = false
-    @Published var activeAlbum: LibraryAlbum?
-    @Published var library: [LibraryAlbum] = []
-    @Published var wantlist: [LibraryAlbum] = []
-    @Published var recentSearches: [RecentSearch] = []
+    @Published var activeAlbum: Release?
+    @Published var library: [Release] = []
+    @Published var wantlist: [Release] = []
+    @Published var recentSearches: [RecentView] = []
     // Filters
     @Published var filter: LibraryFilter = .library
     
@@ -27,7 +27,7 @@ class AlbumsAPI: ObservableObject {
         case playlists
     }
 
-    subscript(filter: String) -> [LibraryAlbum] {
+    subscript(filter: String) -> [Release] {
         get {
             if filter == "library" { return library }
             if filter == "wantlist" { return wantlist }
@@ -56,9 +56,9 @@ class AlbumsAPI: ObservableObject {
     
     private func fetchAlbumsForLibrary() -> Void {
         let me = "AlbumsAPI.fetchAlbumsForLibrary(): "
-        let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
+        let request: NSFetchRequest<Release> = Release.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Release.dateAdded, ascending: false)]
 
         do {
             self.library = try container.viewContext.fetch(request)
@@ -70,9 +70,9 @@ class AlbumsAPI: ObservableObject {
     
     private func fetchAlbumsForWantlist() -> Void {
         let me = "AlbumsAPI.fetchAlbumsForWantlist(): "
-        let request: NSFetchRequest<LibraryAlbum> = LibraryAlbum.fetchRequest()
+        let request: NSFetchRequest<Release> = Release.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \LibraryAlbum.dateAdded, ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Release.dateAdded, ascending: false)]
 
         do {
             self.wantlist = try container.viewContext.fetch(request)
@@ -84,8 +84,8 @@ class AlbumsAPI: ObservableObject {
     
     public func fetchRecentSearches() -> Void {
         let me = "AlbumsAPI.fetchRecentSearches(): "
-        let request: NSFetchRequest<RecentSearch> = RecentSearch.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentSearch.timestamp, ascending: false)]
+        let request: NSFetchRequest<RecentView> = RecentView.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentView.timestamp, ascending: false)]
         request.fetchLimit = 10
         
         do {
@@ -96,8 +96,8 @@ class AlbumsAPI: ObservableObject {
         }
     }
     
-    public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum, upc: String? = nil) -> LibraryAlbum {
-        let album = LibraryAlbum(context: container.viewContext)
+    public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum, upc: String? = nil) -> Release {
+        let album = Release(context: container.viewContext)
     
         album.appleId = Double(iTunesData.collectionId!)
         album.artistAppleId = Double(iTunesData.amgArtistId ?? 0)
@@ -107,7 +107,7 @@ class AlbumsAPI: ObservableObject {
         album.favorite = false
         album.genre = iTunesData.primaryGenreName
         album.owned = false
-        album.playCount = 0
+        album.plays = 0
         album.releaseDate = iTunesData.releaseDate
         album.title = iTunesData.collectionName
         album.wantlisted = false
@@ -116,7 +116,7 @@ class AlbumsAPI: ObservableObject {
         return album
     }
 
-    public func addAlbumToLibrary(_ album: LibraryAlbum) -> Void {
+    public func addAlbumToLibrary(_ album: Release) -> Void {
         let me = "AlbumsAPI.addAlbumToLibrary(): "
         activeAlbum?.owned = true
         activeAlbum?.wantlisted = false
@@ -125,7 +125,7 @@ class AlbumsAPI: ObservableObject {
         saveData()
     }
     
-    public func addAlbumToWantlist(_ album: LibraryAlbum) -> Void {
+    public func addAlbumToWantlist(_ album: Release) -> Void {
         let me = "AlbumsAPI.addAlbumToLibrary(): "
         activeAlbum?.owned = false
         activeAlbum?.wantlisted = true
@@ -134,7 +134,7 @@ class AlbumsAPI: ObservableObject {
         saveData()
     }
     
-    public func removeAlbum(_ album: LibraryAlbum) -> Void {
+    public func removeAlbum(_ album: Release) -> Void {
         let me = "AlbumsAPI.removeAlbum(): "
         activeAlbum?.owned = false
         activeAlbum?.wantlisted = false
@@ -142,8 +142,8 @@ class AlbumsAPI: ObservableObject {
         saveData()
     }
     
-    public func saveRecentSearch(_ album: LibraryAlbum) -> Void {
-        let search = RecentSearch(context: container.viewContext)
+    public func saveRecentSearch(_ album: Release) -> Void {
+        let search = RecentView(context: container.viewContext)
         search.timestamp = Date()
 //        search.album = album
         saveData()
@@ -156,7 +156,7 @@ class AlbumsAPI: ObservableObject {
         saveData()
     }
     
-    public func setActiveAlbum(_ album: LibraryAlbum?) -> Void {
+    public func setActiveAlbum(_ album: Release?) -> Void {
         if album != nil {
             self.activeAlbum = album
             
