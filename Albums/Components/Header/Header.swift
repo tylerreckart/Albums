@@ -12,14 +12,16 @@ struct Header<Content: View>: View {
     
     var showDivider: Bool = true
     var background: Color = Color(.systemBackground)
+    var showWideBackground: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
                     content
+                        .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .background(Color(showWideBackground ? .systemBackground : .clear))
                 .padding(.top, 5)
                 .padding(.bottom, 10)
                 

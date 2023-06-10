@@ -120,11 +120,10 @@ struct AlbumDetail: View {
             let artist = await audioDB.lookupArtist(state.artistMbId!)
             
             if artist != nil {
+                artist!.albums = Set(related) as NSSet
                 state.artists = [artist!]
             }
         }
-        
-        print(state.artists)
         
         store.saveData()
     }
