@@ -122,8 +122,70 @@ struct ArtistDetail: View {
         @Binding var artist: Artist?
         @Binding var inLibraryAlbums: [LibraryAlbum]
         
+        @State private var latestRelease: LibraryAlbum?
+        @State private var discographyForDisplay: [LibraryAlbum] = []
+        
+        func convertToEpochTime(_ dateStr: String) -> Int {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            return Int(formatter.date(from: dateStr)?.timeIntervalSince1970 ?? 0)
+        }
+        
+        func buildDiscography(_ albums: [LibraryAlbum]) -> [LibraryAlbum] {
+            var result = albums
+            
+            let crossReference = Dictionary(grouping: result, by: \.appleId)
+            let duplicates = crossReference.filter { $1.count > 1 }
+            
+            if duplicates.count > 0 {
+                for (_, duplicate) in duplicates {
+                    let index = albums.firstIndex(where: { $0.appleId == duplicate[0].appleId })!
+                    result.remove(at: index)
+                    
+                    let nextCrossReference = Dictionary(grouping: result, by: \.appleId)
+                    let remainingDuplicates = nextCrossReference.filter { $1.count > 1 }
+                    
+                    if remainingDuplicates.isEmpty {
+                        break;
+                    }
+                }
+            }
+            
+            return result.sorted {
+                convertToEpochTime($0.releaseDate!) > convertToEpochTime($1.releaseDate!)
+            }
+        }
+        
         var body: some View {
             VStack(spacing: 0) {
+                VStack {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("Latest Release")
+                            .font(.system(size: 18, weight: .bold))
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    
+                    HStack {
+                        AsyncImage(url: URL(string: latestRelease?.artworkUrl ?? "")) { image in
+                            image.resizable().aspectRatio(contentMode: .fit)
+                        } placeholder: {
+                            ZStack {
+                                Rectangle()
+                                    .fill(Color(.systemGray6))
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .aspectRatio(contentMode: .fit)
+                                ProgressView()
+                            }
+                        }
+                        .frame(maxWidth: 200)
+                        .cornerRadius(10)
+                        .shadow(color: .black.opacity(0.075), radius: 6, y: 6)
+                        
+                        Text(latestRelease?.title ?? "")
+                    }
+                }
+                
                 HStack(alignment: .firstTextBaseline) {
                     Text("Discography")
                         .font(.system(size: 18, weight: .bold))
@@ -133,7 +195,7 @@ struct ArtistDetail: View {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(alignment: .top, spacing: 16) {
-                        ForEach(Array(artist?.albums as? Set<LibraryAlbum> ?? []), id: \.self) { album in
+                        ForEach(discographyForDisplay, id: \.self) { album in
                             Button(action: {}) {
                                 AlbumGridItem(album: album)
                                     .frame(maxWidth: 200)
@@ -170,6 +232,15 @@ struct ArtistDetail: View {
                     .frame(height: 280)
                     .edgesIgnoringSafeArea(.bottom)
                     .foregroundColor(.primary)
+                }
+            }
+            .onAppear {
+                if discographyForDisplay.count == 0 {
+                    let albums = Array(artist?.albums as? Set<LibraryAlbum> ?? [])
+                    var discography = buildDiscography(albums)
+                    latestRelease = discography[0]
+                    discography.remove(at: 0)
+                    discographyForDisplay = discography
                 }
             }
         }
