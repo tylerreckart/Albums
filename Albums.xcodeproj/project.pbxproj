@@ -32,6 +32,9 @@
 		DB6F2ED12A27BC300042E845 /* DynamicTargetSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2ED02A27BC300042E845 /* DynamicTargetSearchResult.swift */; };
 		DB6F2ED42A27CC0E0042E845 /* DynamicOffsetHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2ED32A27CC0E0042E845 /* DynamicOffsetHeader.swift */; };
 		DB6F2EF62A28EB020042E845 /* HomeViewPlaylistSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F2EF52A28EB020042E845 /* HomeViewPlaylistSection.swift */; };
+		DB6F592D2A34E206002D973F /* ArtistDiscography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F592C2A34E206002D973F /* ArtistDiscography.swift */; };
+		DB6F592F2A34E226002D973F /* Biography.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F592E2A34E226002D973F /* Biography.swift */; };
+		DB6F59312A34E24D002D973F /* ArtistDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6F59302A34E24D002D973F /* ArtistDetailHeader.swift */; };
 		DB96D4B52A1A8986005C4CAE /* iTunesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B42A1A8986005C4CAE /* iTunesAPI.swift */; };
 		DB96D4B82A1B0932005C4CAE /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4B72A1B0932005C4CAE /* Color.swift */; };
 		DB96D4BF2A1B0993005C4CAE /* SectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */; };
@@ -92,6 +95,9 @@
 		DB6F2ED02A27BC300042E845 /* DynamicTargetSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTargetSearchResult.swift; sourceTree = "<group>"; };
 		DB6F2ED32A27CC0E0042E845 /* DynamicOffsetHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicOffsetHeader.swift; sourceTree = "<group>"; };
 		DB6F2EF52A28EB020042E845 /* HomeViewPlaylistSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewPlaylistSection.swift; sourceTree = "<group>"; };
+		DB6F592C2A34E206002D973F /* ArtistDiscography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDiscography.swift; sourceTree = "<group>"; };
+		DB6F592E2A34E226002D973F /* Biography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biography.swift; sourceTree = "<group>"; };
+		DB6F59302A34E24D002D973F /* ArtistDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailHeader.swift; sourceTree = "<group>"; };
 		DB96D4B42A1A8986005C4CAE /* iTunesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAPI.swift; sourceTree = "<group>"; };
 		DB96D4B72A1B0932005C4CAE /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		DB96D4BE2A1B0993005C4CAE /* SectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionTitle.swift; sourceTree = "<group>"; };
@@ -231,6 +237,16 @@
 			path = DynamicTargetSearchResult;
 			sourceTree = "<group>";
 		};
+		DB6F592B2A34E1FB002D973F /* ArtistDetail */ = {
+			isa = PBXGroup;
+			children = (
+				DB6F592C2A34E206002D973F /* ArtistDiscography.swift */,
+				DB6F592E2A34E226002D973F /* Biography.swift */,
+				DB6F59302A34E24D002D973F /* ArtistDetailHeader.swift */,
+			);
+			path = ArtistDetail;
+			sourceTree = "<group>";
+		};
 		DB96D4B62A1B0928005C4CAE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +260,7 @@
 		DB96D4B92A1B0953005C4CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				DB6F592B2A34E1FB002D973F /* ArtistDetail */,
 				DB628B072A323FD8006A95F6 /* AlbumOptionsCard */,
 				DB628B042A323B89006A95F6 /* PlayerView */,
 				DB6F2ECF2A27BC130042E845 /* DynamicTargetSearchResult */,
@@ -512,6 +529,8 @@
 				DBD4500A2A1E438B00589220 /* AlbumsAPI.swift in Sources */,
 				DB6F2EA52A1FC4080042E845 /* iTunesArtistLookupResponse.swift in Sources */,
 				DB9B8CBA2A0D11C900CE4D74 /* Albums.xcdatamodeld in Sources */,
+				DB6F592D2A34E206002D973F /* ArtistDiscography.swift in Sources */,
+				DB6F592F2A34E226002D973F /* Biography.swift in Sources */,
 				DB6F2EB02A1FD95E0042E845 /* AlbumMeta.swift in Sources */,
 				DBD450082A1DB65000589220 /* SettingsView.swift in Sources */,
 				DB6F2ECC2A258D0A0042E845 /* Views.swift in Sources */,
@@ -519,6 +538,7 @@
 				DBD450062A1DB3DF00589220 /* Header.swift in Sources */,
 				DB9B8CD32A11C81A00CE4D74 /* AlbumDetail.swift in Sources */,
 				DB96D4D72A1BFC5F005C4CAE /* RoundedCorner.swift in Sources */,
+				DB6F59312A34E24D002D973F /* ArtistDetailHeader.swift in Sources */,
 				DB628B0D2A324089006A95F6 /* AddToPlaylistSheet.swift in Sources */,
 				DB9B8CD52A11C85200CE4D74 /* SearchView.swift in Sources */,
 				DB9B8CBC2A0D11C900CE4D74 /* ContentView.swift in Sources */,
