@@ -10,10 +10,23 @@ import SwiftUI
 import CoreData
 
 /// Determines how the library is sorted.
-enum LibrarySortFilter {
+enum LibrarySortFilter: String, CaseIterable, Identifiable {
     case date
     case albumName
     case artistName
+    
+    var id: String { self.rawValue }
+    
+    var displayName: String {
+        switch self {
+        case .date:
+            return "Date Added"
+        case .albumName:
+            return "Album Name"
+        case .artistName:
+            return "Artist Name"
+        }
+    }
 }
 
 struct LibraryView: View {
@@ -25,7 +38,7 @@ struct LibraryView: View {
     @State private var scrollOffset: CGPoint = .zero
     
     @State private var presentSortMenu: Bool = false
-    @State private var sortFilter: LibrarySortFilter = .date
+    @State private var sortFilter: LibrarySortFilter = LibrarySortFilter.savedSort()
     
     var showNavigation: Bool = false
     
@@ -43,6 +56,7 @@ struct LibraryView: View {
                     // The filter bar (Owned / Wantlist / Playlists + sort)
                     LibraryFilterBar(
                         currentFilter: store.filter,
+                        currentSort: sortFilter,
                         onFilterChange: { newFilter in
                             withAnimation(.interactiveSpring(response: 0.3, dampingFraction: 0.7)) {
                                 store.setFilter(newFilter)
@@ -53,7 +67,7 @@ struct LibraryView: View {
                             presentSortMenu.toggle()
                         }
                     )
-                    .padding(.top, 5)
+                    .padding(.top, 10)
                     .padding(.bottom, 10)
                     
                     // Two-column layout for filtered + sorted results
@@ -67,14 +81,15 @@ struct LibraryView: View {
                                 store.setActiveAlbum(album)
                             }
                         )
+                        .transition(.opacity.combined(with: .slide))
                     }
                 }
-                .padding(.horizontal)
                 .foregroundColor(.primary)
                 
                 Spacer()
             }
             .scrollDismissesKeyboard(.immediately)
+            .padding(.horizontal)
             
             // Dynamic header
             DynamicOffsetHeader(content: {
@@ -88,7 +103,7 @@ struct LibraryView: View {
                     SearchBar(
                         placeholder: "Find in Your Library",
                         searchText: $searchText,
-                        search: {},
+                        search: performSearch,
                         results: $results
                     )
                     .padding(.bottom, 10)
@@ -98,14 +113,28 @@ struct LibraryView: View {
             title: "Your Library")
         }
         .confirmationDialog("Sort your Library", isPresented: $presentSortMenu, titleVisibility: .visible) {
-            Button("Date Added") { sortFilter = .date }
-            Button("Artist Name") { sortFilter = .artistName }
-            Button("Album Name") { sortFilter = .albumName }
+            ForEach(LibrarySortFilter.allCases) { sortOption in
+                Button(sortOption.displayName) {
+                    withAnimation {
+                        sortFilter = sortOption
+                        sortFilter.saveSort()
+                    }
+                }
+            }
+            Button("Cancel", role: .cancel) {}
         }
         .navigationBarHidden(true)
         .transition(.identity)
         .onTapGesture {
             endTextEditing()
+        }
+        .onAppear {
+            // Ensure the sortFilter is loaded when the view appears
+            sortFilter = LibrarySortFilter.savedSort()
+        }
+        .onChange(of: sortFilter) { newValue in
+            // Persist the sort preference when it changes
+            sortFilter.saveSort()
         }
     }
     
@@ -156,18 +185,12 @@ struct LibraryView: View {
     
     /// Breaks the array of `Release` objects into pairs for a two-column layout.
     private func twoColumnRows(for items: [Release]) -> [(Release?, Release?)] {
-        let evens = items.indices.filter { $0 % 2 == 0 }.map { items[$0] }
-        let odds  = items.indices.filter { $0 % 2 == 1 }.map { items[$0] }
-        
-        let maxRows = max(evens.count, odds.count)
-        
         var rows: [(Release?, Release?)] = []
-        rows.reserveCapacity(maxRows)
         
-        for i in 0..<maxRows {
-            let evenItem = i < evens.count ? evens[i] : nil
-            let oddItem = i < odds.count ? odds[i] : nil
-            rows.append((evenItem, oddItem))
+        for index in stride(from: 0, to: items.count, by: 2) {
+            let first = items[index]
+            let second = index + 1 < items.count ? items[index + 1] : nil
+            rows.append((first, second))
         }
         
         return rows
@@ -178,6 +201,29 @@ struct LibraryView: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                         to: nil, from: nil, for: nil)
     }
+    
+    /// Performs the search action. Placeholder for actual search implementation.
+    private func performSearch() {
+        // Implement search logic if needed
+    }
+}
+
+// MARK: - LibrarySortFilter Persistence
+
+extension LibrarySortFilter {
+    /// Saves the current sort filter to UserDefaults.
+    func saveSort() {
+        UserDefaults.standard.set(self.rawValue, forKey: "sortFilter")
+    }
+    
+    /// Retrieves the saved sort filter from UserDefaults, or defaults to `.date`.
+    static func savedSort() -> LibrarySortFilter {
+        if let savedValue = UserDefaults.standard.string(forKey: "sortFilter"),
+           let filter = LibrarySortFilter(rawValue: savedValue) {
+            return filter
+        }
+        return .date
+    }
 }
 
 // MARK: - LibraryFilterBar
@@ -185,74 +231,89 @@ struct LibraryView: View {
 /// A subview that displays the filter buttons (Owned, Wantlist, Playlists) and the sort button.
 private struct LibraryFilterBar: View {
     let currentFilter: AlbumsAPI.LibraryFilter
+    let currentSort: LibrarySortFilter
     let onFilterChange: (AlbumsAPI.LibraryFilter) -> Void
     let onSortTapped: () -> Void
     
     var body: some View {
-        ZStack {
-            // Purple highlight behind the selected filter
-            HStack {
-                Spacer().frame(width: highlightWidth())
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color("PrimaryPurple"))
-                    .frame(width: 90, height: 36)
-                Spacer()
+        HStack {
+            ZStack {
+                // Purple highlight behind the selected filter
+                HStack(spacing: 0) {
+                    Spacer().frame(width: highlightPosition())
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color("PrimaryPurple"))
+                        .frame(width: 90, height: 36)
+                    Spacer()
+                }
+                
+                HStack(spacing: 0) {
+                    FilterButton(title: "Owned", isSelected: currentFilter == .library) {
+                        onFilterChange(.library)
+                    }
+                    .frame(width: 90)
+                    
+                    FilterButton(title: "Wantlist", isSelected: currentFilter == .wantlist) {
+                        onFilterChange(.wantlist)
+                    }
+                    .frame(width: 90)
+                    
+                    FilterButton(title: "Playlists", isSelected: currentFilter == .playlists) {
+                        onFilterChange(.playlists)
+                    }
+                    .frame(width: 90)
+                    
+                    Spacer()
+                }
+                .animation(.easeInOut, value: currentFilter)
             }
             
-            HStack(spacing: 0) {
-                // Owned
-                Button(action: {
-                    onFilterChange(.library)
-                }) {
-                    Text("Owned")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(currentFilter == .library ? .white : .primary)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                }
-                .frame(width: 90)
-                
-                // Wantlist
-                Button(action: {
-                    onFilterChange(.wantlist)
-                }) {
-                    Text("Wantlist")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(currentFilter == .wantlist ? .white : .primary)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                }
-                .frame(width: 90)
-                
-                // Playlists
-                Button(action: {
-                    onFilterChange(.playlists)
-                }) {
-                    Text("Playlists")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(currentFilter == .playlists ? .white : .primary)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
-                }
-                .frame(width: 90)
-                
-                Spacer()
-                
-                // Sort button
-                SortButton(action: onSortTapped)
+            Spacer()
+            
+            SortButton(action: onSortTapped, currentSort: currentSort)
+        }
+    }
+    
+    /// Determines the X-axis position for the highlight based on the current filter.
+    private func highlightPosition() -> CGFloat {
+        switch currentFilter {
+        case .library:
+            return 0
+        case .wantlist:
+            return 90
+        case .playlists:
+            return 180
+        }
+    }
+    
+    /// A reusable filter button component.
+    private struct FilterButton: View {
+        let title: String
+        let isSelected: Bool
+        let action: () -> Void
+        
+        var body: some View {
+            Button(action: action) {
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(isSelected ? .white : .primary)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
             }
         }
     }
     
+    /// A reusable sort button component that displays the current sort option.
     private struct SortButton: View {
         let action: () -> Void
+        let currentSort: LibrarySortFilter
         
         var body: some View {
             Button(action: action) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(Color(.systemGray6))
-                        .frame(width: 90, height: 42)
+                        .frame(width: 90, height: 36)
                     
                     HStack(spacing: 5) {
                         Image(systemName: "arrow.up.arrow.down")
@@ -265,19 +326,6 @@ private struct LibraryFilterBar: View {
                     .padding(.horizontal, 15)
                 }
             }
-            .frame(width: 90)
-        }
-    }
-    
-    /// Determines how far to shift the purple highlight background.
-    private func highlightWidth() -> CGFloat {
-        switch currentFilter {
-        case .library:
-            return 0
-        case .wantlist:
-            return 90
-        case .playlists:
-            return 180
         }
     }
 }
@@ -291,10 +339,12 @@ private struct AlbumRow: View {
     let onSelectAlbum: (Release) -> Void
     
     var body: some View {
-        HStack(spacing: 20) {
+        HStack {
             albumCell(even)
+                .padding(.trailing)
             albumCell(odd)
         }
+        .padding(.bottom)
     }
     
     @ViewBuilder
@@ -303,9 +353,11 @@ private struct AlbumRow: View {
             Button { onSelectAlbum(album) } label: {
                 AlbumGridItem(album: album)
             }
+            .buttonStyle(PlainButtonStyle())
         } else {
-            Rectangle().fill(Color.clear).aspectRatio(1.0, contentMode: .fit)
+            Rectangle()
+                .fill(Color.clear)
+                .aspectRatio(1.0, contentMode: .fit)
         }
-        Spacer()
     }
 }
