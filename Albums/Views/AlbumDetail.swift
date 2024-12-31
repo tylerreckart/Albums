@@ -36,7 +36,7 @@ struct AlbumDetail: View {
                 )
                 .task {
                     do {
-                        try await loadAlbumMeta(album)
+                        await loadAlbumMeta(album)
                     } catch {
                         print("Error loading album metadata: \(error.localizedDescription)")
                     }
@@ -70,18 +70,17 @@ struct AlbumDetail: View {
         .edgesIgnoringSafeArea(.bottom)
     }
     
-    private func loadAlbumMeta(_ album: Release) async throws {
+    private func loadAlbumMeta(_ album: Release) async {
         guard let albumTitle = album.title, let artistName = album.artistName else { return }
-        let audioDB = AudioDB(cont: store.container)
 
         do {
             // Fetch album artwork
-            album.artworkUrl = try await iTunesAPI.lookupAlbumArtwork(album)
+            album.artworkUrl = await iTunesAPI.lookupAlbumArtwork(album)
 
             // Fetch related albums and tracks
-            related = try await iTunesAPI.lookupRelatedAlbums(Int(album.artistAppleId))
+            related = await iTunesAPI.lookupRelatedAlbums(Int(album.artistAppleId))
                 .map { store.mapAlbumDataToLibraryModel($0) }
-            tracks = try await iTunesAPI.lookupTracksForAlbum(Int(album.appleId))
+            tracks = await iTunesAPI.lookupTracksForAlbum(Int(album.appleId))
 
             // Fetch metadata from MusicBrainz
             if album.upc == nil {
@@ -92,18 +91,9 @@ struct AlbumDetail: View {
                 }
             }
 
-            // Fetch artist information
-            if let artistMbId = album.artistMbId {
-                if let artist = try await audioDB.lookupArtist(artistMbId) {
-                    artist.albums = Set(related) as NSSet
-                    album.artists = [artist]
-                }
-            }
-
             store.saveData()
         } catch {
             print("Error loading album metadata: \(error.localizedDescription)")
-            throw error // Re-throw the error for further handling if needed
         }
     }
 }
