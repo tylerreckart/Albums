@@ -50,18 +50,27 @@ struct AlbumCoverView: View {
         .offset(y: -20)
         .onAppear {
             Task {
-                let top15 = await itunes.fetchTopAlbums().shuffled()
-                for i in 0..<3 {
-                    let start = i == 0 ? 0 : i * 5
-                    let end   = start + 5
-                    
-                    var results: [iTunesFeedAlbum] = []
-                    
-                    for a in top15[start...end] {
-                        results.append(a)
+                do {
+                    // Fetch and shuffle the albums
+                    let fetchedAlbums = try await itunes.fetchTopAlbums()
+                    let shuffledAlbums = fetchedAlbums.shuffled()
+
+                    // Ensure we have at least 15 albums
+                    guard shuffledAlbums.count >= 15 else {
+                        // Handle insufficient albums if needed
+                        return
                     }
-                    
-                    topAlbums[i] = results
+
+                    // Partition into three groups of five
+                    for i in 0..<3 {
+                        let startIndex = i * 5
+                        let endIndex = startIndex + 5
+                        let slice = shuffledAlbums[startIndex..<endIndex]
+                        topAlbums[i] = Array(slice)
+                    }
+                } catch {
+                    // Handle the error (e.g., log, show alert, etc.)
+                    print("Error fetching top albums: \(error.localizedDescription)")
                 }
             }
         }

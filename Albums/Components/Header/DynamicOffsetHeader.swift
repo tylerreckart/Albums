@@ -34,8 +34,8 @@ struct DynamicOffsetHeader<Content: View>: View {
                         Color(.systemBackground)
                         Spacer()
                     }
-                    .frame(maxHeight: 100)
-                    .offset(y: -73)
+                    .frame(maxHeight: 103)
+                    .offset(y: -76)
                     .edgesIgnoringSafeArea(.top)
                     
                     VStack {

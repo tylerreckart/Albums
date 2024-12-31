@@ -23,8 +23,8 @@ struct BarcodeScannerView: View {
             ) { response in
                 if case let .success(result) = response {
                     Task {
-                        let res = await itunes.lookupUPC(result.string)
-                        
+                        let res = try? await itunes.lookupUPC(result.string)
+                    
                         if res != nil {
                             let r = store.mapAlbumDataToLibraryModel(res!)
                             

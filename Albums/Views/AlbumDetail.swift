@@ -11,120 +11,139 @@ import CoreData
 
 struct AlbumDetail: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
     @EnvironmentObject var store: AlbumsAPI
     @EnvironmentObject var iTunesAPI: iTunesAPI
     
-    @StateObject var mbAPI: MusicBrainzAPI = MusicBrainzAPI()
-    
-    var album: Release?
-    var searchResult: Bool = false
-    
-    @State private var viewContext: NSManagedObjectContext?
+    @StateObject private var mbAPI = MusicBrainzAPI()
     @State private var related: [Release] = []
     @State private var tracks: [iTunesTrack] = []
     @State private var scrollOffset: CGPoint = CGPoint()
-    
-    @State private var showOptionsCard: Bool = false
-    
-    @State private var showAddToPlaylistSheet: Bool = false
-    
-    @State private var shouldScrollToTop: Bool = false
-    
-    @State private var showArtistDetail: Bool = false
-    
+    @State private var showOptionsCard = false
+    @State private var showAddToPlaylistSheet = false
     @State private var selectedArtist: Artist?
-    
+
+    var album: Release?
+    var searchResult: Bool = false
+
     var body: some View {
         ZStack {
-            if album != nil {
-                ScrollViewReader { reader in
-                    ScrollOffsetObserver(showsIndicators: false, offset: $scrollOffset) {
-                        VStack(spacing: 20) {
-                            AlbumMeta(selectedArtist: $selectedArtist)
-                            AlbumActions()
-                            
-                            if self.tracks.count > 0 {
-                                AlbumTracklist(tracks: $tracks)
-                            }
-                            
-                            if self.related.count > 0 {
-                                RelatedAlbums(related: $related, scrollToTop: { shouldScrollToTop.toggle() })
-                            }
-                            
-                            Spacer().frame(height: 10)
-                        }
-                        .id("meta")
-                        .onChange(of: shouldScrollToTop) { _ in
-                            withAnimation {
-                               reader.scrollTo("meta", anchor: .top)
-                            }
-                        }
+            if let album = album {
+                AlbumScrollView(
+                    tracks: $tracks,
+                    related: $related,
+                    shouldScrollToTop: Binding.constant(false),
+                    selectedArtist: $selectedArtist
+                )
+                .task {
+                    do {
+                        try await loadAlbumMeta(album)
+                    } catch {
+                        print("Error loading album metadata: \(error.localizedDescription)")
                     }
-                    .frame(maxHeight: .infinity)
-                    .padding(.top, 40)
-                    .background(Color(.systemBackground))
                 }
             } else {
                 ProgressView()
             }
-                
-            AlbumDetailHeader(album: album, scrollOffset: $scrollOffset, showOptionsCard: $showOptionsCard)
-                
+
+            AlbumDetailHeader(
+                album: album,
+                scrollOffset: $scrollOffset,
+                showOptionsCard: $showOptionsCard
+            )
+            
             if showOptionsCard {
-                AlbumOptionsCard(showOptionsCard: $showOptionsCard, showAddToPlaylistSheet: $showAddToPlaylistSheet)
+                AlbumOptionsCard(
+                    showOptionsCard: $showOptionsCard,
+                    showAddToPlaylistSheet: $showAddToPlaylistSheet
+                )
             }
             
-            if selectedArtist != nil {
-                ArtistDetail(artist: $selectedArtist)
+            if let selectedArtist = selectedArtist {
+                ArtistDetail(artist: .constant(selectedArtist))
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onChange(of: store.activeAlbum) { state in
-            if state != nil {
-                Task {
-                    await loadAlbumMeta(state: state!)
-                }
-            }
+        .sheet(isPresented: $showAddToPlaylistSheet) {
+            AddToPlaylistSheet()
         }
-        .sheet(isPresented: $showAddToPlaylistSheet, content: { AddToPlaylistSheet() })
         .background(Color(.systemBackground))
         .navigationBarHidden(true)
         .edgesIgnoringSafeArea(.bottom)
     }
     
-    func loadAlbumMeta(state: Release) async -> Void {
+    private func loadAlbumMeta(_ album: Release) async throws {
+        guard let albumTitle = album.title, let artistName = album.artistName else { return }
         let audioDB = AudioDB(cont: store.container)
-        
-        let artwork = await iTunesAPI.lookupAlbumArtwork(state)
-        
-        state.artworkUrl = artwork
-        
-        self.related = await iTunesAPI.lookupRelatedAlbums(Int(state.artistAppleId)).map { store.mapAlbumDataToLibraryModel($0) }
-        self.tracks  = await iTunesAPI.lookupTracksForAlbum(Int(state.appleId))
-        
-        print("Stored MBID: \(state.artistMbId ?? "")")
-        
-        if state.upc == nil {
-            let data = await mbAPI.requestMetadata(state.title!, state.artistName!)
-            print(data)
-            
-            if !data.isEmpty && data[0].barcode?.count ?? 0 > 0 {
-                state.upc = data[0].barcode
-                state.artistMbId = data[0].artistcredit![0].artist?.id
-                print("Retrived MBID: \(state.artistMbId ?? "")")
+
+        do {
+            // Fetch album artwork
+            album.artworkUrl = try await iTunesAPI.lookupAlbumArtwork(album)
+
+            // Fetch related albums and tracks
+            related = try await iTunesAPI.lookupRelatedAlbums(Int(album.artistAppleId))
+                .map { store.mapAlbumDataToLibraryModel($0) }
+            tracks = try await iTunesAPI.lookupTracksForAlbum(Int(album.appleId))
+
+            // Fetch metadata from MusicBrainz
+            if album.upc == nil {
+                let metadata = try await mbAPI.requestMetadata(albumTitle, artistName)
+                if let firstMetadata = metadata.first, let barcode = firstMetadata.barcode, !barcode.isEmpty {
+                    album.upc = barcode
+                    album.artistMbId = firstMetadata.artistcredit?.first?.artist?.id
+                }
             }
-        }
-        
-        if !(state.artistMbId?.isEmpty ?? true && state.artists == nil) {
-            let artist = await audioDB.lookupArtist(state.artistMbId!)
-            
-            if artist != nil {
-                artist!.albums = Set(related) as NSSet
-                state.artists = [artist!]
+
+            // Fetch artist information
+            if let artistMbId = album.artistMbId {
+                if let artist = try await audioDB.lookupArtist(artistMbId) {
+                    artist.albums = Set(related) as NSSet
+                    album.artists = [artist]
+                }
             }
+
+            store.saveData()
+        } catch {
+            print("Error loading album metadata: \(error.localizedDescription)")
+            throw error // Re-throw the error for further handling if needed
         }
-        
-        store.saveData()
     }
 }
+
+struct AlbumScrollView: View {
+    @Binding var tracks: [iTunesTrack]
+    @Binding var related: [Release]
+    @Binding var shouldScrollToTop: Bool
+    @Binding var selectedArtist: Artist?
+    
+    var body: some View {
+        ScrollViewReader { reader in
+            ScrollOffsetObserver(showsIndicators: false, offset: .constant(.zero)) {
+                VStack(spacing: 20) {
+                    AlbumMeta(selectedArtist: $selectedArtist)
+                    AlbumActions()
+                    
+                    if !tracks.isEmpty {
+                        AlbumTracklist(tracks: $tracks)
+                    }
+                    
+                    if !related.isEmpty {
+                        RelatedAlbums(related: $related) {
+                            shouldScrollToTop.toggle()
+                        }
+                    }
+                    
+                    Spacer().frame(height: 10)
+                }
+                .id("meta")
+                .onChange(of: shouldScrollToTop) { _ in
+                    withAnimation {
+                        reader.scrollTo("meta", anchor: .top)
+                    }
+                }
+            }
+            .frame(maxHeight: .infinity)
+            .padding(.top, 40)
+            .background(Color(.systemBackground))
+        }
+    }
+}
+

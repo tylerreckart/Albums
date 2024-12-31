@@ -3,6 +3,7 @@
 //  Albums
 //
 //  Created by Tyler Reckart on 5/24/23.
+//  Refactored by ChatGPT
 //
 
 import Foundation
@@ -10,97 +11,119 @@ import CoreData
 import SwiftUI
 
 class AlbumsAPI: ObservableObject {
+    
+    // MARK: - Published Properties
+    
     @Published var container: NSPersistentContainer
     
-    // Data Stores.
     @Published var presentAlbum: Bool = false
     @Published var activeAlbum: Release?
+    
     @Published var library: [Release] = []
     @Published var wantlist: [Release] = []
     @Published var recentSearches: [RecentView] = []
-    // Filters
+    
     @Published var filter: LibraryFilter = .library
+    
+    // MARK: - Nested Types
     
     enum LibraryFilter: String {
         case library
         case wantlist
         case playlists
     }
-
-    subscript(filter: String) -> [Release] {
-        get {
-            if filter == "library" { return library }
-            if filter == "wantlist" { return wantlist }
+    
+    // MARK: - Initialization
+    
+    init() {
+        container = NSPersistentContainer(name: "Albums")
+        container.loadPersistentStores { _, error in
+            if let error = error {
+                print("AlbumsAPI: ERROR LOADING DATA – \(error.localizedDescription)")
+            } else {
+                print("AlbumsAPI: Successfully loaded Core Data.")
+            }
+        }
+        
+        // Pre-fetch data
+        fetchLibraryAlbums()
+        fetchWantlistAlbums()
+        fetchRecentSearches()
+    }
+    
+    // MARK: - Filtering
+    
+    /// Returns the array of `AlbumRelease` objects depending on the specified filter.
+    public func albums(for filter: LibraryFilter) -> [Release] {
+        switch filter {
+        case .library:
+            return library
+        case .wantlist:
+            return wantlist
+        case .playlists:
+            // If you have playlist logic, return that here. By default, return library.
             return library
         }
     }
     
-    init() {
-        let me = "AlbumsAPI.init(): "
-        container = NSPersistentContainer(name:"Albums")
-        container.loadPersistentStores {( description, error) in
-            if let error = error {
-                print(me + "ERROR LOADING DATA: \(error)")
-            } else {
-                print(me + "Sucessfully loaded Core Data")
-            }
-        }
-        fetchAlbumsForLibrary()
-        fetchAlbumsForWantlist()
-        fetchRecentSearches()
+    public func setFilter(_ newFilter: LibraryFilter) {
+        filter = newFilter
     }
     
-    public func setFilter(_ filter: LibraryFilter) -> Void {
-        self.filter = filter
-    }
+    // MARK: - Fetch Methods
     
-    private func fetchAlbumsForLibrary() -> Void {
-        let me = "AlbumsAPI.fetchAlbumsForLibrary(): "
+    private func fetchLibraryAlbums() {
         let request: NSFetchRequest<Release> = Release.fetchRequest()
         request.predicate = NSPredicate(format: "owned == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Release.dateAdded, ascending: false)]
-
+        
         do {
-            self.library = try container.viewContext.fetch(request)
-            print(me + "success")
-        } catch let error {
-            print(me + "error \(error)")
+            library = try container.viewContext.fetch(request)
+            print("AlbumsAPI: Library fetch successful. Total: \(library.count)")
+        } catch {
+            print("AlbumsAPI: ERROR fetching library – \(error.localizedDescription)")
         }
     }
     
-    private func fetchAlbumsForWantlist() -> Void {
-        let me = "AlbumsAPI.fetchAlbumsForWantlist(): "
+    private func fetchWantlistAlbums() {
         let request: NSFetchRequest<Release> = Release.fetchRequest()
         request.predicate = NSPredicate(format: "wantlisted == true")
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Release.dateAdded, ascending: false)]
-
+        
         do {
-            self.wantlist = try container.viewContext.fetch(request)
-            print(me + "success")
-        } catch let error {
-            print(me + "error \(error)")
+            wantlist = try container.viewContext.fetch(request)
+            print("AlbumsAPI: Wantlist fetch successful. Total: \(wantlist.count)")
+        } catch {
+            print("AlbumsAPI: ERROR fetching wantlist – \(error.localizedDescription)")
         }
     }
     
-    public func fetchRecentSearches() -> Void {
-        let me = "AlbumsAPI.fetchRecentSearches(): "
+    public func fetchRecentSearches() {
         let request: NSFetchRequest<RecentView> = RecentView.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \RecentView.timestamp, ascending: false)]
         request.fetchLimit = 10
         
         do {
-            self.recentSearches = try container.viewContext.fetch(request)
-            print(me + "success")
-        } catch let error {
-            print(me + "error \(error)")
+            recentSearches = try container.viewContext.fetch(request)
+            print("AlbumsAPI: Recent searches fetch successful. Total: \(recentSearches.count)")
+        } catch {
+            print("AlbumsAPI: ERROR fetching recent searches – \(error.localizedDescription)")
         }
     }
     
+    // MARK: - Data Mapping
+    
+    /// Maps `iTunesAlbum` data to a new `AlbumRelease` managed object.
+    /// - Parameter iTunesData: The album data from iTunes.
+    /// - Parameter upc: Optional UPC code for the album.
+    /// - Returns: A new `AlbumRelease` instance in the context of `container.viewContext`.
     public func mapAlbumDataToLibraryModel(_ iTunesData: iTunesAlbum, upc: String? = nil) -> Release {
         let album = Release(context: container.viewContext)
-    
-        album.appleId = Double(iTunesData.collectionId!)
+        
+        // Safe optional unwrapping
+        album.appleId = Double(iTunesData.collectionId ?? 0)
         album.artistAppleId = Double(iTunesData.amgArtistId ?? 0)
+        
         album.artistName = iTunesData.artistName
         album.artworkUrl = iTunesData.artworkUrl100
         album.dateAdded = Date()
@@ -115,72 +138,77 @@ class AlbumsAPI: ObservableObject {
         
         return album
     }
-
-    public func addAlbumToLibrary(_ album: Release) -> Void {
-        let me = "AlbumsAPI.addAlbumToLibrary(): "
-        activeAlbum?.owned = true
-        activeAlbum?.wantlisted = false
-        print(me + activeAlbum.debugDescription)
-        
+    
+    // MARK: - Album State Changes
+    
+    public func addAlbumToLibrary(_ album: Release) {
+        album.owned = true
+        album.wantlisted = false
+        print("AlbumsAPI: Adding album to library: \(album.debugDescription)")
         saveData()
     }
     
-    public func addAlbumToWantlist(_ album: Release) -> Void {
-        let me = "AlbumsAPI.addAlbumToLibrary(): "
-        activeAlbum?.owned = false
-        activeAlbum?.wantlisted = true
-        print(me + activeAlbum.debugDescription)
-        
+    public func addAlbumToWantlist(_ album: Release) {
+        album.owned = false
+        album.wantlisted = true
+        print("AlbumsAPI: Adding album to wantlist: \(album.debugDescription)")
         saveData()
     }
     
-    public func removeAlbum(_ album: Release) -> Void {
-        let me = "AlbumsAPI.removeAlbum(): "
-        activeAlbum?.owned = false
-        activeAlbum?.wantlisted = false
-        print(me + album.title!)
+    public func removeAlbum(_ album: Release) {
+        album.owned = false
+        album.wantlisted = false
+        print("AlbumsAPI: Removing album: \(album.title ?? "Unknown")")
         saveData()
     }
     
-    public func saveRecentSearch(_ album: Release) -> Void {
+    // MARK: - Recent Searches
+    
+    public func saveRecentSearch(_ album: Release) {
         let search = RecentView(context: container.viewContext)
         search.timestamp = Date()
-//        search.album = album
+        // If you want to relate the album, add logic below:
+        // search.album = album
         saveData()
     }
     
-    public func clearRecentSearches() -> Void {
-        for search in recentSearches {
-            container.viewContext.delete(search)
+    public func clearRecentSearches() {
+        for searchRecord in recentSearches {
+            container.viewContext.delete(searchRecord)
         }
         saveData()
     }
     
-    public func setActiveAlbum(_ album: Release?) -> Void {
-        if album != nil {
-            self.activeAlbum = album
-            
+    // MARK: - Active Album Presentation
+    
+    public func setActiveAlbum(_ album: Release?) {
+        if let nonNilAlbum = album {
+            activeAlbum = nonNilAlbum
             withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.7, blendDuration: 1)) {
-                self.presentAlbum = true
+                presentAlbum = true
             }
         } else {
+            // Delay clearing `activeAlbum` for animation
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                self.activeAlbum = album
+                self.activeAlbum = nil
             }
             withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.7, blendDuration: 1)) {
-                self.presentAlbum = false
+                presentAlbum = false
             }
         }
     }
-
+    
+    // MARK: - Saving
+    
+    /// Persists any changes to the `container.viewContext` and refreshes local data arrays.
     public func saveData() {
         do {
-          try container.viewContext.save()
-            fetchAlbumsForLibrary()
-            fetchAlbumsForWantlist()
+            try container.viewContext.save()
+            fetchLibraryAlbums()
+            fetchWantlistAlbums()
             fetchRecentSearches()
-        } catch let error {
-            print("Error saving... \(error)")
+        } catch {
+            print("AlbumsAPI: ERROR saving data – \(error.localizedDescription)")
         }
     }
 }
