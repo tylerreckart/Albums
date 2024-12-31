@@ -131,7 +131,7 @@ struct SearchView: View {
                             isPresentingScanner: $isPresentingScanner,
                             search: search
                         )
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 13)
                     }
                 },
                 yOffset: scrollOffset.y,
@@ -198,9 +198,6 @@ struct SearchView: View {
 
     /// Ends the keyboard focus by resigning first responder status.
     private func endTextEditing() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                        to: nil,
-                                        from: nil,
-                                        for: nil)
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

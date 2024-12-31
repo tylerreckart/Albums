@@ -239,12 +239,33 @@ private struct LibraryFilterBar: View {
                 Spacer()
                 
                 // Sort button
-                Button(action: onSortTapped) {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .font(.system(size: 18, weight: .regular))
-                }
-                .foregroundColor(Color("PrimaryPurple"))
+                SortButton(action: onSortTapped)
             }
+        }
+    }
+    
+    private struct SortButton: View {
+        let action: () -> Void
+        
+        var body: some View {
+            Button(action: action) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color(.systemGray6))
+                        .frame(width: 90, height: 42)
+                    
+                    HStack(spacing: 5) {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .font(.system(size: 12, weight: .heavy))
+                        Text("Sort")
+                            .font(.system(size: 14, weight: .semibold))
+                    }
+                    .foregroundColor(Color("PrimaryPurple"))
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
+                }
+            }
+            .frame(width: 90)
         }
     }
     

@@ -67,7 +67,6 @@
 		DBDC436E2A1D954A00183A8B /* HomeViewLibrarySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */; };
 		DBDC43702A1D955E00183A8B /* HomeViewWantlistSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */; };
 		DBDC43722A1D963900183A8B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43712A1D963900183A8B /* RootView.swift */; };
-		DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43732A1D98C000183A8B /* Greeting.swift */; };
 		DBDC43762A1D993300183A8B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC43752A1D993300183A8B /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -130,7 +129,6 @@
 		DBDC436D2A1D954A00183A8B /* HomeViewLibrarySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewLibrarySection.swift; sourceTree = "<group>"; };
 		DBDC436F2A1D955E00183A8B /* HomeViewWantlistSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewWantlistSection.swift; sourceTree = "<group>"; };
 		DBDC43712A1D963900183A8B /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		DBDC43732A1D98C000183A8B /* Greeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Greeting.swift; sourceTree = "<group>"; };
 		DBDC43752A1D993300183A8B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -210,14 +208,6 @@
 			path = SearchBar;
 			sourceTree = "<group>";
 		};
-		DB6F2EB82A1FDAA00042E845 /* Greeting */ = {
-			isa = PBXGroup;
-			children = (
-				DBDC43732A1D98C000183A8B /* Greeting.swift */,
-			);
-			path = Greeting;
-			sourceTree = "<group>";
-		};
 		DB6F2EB92A1FDAC20042E845 /* APIs */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,7 +260,6 @@
 				DBDC436C2A1D953E00183A8B /* HomeView */,
 				DB6F2EA82A1FD8E70042E845 /* AlbumDetail */,
 				DB6F2EB62A1FDA8D0042E845 /* AlbumListItem */,
-				DB6F2EB82A1FDAA00042E845 /* Greeting */,
 				DB6F2EB52A1FDA780042E845 /* SectionTitle */,
 				DB6F2EB12A1FD97B0042E845 /* UIButton */,
 				DBD4500D2A1EEF2B00589220 /* ScrollOffsetObserver */,
@@ -520,7 +509,6 @@
 				DB96D4D22A1BA154005C4CAE /* iTunesArtist.swift in Sources */,
 				DB6F2ECE2A2596E70042E845 /* BarcodeScannerView.swift in Sources */,
 				DB96D4DD2A1C014F005C4CAE /* SearchBar.swift in Sources */,
-				DBDC43742A1D98C000183A8B /* Greeting.swift in Sources */,
 				DB628B062A323B94006A95F6 /* PlayerView.swift in Sources */,
 				DB6F2ED12A27BC300042E845 /* DynamicTargetSearchResult.swift in Sources */,
 				DB6F2EAC2A1FD9290042E845 /* AlbumTracklist.swift in Sources */,
